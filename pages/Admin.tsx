@@ -71,7 +71,7 @@ const Admin: React.FC = () => {
             }
 
             // Check Role
-            if (session.user.email === 'obiesieprosper@gmail.com') {
+            if (session.user.email === 'obiesieprosper@gmail.com' || session.user.email === 'admin@fisherspay.de') {
                 // Bypass for Super Admin
                 setCurrentUser({ ...session.user, role: 'admin' } as any);
                 fetchData();

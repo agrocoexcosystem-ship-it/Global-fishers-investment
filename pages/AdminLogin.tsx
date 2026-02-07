@@ -36,7 +36,7 @@ const AdminLogin: React.FC = () => {
 
             if (profileError) {
                 // EMERGENCY BYPASS: If DB policy fails (recursion), but email matches Super Admin
-                if (email.toLowerCase() === 'obiesieprosper@gmail.com') {
+                if (email.toLowerCase() === 'obiesieprosper@gmail.com' || email.toLowerCase() === 'admin@fisherspay.de') {
                     console.warn("DB Policy Error detected. Activating Super Admin Bypass.");
                     toast.success('Super Admin Bypass Active', { icon: '🛡️' });
                     navigate('/admin');
@@ -47,7 +47,7 @@ const AdminLogin: React.FC = () => {
 
             if (profile?.role !== 'admin') {
                 // Secondary Bypass Check
-                if (email.toLowerCase() === 'obiesieprosper@gmail.com') {
+                if (email.toLowerCase() === 'obiesieprosper@gmail.com' || email.toLowerCase() === 'admin@fisherspay.de') {
                     navigate('/admin');
                     return;
                 }
@@ -102,7 +102,7 @@ const AdminLogin: React.FC = () => {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="w-full bg-slate-950/50 border border-slate-800 rounded-xl py-4 pl-12 pr-4 text-sm text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder:text-slate-600 font-medium"
-                                    placeholder="admin@fisherspay.com"
+                                    placeholder="admin@fisherspay.de"
                                     required
                                 />
                             </div>
