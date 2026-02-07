@@ -10,7 +10,7 @@ interface BotControlProps {
 
 const AdminBotControl: React.FC<BotControlProps> = ({ users }) => {
     const [selectedUser, setSelectedUser] = useState<string>('');
-    const [targetUser, setTargetUser] = useState<Profile | null>(null);
+    const targetUser = users.find(u => u.id === selectedUser) || null;
     const [botConfig, setBotConfig] = useState({
         enabled: false,
         strategy: 'AI_OPTIMIZED',
@@ -21,7 +21,6 @@ const AdminBotControl: React.FC<BotControlProps> = ({ users }) => {
     const handleUserSelect = (id: string) => {
         setSelectedUser(id);
         const user = users.find(u => u.id === id);
-        setTargetUser(user || null);
 
         // Simulate fetching settings
         setBotConfig({
@@ -42,33 +41,49 @@ const AdminBotControl: React.FC<BotControlProps> = ({ users }) => {
         const toastId = toast.loading("Updating Neural Net...");
 
         try {
-            // Mock Save
+            const { error } = await supabase.from('profiles').update({
+                bot_settings: botConfig
+            }).eq('id', selectedUser);
+
+            if (error) throw error;
+
             addLog(`Configuration saved. Mode: ${botConfig.strategy}, Win Rate: ${botConfig.win_rate}%`);
             toast.success("Bot configuration updated", { id: toastId });
-        } catch (e) {
-            toast.error("Failed to update bot", { id: toastId });
+        } catch (e: any) {
+            console.error(e);
+            toast.error("Failed to update bot: " + e.message, { id: toastId });
         }
     };
 
     const executeForceTrade = async (type: 'WIN' | 'LOSS') => {
-        if (!selectedUser) return;
+        if (!selectedUser || !targetUser) return;
 
         const amount = Math.floor(Math.random() * 500) + 100;
-        const profit = type === 'WIN' ? amount * 0.85 : -amount;
+        const pnl = type === 'WIN' ? amount * 0.85 : -amount;
 
         addLog(`Executing FORCE ${type} trade...`);
 
+        // 1. Record Transaction
         const { error } = await supabase.from('transactions').insert({
             user_id: selectedUser,
             type: 'bot_trade',
-            amount: Math.abs(profit),
+            amount: Math.abs(pnl),
             status: 'completed',
             method: `Bot Execution (${botConfig.strategy})`,
             details: `Forced ${type} by Admin. Asset: BTC/USD`
         });
 
         if (!error) {
-            addLog(`Trade Executed: ${type} $${Math.abs(profit).toFixed(2)}`);
+            // 2. Update Profile Balance/Profit manually (Trigger might not handle 'bot_trade')
+            const newProfit = (targetUser.profit || 0) + pnl;
+            const newBalance = (targetUser.balance || 0) + pnl;
+
+            await supabase.from('profiles').update({
+                profit: newProfit,
+                balance: newBalance
+            }).eq('id', selectedUser);
+
+            addLog(`Trade Executed: ${type} $${Math.abs(pnl).toFixed(2)}`);
             toast.success(`Forced ${type} trade executed`);
         } else {
             addLog(`Trade Failed: ${error.message}`);
