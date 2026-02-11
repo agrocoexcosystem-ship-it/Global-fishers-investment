@@ -36,46 +36,39 @@ const Navbar: React.FC = () => {
       setSession(currentSession);
     });
 
-    const top30Languages = 'en,de,es,fr,zh-CN,hi,ar,pt,ru,ja,ko,it,tr,nl,vi,id,pl,th,sv,no,fi,el,cs,da,hu,ro,sk,bg,uk,he';
-
-    window.googleTranslateElementInit = () => {
-      try {
-        if (window.google?.translate?.TranslateElement) {
-          const layout = window.google.translate.TranslateElement.InlineLayout
-            ? window.google.translate.TranslateElement.InlineLayout.SIMPLE
-            : 0;
-
+    const checkGoogleTranslate = setInterval(() => {
+      if (window.google?.translate?.TranslateElement) {
+        clearInterval(checkGoogleTranslate);
+        try {
           // Desktop Instance
           new window.google.translate.TranslateElement({
             pageLanguage: 'en',
-            includedLanguages: top30Languages,
-            layout: layout,
+            includedLanguages: 'en,de,es,fr,zh-CN,hi,ar,pt,ru,ja,ko,it,tr,nl,vi,id,pl,th,sv,no,fi,el,cs,da,hu,ro,sk,bg,uk,he',
+            layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
             autoDisplay: false
           }, 'google_translate_element_desktop');
 
           // Mobile Instance
-          // Note: Google Translate API might conflict if ID is missing, handled by having div present in DOM
           const mobileDiv = document.getElementById('google_translate_element_mobile');
           if (mobileDiv) {
             new window.google.translate.TranslateElement({
               pageLanguage: 'en',
-              includedLanguages: top30Languages,
-              layout: layout,
+              includedLanguages: 'en,de,es,fr,zh-CN,hi,ar,pt,ru,ja,ko,it,tr,nl,vi,id,pl,th,sv,no,fi,el,cs,da,hu,ro,sk,bg,uk,he',
+              layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
               autoDisplay: false
             }, 'google_translate_element_mobile');
           }
+        } catch (e) {
+          console.error("Translate init error", e);
         }
-      } catch (err) {
-        console.error("Google Translate initialization error:", err);
       }
+    }, 100);
+
+    return () => {
+      subscription.unsubscribe();
+      clearInterval(checkGoogleTranslate);
     };
-
-    if (window.google?.translate?.TranslateElement) {
-      window.googleTranslateElementInit();
-    }
-
-    return () => subscription.unsubscribe();
-  }, [isOpen]); // Re-run when menu opens/closes to re-init mobile translate if needed? Actually better to init once.
+  }, [isOpen]);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -119,33 +112,34 @@ const Navbar: React.FC = () => {
               ))}
             </div>
 
-            <div className="flex items-center gap-3 pl-3 border-l border-slate-200 ml-2">
-              <div id="google_translate_element_desktop" className="min-w-[120px]"></div>
+            {/* Translator Pill - Added background for visibility */}
+            <div className="flex items-center bg-white/90 backdrop-blur-md rounded-full px-3 py-1.5 border border-white/50 shadow-sm mr-2 h-[46px]">
+              <div id="google_translate_element_desktop" className="min-w-[100px]"></div>
+            </div>
 
-              <div className="flex items-center gap-2">
-                {session ? (
-                  <div className="flex items-center gap-2">
-                    <Link to="/dashboard" className="group flex items-center gap-2 text-xs font-bold text-slate-800 bg-white border border-slate-200 px-4 py-2 rounded-full hover:bg-emerald-50 hover:border-emerald-200 hover:shadow-md transition-all">
-                      <LayoutDashboard size={14} className="text-emerald-500 group-hover:scale-110 transition-transform" />
-                      Dashboard
-                    </Link>
-                    <button onClick={handleLogout} className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-full transition-all duration-300" title="Logout">
-                      <LogOut size={18} />
-                    </button>
-                  </div>
-                ) : (
-                  <>
-                    <Link to="/login" className="text-xs font-bold text-slate-600 hover:text-emerald-600 px-4 transition-colors">Login</Link>
-                    <Link
-                      to="/signup"
-                      className="group flex items-center gap-1 bg-slate-900 text-white px-6 py-2.5 rounded-full text-xs font-bold hover:bg-emerald-600 shadow-xl shadow-slate-200 hover:shadow-emerald-200 transition-all duration-300 active:scale-95"
-                    >
-                      Join Now
-                      <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </>
-                )}
-              </div>
+            <div className="flex items-center gap-2">
+              {session ? (
+                <div className="flex items-center gap-2">
+                  <Link to="/dashboard" className="group flex items-center gap-2 text-xs font-bold text-slate-800 bg-white border border-slate-200 px-4 py-2 rounded-full hover:bg-emerald-50 hover:border-emerald-200 hover:shadow-md transition-all h-[46px]">
+                    <LayoutDashboard size={14} className="text-emerald-500 group-hover:scale-110 transition-transform" />
+                    Dashboard
+                  </Link>
+                  <button onClick={handleLogout} className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-full transition-all duration-300 bg-white/80 shadow-sm h-[46px] w-[46px] flex items-center justify-center" title="Logout">
+                    <LogOut size={18} />
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <Link to="/login" className="flex items-center text-xs font-bold text-slate-800 bg-white/80 px-4 py-2 rounded-full hover:bg-white hover:text-emerald-600 transition-colors h-[46px] shadow-sm">Login</Link>
+                  <Link
+                    to="/signup"
+                    className="group flex items-center gap-1 bg-slate-900 text-white px-6 py-2.5 rounded-full text-xs font-bold hover:bg-emerald-600 shadow-xl shadow-slate-200 hover:shadow-emerald-200 transition-all duration-300 active:scale-95 h-[46px]"
+                  >
+                    Join Now
+                    <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </>
+              )}
             </div>
           </div>
 
