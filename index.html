@@ -67,7 +67,11 @@
   <!-- Google Translate Script Source -->
   <script type="text/javascript">
     function googleTranslateElementInit() {
-      new google.translate.TranslateElement({ pageLanguage: 'de', layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 'google_translate_element');
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'de,es,fr,it,pt,ru,zh-CN,ja,ar',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_translate_element');
     }
   </script>
   <script type="text/javascript"

@@ -261,10 +261,10 @@ const BotTerminal: React.FC<{ active: boolean; onToggle: () => void; userId?: st
                 {/* TOP METRICS ROW */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <MeticCard
-                        label="NETTO_G/V (24h)"
+                        label="NET P/L (24h)"
                         value={`+${(priceChange * 12.5).toFixed(2)}%`}
                         trend="up"
-                        subValue="+€1,240.50"
+                        subValue="+$1,240.50"
                     />
                     <MeticCard
                         label="RSI (14)"
@@ -279,8 +279,8 @@ const BotTerminal: React.FC<{ active: boolean; onToggle: () => void; userId?: st
                         icon={trend === 'BULLISH' ? <ArrowUpRight size={16} /> : <ArrowDownRight size={16} />}
                     />
                     <MeticCard
-                        label="VOLATILITÄT"
-                        value="HOCH"
+                        label="VOLATILITY"
+                        value="HIGH"
                         color="text-amber-400"
                         icon={<Activity size={16} />}
                     />
@@ -329,7 +329,7 @@ const BotTerminal: React.FC<{ active: boolean; onToggle: () => void; userId?: st
                                 </button>
                                 {showIndicators && (
                                     <div className="absolute top-10 right-0 w-48 bg-slate-900 border border-slate-700 rounded-xl p-3 shadow-xl z-50 flex flex-col gap-2">
-                                        <span className="text-[10px] font-bold uppercase text-slate-500 mb-1">Indikatoren</span>
+                                        <span className="text-[10px] font-bold uppercase text-slate-500 mb-1">Indicators</span>
                                         {Object.keys(indicators).map((ind) => (
                                             <label key={ind} className="flex items-center justify-between text-xs font-bold cursor-pointer hover:bg-slate-800 p-2 rounded-lg">
                                                 <span className="uppercase">{ind}</span>
@@ -347,7 +347,7 @@ const BotTerminal: React.FC<{ active: boolean; onToggle: () => void; userId?: st
 
                             <div className={cn("flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border", active ? "bg-emerald-500/10 border-emerald-500/50 text-emerald-400" : "bg-rose-500/10 border-rose-500/50 text-rose-400")}>
                                 <div className={cn("w-2 h-2 rounded-full", active ? "bg-emerald-500 animate-pulse" : "bg-rose-500")} />
-                                {active ? 'SYSTEM AKTIV' : 'OFFLINE'}
+                                {active ? 'SYSTEM ACTIVE' : 'OFFLINE'}
                             </div>
                         </div>
                     </div>
@@ -383,18 +383,18 @@ const BotTerminal: React.FC<{ active: boolean; onToggle: () => void; userId?: st
                     {/* Quick Order Panel (Bottom Overlay) */}
                     <div className="bg-slate-900/90 backdrop-blur border-t border-slate-800 p-3 grid grid-cols-2 md:grid-cols-4 gap-4 items-center">
                         <div className="flex flex-col">
-                            <label className="text-[9px] text-slate-400 font-bold uppercase">Betrag (Lots)</label>
+                            <label className="text-[9px] text-slate-400 font-bold uppercase">Amount (Lots)</label>
                             <input type="number" defaultValue={0.1} step={0.01} className="bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-white outline-none focus:border-indigo-500" />
                         </div>
                         <div className="flex flex-col">
-                            <label className="text-[9px] text-slate-400 font-bold uppercase">TP (Ziel)</label>
-                            <input type="number" placeholder="Preis" className="bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-white outline-none focus:border-indigo-500" />
+                            <label className="text-[9px] text-slate-400 font-bold uppercase">TP (Target)</label>
+                            <input type="number" placeholder="Price" className="bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-white outline-none focus:border-indigo-500" />
                         </div>
                         <button className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded py-2 flex items-center justify-center gap-2 transition-all active:scale-95 shadow-[0_0_15px_rgba(16,185,129,0.4)]">
-                            KAUFEN <TrendingUp size={14} />
+                            BUY <TrendingUp size={14} />
                         </button>
                         <button className="bg-rose-600 hover:bg-rose-500 text-white font-bold rounded py-2 flex items-center justify-center gap-2 transition-all active:scale-95 shadow-[0_0_15px_rgba(244,63,94,0.4)]">
-                            VERKAUFEN <TrendingDown size={14} />
+                            SELL <TrendingDown size={14} />
                         </button>
                     </div>
                 </div>
@@ -406,12 +406,12 @@ const BotTerminal: React.FC<{ active: boolean; onToggle: () => void; userId?: st
                 {/* Connection / Status Card */}
                 <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center justify-between">
                     <div>
-                        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Latenz</div>
+                        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Latency</div>
                         <div className="text-emerald-400 font-mono font-bold text-sm">24ms</div>
                     </div>
                     <div>
-                        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest text-right">API-Status</div>
-                        <div className="text-emerald-400 font-mono font-bold text-sm flex items-center gap-1 justify-end"><Wifi size={12} /> Verbunden</div>
+                        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest text-right">API Status</div>
+                        <div className="text-emerald-400 font-mono font-bold text-sm flex items-center gap-1 justify-end"><Wifi size={12} /> Connected</div>
                     </div>
                 </div>
 
@@ -427,11 +427,11 @@ const BotTerminal: React.FC<{ active: boolean; onToggle: () => void; userId?: st
                 >
                     {active ? (
                         <>
-                            <PauseCircle size={20} /> Engine stoppen
+                            <PauseCircle size={20} /> Stop Engine
                         </>
                     ) : (
                         <>
-                            <PlayCircle size={20} /> Engine starten
+                            <PlayCircle size={20} /> Start Engine
                         </>
                     )}
                 </button>
@@ -440,7 +440,7 @@ const BotTerminal: React.FC<{ active: boolean; onToggle: () => void; userId?: st
                 <div className="flex-grow bg-[#0b0f19] border border-slate-800 rounded-2xl flex flex-col overflow-hidden relative">
                     <div className="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-900/50">
                         <h3 className="font-bold text-slate-200 text-sm flex items-center gap-2">
-                            <Zap size={16} className="text-amber-400" /> LIVE-SIGNALE
+                            <Zap size={16} className="text-amber-400" /> LIVE SIGNALS
                         </h3>
                         <span className="relative flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -453,7 +453,7 @@ const BotTerminal: React.FC<{ active: boolean; onToggle: () => void; userId?: st
                             {signals.length === 0 && (
                                 <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-600 opacity-50">
                                     <Activity size={40} className="mb-2" />
-                                    <p className="text-xs font-bold uppercase">Warte auf Signale...</p>
+                                    <p className="text-xs font-bold uppercase">Waiting for signals...</p>
                                 </div>
                             )}
                             {signals.map((signal) => (

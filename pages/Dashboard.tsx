@@ -53,8 +53,8 @@ const BOT_STRATEGIES = [
   { id: 'neural', name: 'Neural Forex Arb', risk: 'High', winRate: '65%', icon: '🧠' },
 ];
 const INITIAL_CHAT: ChatMessage[] = [
-  { id: '1', user: 'Alpha Analyst', message: 'Beobachte XAU/USD genau am Widerstandsniveau 2732.12.', time: '09:41', role: 'analyst', type: 'news' },
-  { id: '2', user: 'Bot v3.1', message: 'SIGNAL: GBP/JPY KAUF-Order ausgeführt bei 191.45. TP: 192.10', time: '09:42', role: 'bot', type: 'signal' },
+  { id: '1', user: 'Alpha Analyst', message: 'Watching XAU/USD closely at resistance level 2732.12.', time: '09:41', role: 'analyst', type: 'news' },
+  { id: '2', user: 'Bot v3.1', message: 'SIGNAL: GBP/JPY BUY order executed at 191.45. TP: 192.10', time: '09:42', role: 'bot', type: 'signal' },
 ];
 
 const getQRCodeUrl = (address: string) => `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${address}`;
@@ -245,7 +245,7 @@ const Dashboard: React.FC = () => {
           const chatSignal: ChatMessage = {
             id: Date.now().toString(),
             user: 'Elite Bot',
-            message: `SIGNAL: ${newTrade.type === 'BUY' ? 'KAUF' : 'VERKAUF'}-Order für ${newTrade.pair} abgeschlossen. PnL: ${newTrade.pnl >= 0 ? '+' : ''}€${Math.abs(newTrade.pnl).toFixed(2)}`,
+            message: `SIGNAL: ${newTrade.type === 'BUY' ? 'BUY' : 'SELL'} order closed for ${newTrade.pair}. PnL: ${newTrade.pnl >= 0 ? '+' : ''}€${Math.abs(newTrade.pnl).toFixed(2)}`,
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             role: 'bot',
             type: 'signal'
@@ -264,7 +264,7 @@ const Dashboard: React.FC = () => {
 
     const userMsg: ChatMessage = {
       id: Date.now().toString(),
-      user: user?.email?.split('@')[0] || 'Du',
+      user: user?.email?.split('@')[0] || 'You',
       message: chatInput,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       role: 'user'
@@ -277,7 +277,7 @@ const Dashboard: React.FC = () => {
       const analystMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         user: 'Alpha Analyst',
-        message: 'Verstanden. Überwache Liquidität.',
+        message: 'Understood. Monitoring liquidity.',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         role: 'analyst'
       };
@@ -321,7 +321,7 @@ const Dashboard: React.FC = () => {
       };
       setTransactions(prev => [newTx, ...prev]);
       setIsProcessing(false); setActiveModal(null); setAmountInput('');
-      toast.success(`Einzahlungsanfrage von €${amt.toLocaleString()} erfolgreich gesendet!`);
+      toast.success(`Deposit request of €${amt.toLocaleString()} sent successfully!`);
     }, 2000);
   };
 
@@ -329,7 +329,7 @@ const Dashboard: React.FC = () => {
     e.preventDefault();
     const amt = parseFloat(amountInput);
     const sourceBalance = withdrawSource === 'main' ? mainBalance : profitBalance;
-    if (amt > sourceBalance) { toast.error('Unzureichendes Guthaben im gewählten Wallet.'); return; }
+    if (amt > sourceBalance) { toast.error('Insufficient funds in selected wallet.'); return; }
 
     setIsProcessing(true);
 
@@ -360,19 +360,19 @@ const Dashboard: React.FC = () => {
       setTransactions(prev => [newTx, ...prev]);
 
       setIsProcessing(false); setActiveModal(null); setAmountInput('');
-      toast.success(`Auszahlungsanfrage von €${amt.toLocaleString()} in Bearbeitung.`);
+      toast.success(`Withdrawal request of €${amt.toLocaleString()} in process.`);
     }, 2500);
   };
 
   const handleSwap = (e: React.FormEvent) => {
     e.preventDefault();
     const amt = parseFloat(amountInput);
-    if (amt > profitBalance) { toast.error('Unzureichendes Ertragsguthaben.'); return; }
+    if (amt > profitBalance) { toast.error('Insufficient profit balance.'); return; }
     setIsProcessing(true);
     setTimeout(() => {
       setProfitBalance(prev => prev - amt); setMainBalance(prev => prev + amt);
       setIsProcessing(false); setActiveModal(null); setAmountInput('');
-      toast.success(`€${amt.toLocaleString()} erfolgreich zum Hauptguthaben getauscht!`);
+      toast.success(`€${amt.toLocaleString()} successfully swapped to main balance!`);
     }, 1200);
   };
 
@@ -380,17 +380,17 @@ const Dashboard: React.FC = () => {
     e.preventDefault();
     const num = parseFloat(amountInput);
     if (isNaN(num) || num <= 0) return;
-    if (num > mainBalance) { toast.error('Unzureichendes Portfolio-Guthaben.'); return; }
+    if (num > mainBalance) { toast.error('Insufficient portfolio balance.'); return; }
     setMainBalance(prev => prev - num); setBotBalance(prev => prev + num);
     setActiveModal(null); setAmountInput('');
-    toast.success(`€${num.toLocaleString()} erfolgreich zum Bot-Terminal transferiert!`);
+    toast.success(`€${num.toLocaleString()} successfully transferred to Bot Terminal!`);
   };
 
   if (loading) return (
     <div className="min-h-screen bg-[#020617] flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
         <RefreshCw className="text-emerald-500 animate-spin" size={40} />
-        <p className="text-emerald-500 font-bold uppercase tracking-[0.3em] text-[10px]">Authentifizierung</p>
+        <p className="text-emerald-500 font-bold uppercase tracking-[0.3em] text-[10px]">Authentication</p>
       </div>
     </div>
   );
@@ -420,7 +420,7 @@ const Dashboard: React.FC = () => {
         <div className="flex items-center gap-4">
           <div id="google_translate_element" className="mr-2"></div>
           <div className="text-right hidden sm:block">
-            <div className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Betreiber-Identität</div>
+            <div className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Operator Identity</div>
             <div className="text-xs font-bold text-emerald-400 font-mono">{user?.email}</div>
           </div>
           <button onClick={handleLogout} className="p-2 bg-rose-500/10 text-rose-500 rounded-lg hover:bg-rose-500 hover:text-white transition-all">
@@ -436,18 +436,18 @@ const Dashboard: React.FC = () => {
               <LayoutDashboard size={16} /> Portfolio
             </button>
             <button onClick={() => setView('bot')} className={`px-6 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest transition-all flex items-center gap-2 ${view === 'bot' ? 'bg-indigo-600 shadow-xl text-white' : 'text-slate-500 hover:text-white'}`}>
-              <Terminal size={16} /> Bot-Terminal
+              <Terminal size={16} /> Bot Terminal
             </button>
             <button onClick={() => setView('documents')} className={`px-6 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest transition-all flex items-center gap-2 ${view === 'documents' ? 'bg-indigo-600 shadow-xl text-white' : 'text-slate-500 hover:text-white'}`}>
-              <FileText size={16} /> Dokumente
+              <FileText size={16} /> Documents
             </button>
             <button onClick={() => setView('security')} className={`px-6 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest transition-all flex items-center gap-2 ${view === 'security' ? 'bg-indigo-600 shadow-xl text-white' : 'text-slate-500 hover:text-white'}`}>
-              <ShieldCheck size={16} /> Sicherheit
+              <ShieldCheck size={16} /> Security
             </button>
           </div>
           <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/5 border border-emerald-500/20 rounded-lg text-emerald-500 text-xs font-bold">
             <Wifi size={14} className="animate-pulse" />
-            System Aktiv
+            System Active
           </div>
         </div>
 
@@ -463,7 +463,7 @@ const Dashboard: React.FC = () => {
                     <span className="text-xs font-bold text-slate-500">EUR</span>
                   </div>
                   <div className="text-3xl font-black text-white tracking-tight">€{mainBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
-                  <div className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-1">Hauptkapital</div>
+                  <div className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-1">Main Capital</div>
                 </div>
               </div>
 
@@ -474,7 +474,7 @@ const Dashboard: React.FC = () => {
                     {profitBalance > 0 && <button onClick={() => openModal('swap')} className="text-[10px] bg-emerald-600/20 text-emerald-400 px-2 py-1 rounded font-bold hover:bg-emerald-600 hover:text-white transition-colors">SWAP</button>}
                   </div>
                   <div className="text-3xl font-black text-emerald-400 tracking-tight">€{profitBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
-                  <div className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-1">Kumulierter Ertrag</div>
+                  <div className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-1">Cumulative Profit</div>
                 </div>
               </div>
 
@@ -483,7 +483,7 @@ const Dashboard: React.FC = () => {
                   <div className="p-2 bg-slate-800 rounded-lg"><CreditCard className="text-indigo-400" size={20} /></div>
                 </div>
                 <div className="text-3xl font-black text-indigo-400 tracking-tight">{activeInvestments.length}</div>
-                <div className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-1">Aktive Verträge</div>
+                <div className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-1">Active Contracts</div>
               </div>
 
               <div className="bg-emerald-600 p-6 rounded-3xl relative overflow-hidden cursor-pointer hover:bg-emerald-500 transition-colors" onClick={() => openModal('deposit')}>
@@ -491,8 +491,8 @@ const Dashboard: React.FC = () => {
                 <div className="relative z-10 h-full flex flex-col justify-between">
                   <div className="p-2 bg-white/20 w-fit rounded-lg"><ArrowDownLeft className="text-white" size={20} /></div>
                   <div>
-                    <div className="text-2xl font-black text-white">Einzahlen</div>
-                    <div className="text-[10px] uppercase tracking-widest text-emerald-100 font-bold mt-1">Guthaben aufladen</div>
+                    <div className="text-2xl font-black text-white">Deposit</div>
+                    <div className="text-[10px] uppercase tracking-widest text-emerald-100 font-bold mt-1">Top up balance</div>
                   </div>
                 </div>
               </div>
@@ -500,13 +500,13 @@ const Dashboard: React.FC = () => {
 
             <div className="grid lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2 space-y-6">
-                <h2 className="text-lg font-bold flex items-center gap-2"><Globe size={18} className="text-slate-400" /> Investitionsstufen</h2>
+                <h2 className="text-lg font-bold flex items-center gap-2"><Globe size={18} className="text-slate-400" /> Investment Tiers</h2>
                 <div className="grid md:grid-cols-2 gap-4">
                   {INVESTMENT_PLANS.slice(0, 4).map((plan) => (
                     <div key={plan.id} className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 hover:border-emerald-500/50 transition-all group">
                       <div className="flex justify-between items-center mb-4">
                         <h4 className="font-bold text-slate-200">{plan.name}</h4>
-                        <span className="text-emerald-400 font-bold text-xs">+{plan.dailyReturn}% Täglich</span>
+                        <span className="text-emerald-400 font-bold text-xs">+{plan.dailyReturn}% Daily</span>
                       </div>
                       <div className="grid grid-cols-2 gap-4 mb-6">
                         <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
@@ -514,18 +514,18 @@ const Dashboard: React.FC = () => {
                           <div className="text-slate-300 font-mono font-bold">€{plan.minDeposit.toLocaleString()}</div>
                         </div>
                         <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                          <div className="text-[10px] text-slate-500 font-bold uppercase">Laufzeit</div>
-                          <div className="text-slate-300 font-mono font-bold">{plan.durationDays} Tage</div>
+                          <div className="text-[10px] text-slate-500 font-bold uppercase">Duration</div>
+                          <div className="text-slate-300 font-mono font-bold">{plan.durationDays} Days</div>
                         </div>
                       </div>
-                      <button onClick={() => navigate('/plans')} className="w-full py-3 bg-slate-800 text-slate-400 rounded-xl font-bold text-xs uppercase tracking-widest group-hover:bg-emerald-600 group-hover:text-white transition-all">Strategie wählen</button>
+                      <button onClick={() => navigate('/plans')} className="w-full py-3 bg-slate-800 text-slate-400 rounded-xl font-bold text-xs uppercase tracking-widest group-hover:bg-emerald-600 group-hover:text-white transition-all">Select Strategy</button>
                     </div>
                   ))}
                 </div>
               </div>
 
               <div className="space-y-6">
-                <h2 className="text-lg font-bold flex items-center gap-2"><History size={18} className="text-slate-400" /> Letzte Transaktionen</h2>
+                <h2 className="text-lg font-bold flex items-center gap-2"><History size={18} className="text-slate-400" /> Recent Transactions</h2>
                 <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-4 min-h-[300px]">
                   {transactions.length > 0 ? (
                     <div className="space-y-3">
@@ -550,13 +550,13 @@ const Dashboard: React.FC = () => {
                   ) : (
                     <div className="flex flex-col items-center justify-center h-full text-slate-500 opacity-50">
                       <History size={40} />
-                      <p className="text-xs font-bold mt-2">Keine Historie</p>
+                      <p className="text-xs font-bold mt-2">No History</p>
                     </div>
                   )}
                 </div>
 
                 <button onClick={() => openModal('withdraw')} className="w-full py-4 bg-slate-800 border border-slate-700 rounded-2xl text-slate-400 font-bold hover:bg-slate-700 hover:text-white transition-all flex items-center justify-center gap-2">
-                  <ArrowUpRight size={18} /> Auszahlung anfordern
+                  <ArrowUpRight size={18} /> Request Withdrawal
                 </button>
               </div>
             </div>
@@ -571,16 +571,16 @@ const Dashboard: React.FC = () => {
               <div className="flex items-center gap-4 mb-8">
                 <div className="p-3 bg-slate-800 rounded-xl"><FileText size={24} className="text-slate-400" /></div>
                 <div>
-                  <h2 className="text-2xl font-bold text-white">Dokumenten-Tresor</h2>
-                  <p className="text-slate-400 text-sm">Zugriff auf Ihre monatlichen Auszüge, Steuerformulare und Verträge.</p>
+                  <h2 className="text-2xl font-bold text-white">Document Vault</h2>
+                  <p className="text-slate-400 text-sm">Access your monthly statements, tax forms, and contracts.</p>
                 </div>
               </div>
 
               <div className="space-y-8">
                 <div>
-                  <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Aktuelle Auszüge</h3>
+                  <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Recent Statements</h3>
                   <div className="space-y-2">
-                    {['Dezember 2024 Auszug', 'November 2024 Auszug', 'Oktober 2024 Auszug'].map((doc, i) => (
+                    {['December 2024 Statement', 'November 2024 Statement', 'October 2024 Statement'].map((doc, i) => (
                       <div key={i} className="flex justify-between items-center p-4 bg-slate-950 rounded-xl border border-slate-800 hover:border-slate-600 transition-colors cursor-pointer group">
                         <div className="flex items-center gap-4">
                           <div className="p-2 bg-slate-900 rounded-lg text-rose-500"><FileText size={18} /></div>
@@ -596,19 +596,19 @@ const Dashboard: React.FC = () => {
                 </div>
 
                 <div>
-                  <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Recht & Steuern</h3>
+                  <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Legal & Taxes</h3>
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="p-6 bg-slate-950 rounded-xl border border-slate-800">
                       <ShieldCheck size={24} className="text-emerald-500 mb-4" />
-                      <h4 className="font-bold text-white">Kundenvereinbarung</h4>
-                      <p className="text-xs text-slate-500 mt-2 mb-4">Unterzeichnet am {new Date(user?.created_at || Date.now()).toLocaleDateString()}</p>
-                      <button className="text-xs font-bold text-emerald-500 hover:text-emerald-400">Vertrag ansehen</button>
+                      <h4 className="font-bold text-white">Client Agreement</h4>
+                      <p className="text-xs text-slate-500 mt-2 mb-4">Signed on {new Date(user?.created_at || Date.now()).toLocaleDateString()}</p>
+                      <button className="text-xs font-bold text-emerald-500 hover:text-emerald-400">View Contract</button>
                     </div>
                     <div className="p-6 bg-slate-950 rounded-xl border border-slate-800 opacity-50">
                       <FileText size={24} className="text-slate-500 mb-4" />
-                      <h4 className="font-bold text-white">Steuerformular 1099-B</h4>
-                      <p className="text-xs text-slate-500 mt-2 mb-4">Verfügbar ab 15. Feb. 2025</p>
-                      <button className="text-xs font-bold text-slate-500 cursor-not-allowed">Nicht generiert</button>
+                      <h4 className="font-bold text-white">Tax Form 1099-B</h4>
+                      <p className="text-xs text-slate-500 mt-2 mb-4">Available from Feb 15, 2025</p>
+                      <button className="text-xs font-bold text-slate-500 cursor-not-allowed">Not generated</button>
                     </div>
                   </div>
                 </div>
@@ -621,40 +621,40 @@ const Dashboard: React.FC = () => {
               <div className="flex items-center gap-4 mb-8">
                 <div className="p-3 bg-slate-800 rounded-xl"><ShieldCheck size={24} className="text-emerald-500" /></div>
                 <div>
-                  <h2 className="text-2xl font-bold text-white">Sicherheitscenter</h2>
-                  <p className="text-slate-400 text-sm">Verwalten Sie Ihren Kontoschutz und Anmeldemethoden.</p>
+                  <h2 className="text-2xl font-bold text-white">Security Center</h2>
+                  <p className="text-slate-400 text-sm">Manage your account protection and login methods.</p>
                 </div>
               </div>
 
               <div className="space-y-6">
                 <div className="p-6 bg-slate-950 rounded-xl border border-slate-800 flex justify-between items-center">
                   <div>
-                    <h4 className="font-bold text-white">Zwei-Faktor-Authentifizierung</h4>
-                    <p className="text-xs text-slate-500 mt-1">Fügen Sie Ihrem Konto eine zusätzliche Sicherheitsebene hinzu.</p>
+                    <h4 className="font-bold text-white">Two-Factor Authentication</h4>
+                    <p className="text-xs text-slate-500 mt-1">Add an extra layer of security to your account.</p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="text-xs font-bold text-rose-500">Deaktiviert</span>
-                    <button className="px-4 py-2 bg-slate-800 rounded-lg text-xs font-bold text-white hover:bg-slate-700">2FA aktivieren</button>
+                    <span className="text-xs font-bold text-rose-500">Disabled</span>
+                    <button className="px-4 py-2 bg-slate-800 rounded-lg text-xs font-bold text-white hover:bg-slate-700">Enable 2FA</button>
                   </div>
                 </div>
 
                 <div className="p-6 bg-slate-950 rounded-xl border border-slate-800">
-                  <h4 className="font-bold text-white mb-4">Passwort ändern</h4>
+                  <h4 className="font-bold text-white mb-4">Change Password</h4>
                   <div className="grid md:grid-cols-2 gap-4">
-                    <input type="password" placeholder="Aktuelles Passwort" className="bg-slate-900 border border-slate-800 p-3 rounded-xl text-sm" />
-                    <input type="password" placeholder="Neues Passwort" className="bg-slate-900 border border-slate-800 p-3 rounded-xl text-sm" />
+                    <input type="password" placeholder="Current Password" className="bg-slate-900 border border-slate-800 p-3 rounded-xl text-sm" />
+                    <input type="password" placeholder="New Password" className="bg-slate-900 border border-slate-800 p-3 rounded-xl text-sm" />
                   </div>
                   <div className="mt-4 text-right">
-                    <button className="px-6 py-2 bg-emerald-600 text-white rounded-xl text-sm font-bold hover:bg-emerald-700">Passwort aktualisieren</button>
+                    <button className="px-6 py-2 bg-emerald-600 text-white rounded-xl text-sm font-bold hover:bg-emerald-700">Update Password</button>
                   </div>
                 </div>
 
                 <div>
-                  <h4 className="font-bold text-white mb-4">Letzte Anmeldeaktivität</h4>
+                  <h4 className="font-bold text-white mb-4">Recent Login Activity</h4>
                   <div className="space-y-2">
                     {[
-                      { ip: '192.168.1.1', loc: 'New York, USA', time: 'Gerade eben', device: 'Chrome / Windows' },
-                      { ip: '192.168.1.1', loc: 'New York, USA', time: 'Vor 2 Tagen', device: 'Chrome / Windows' },
+                      { ip: '192.168.1.1', loc: 'New York, USA', time: 'Just now', device: 'Chrome / Windows' },
+                      { ip: '192.168.1.1', loc: 'New York, USA', time: '2 days ago', device: 'Chrome / Windows' },
                     ].map((login, i) => (
                       <div key={i} className="flex justify-between items-center p-3 border-b border-slate-800 last:border-0">
                         <div>
@@ -680,7 +680,7 @@ const Dashboard: React.FC = () => {
 
             {activeModal === 'deposit' && (
               <div>
-                <h2 className="text-2xl font-bold mb-6">Guthaben einzahlen</h2>
+                <h2 className="text-2xl font-bold mb-6">Deposit Funds</h2>
                 <form onSubmit={handleMainDeposit} className="space-y-4">
                   <select className="w-full bg-slate-950 border border-slate-800 p-4 rounded-xl outline-none" value={assetType} onChange={e => setAssetType(e.target.value)}>
                     {Object.keys(WALLET_ADDRESSES).map(k => <option key={k} value={k}>{k}</option>)}
@@ -689,34 +689,34 @@ const Dashboard: React.FC = () => {
                     <img src={getQRCodeUrl(WALLET_ADDRESSES[assetType])} className="w-32 h-32" />
                   </div>
                   <div className="bg-slate-950 p-3 rounded-xl text-center">
-                    <div className="text-[10px] text-slate-500 uppercase font-bold">Wallet-Adresse</div>
+                    <div className="text-[10px] text-slate-500 uppercase font-bold">Wallet Address</div>
                     <div className="text-xs font-mono break-all text-slate-300 mt-1">{WALLET_ADDRESSES[assetType]}</div>
                   </div>
-                  <input type="number" placeholder="Betrag (€)" className="w-full bg-slate-950 border border-slate-800 p-4 rounded-xl outline-none" value={amountInput} onChange={e => setAmountInput(e.target.value)} />
-                  <button disabled={isProcessing} className="w-full py-4 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-all">{isProcessing ? 'Verarbeitung läuft...' : 'Ich habe gesendet'}</button>
+                  <input type="number" placeholder="Amount (€)" className="w-full bg-slate-950 border border-slate-800 p-4 rounded-xl outline-none" value={amountInput} onChange={e => setAmountInput(e.target.value)} />
+                  <button disabled={isProcessing} className="w-full py-4 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-all">{isProcessing ? 'Processing...' : 'I have sent'}</button>
                 </form>
               </div>
             )}
 
             {activeModal === 'withdraw' && (
               <div>
-                <h2 className="text-2xl font-bold mb-6">Kapital auszahlen</h2>
+                <h2 className="text-2xl font-bold mb-6">Withdraw Capital</h2>
                 {withdrawStep === 'source' ? (
                   <div className="space-y-3">
                     <button onClick={() => { setWithdrawSource('main'); setWithdrawStep('details'); }} className="w-full p-4 bg-slate-950 border border-slate-800 rounded-xl flex justify-between items-center hover:border-emerald-500">
-                      <span className="font-bold text-slate-300">Haupt-Wallet</span>
+                      <span className="font-bold text-slate-300">Main Wallet</span>
                       <span className="text-emerald-400 font-mono">€{mainBalance.toLocaleString()}</span>
                     </button>
                     <button onClick={() => { setWithdrawSource('profit'); setWithdrawStep('details'); }} className="w-full p-4 bg-slate-950 border border-slate-800 rounded-xl flex justify-between items-center hover:border-emerald-500">
-                      <span className="font-bold text-slate-300">Ertrags-Wallet</span>
+                      <span className="font-bold text-slate-300">Profit Wallet</span>
                       <span className="text-emerald-400 font-mono">€{profitBalance.toLocaleString()}</span>
                     </button>
                   </div>
                 ) : (
                   <form onSubmit={handleMainWithdraw} className="space-y-4">
-                    <input type="number" placeholder="Betrag (€)" className="w-full bg-slate-950 border border-slate-800 p-4 rounded-xl outline-none" value={amountInput} onChange={e => setAmountInput(e.target.value)} />
-                    <input type="text" placeholder="Ihre Wallet-Adresse" className="w-full bg-slate-950 border border-slate-800 p-4 rounded-xl outline-none" value={withdrawalAddress} onChange={e => setWithdrawalAddress(e.target.value)} />
-                    <button disabled={isProcessing} className="w-full py-4 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-all">{isProcessing ? 'Überprüfung...' : 'Auszahlung anfordern'}</button>
+                    <input type="number" placeholder="Amount (€)" className="w-full bg-slate-950 border border-slate-800 p-4 rounded-xl outline-none" value={amountInput} onChange={e => setAmountInput(e.target.value)} />
+                    <input type="text" placeholder="Your Wallet Address" className="w-full bg-slate-950 border border-slate-800 p-4 rounded-xl outline-none" value={withdrawalAddress} onChange={e => setWithdrawalAddress(e.target.value)} />
+                    <button disabled={isProcessing} className="w-full py-4 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-all">{isProcessing ? 'Checking...' : 'Request Withdrawal'}</button>
                   </form>
                 )}
               </div>
@@ -724,18 +724,18 @@ const Dashboard: React.FC = () => {
 
             {activeModal === 'swap' && (
               <div className="space-y-4">
-                <h2 className="text-xl font-bold">Ertrag zu Hauptkapital tauschen</h2>
-                <p className="text-sm text-slate-500">Gewinne dem Kapital für Zinseszins hinzufügen.</p>
-                <input type="number" placeholder="Betrag (€)" className="w-full bg-slate-950 border border-slate-800 p-4 rounded-xl" value={amountInput} onChange={e => setAmountInput(e.target.value)} />
-                <button onClick={handleSwap} disabled={isProcessing} className="w-full py-4 bg-indigo-600 text-white rounded-xl font-bold">{isProcessing ? 'Wird getauscht...' : 'Jetzt tauschen'}</button>
+                <h2 className="text-xl font-bold">Swap Profit to Main Capital</h2>
+                <p className="text-sm text-slate-500">Add profits to capital for compound interest.</p>
+                <input type="number" placeholder="Amount (€)" className="w-full bg-slate-950 border border-slate-800 p-4 rounded-xl" value={amountInput} onChange={e => setAmountInput(e.target.value)} />
+                <button onClick={handleSwap} disabled={isProcessing} className="w-full py-4 bg-indigo-600 text-white rounded-xl font-bold">{isProcessing ? 'Swapping...' : 'Swap Now'}</button>
               </div>
             )}
 
             {activeModal === 'bot-fund' && (
               <div className="space-y-4">
-                <h2 className="text-xl font-bold">Bot-Terminal aufladen</h2>
-                <input type="number" placeholder="Betrag (€)" className="w-full bg-slate-950 border border-slate-800 p-4 rounded-xl" value={amountInput} onChange={e => setAmountInput(e.target.value)} />
-                <button onClick={handleBotFund} className="w-full py-4 bg-indigo-600 text-white rounded-xl font-bold">Transferieren</button>
+                <h2 className="text-xl font-bold">Fund Bot Terminal</h2>
+                <input type="number" placeholder="Amount (€)" className="w-full bg-slate-950 border border-slate-800 p-4 rounded-xl" value={amountInput} onChange={e => setAmountInput(e.target.value)} />
+                <button onClick={handleBotFund} className="w-full py-4 bg-indigo-600 text-white rounded-xl font-bold">Transfer</button>
               </div>
             )}
           </div>

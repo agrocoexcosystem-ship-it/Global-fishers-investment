@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase';
 import { supabase as realTimeSupabase } from '../lib/supabase'; // Using same instance
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, PieChart, Pie, Cell } from 'recharts';
 import { INVESTMENT_PLANS } from '../constants';
-import { Users, CreditCard, ArrowDownLeft, ArrowUpRight, Check, X, Search, Edit, Plus, Shield, FileText, Settings, Briefcase, BarChart2, Bell, Wallet, Clock, AlertTriangle, LogOut, Database } from 'lucide-react';
+import { Users, CreditCard, ArrowDownLeft, ArrowUpRight, Check, X, Search, Edit, Plus, Shield, FileText, Settings, Briefcase, BarChart2, Bell, Wallet, Clock, AlertTriangle, LogOut, Database, Key } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Profile, Transaction, DBInvestment } from '../types';
 import toast from 'react-hot-toast';
@@ -345,20 +345,46 @@ const Admin: React.FC = () => {
         }
     };
 
-    const handleDeleteUser = async (id: string) => {
-        if (!window.confirm("ARE YOU SURE? This will delete the user profile and potentially orphan transactions. This cannot be undone.")) return;
+    const handleDeleteUser = async (user: Profile) => {
+        if (!window.confirm(`Are you sure you want to PERMANENTLY delete ${user.email}? This action cannot be undone.`)) return;
 
-        const toastId = toast.loading("Deleting user...");
-        // Delete related transactions first to satisfy FK constraints if not cascading
-        await supabase.from('transactions').delete().eq('user_id', id);
+        const toastId = toast.loading("Deleting user (Complete Wipe)...");
 
-        const { error } = await supabase.from('profiles').delete().eq('id', id);
+        try {
+            // Try the Complete Wipe RPC first (Deletes User from Auth + DB)
+            const { error: rpcError } = await supabase.rpc('delete_user_completely', { target_user_id: user.id });
 
-        if (!error) {
-            toast.success("User deleted", { id: toastId });
-            fetchData();
-        } else {
-            toast.error("Failed: " + error.message, { id: toastId });
+            if (rpcError) {
+                console.warn("RPC Delete failed, falling back to standard delete", rpcError);
+                // Fallback: Delete profile (RLS allows admin to delete)
+                const { error } = await supabase.from('profiles').delete().eq('id', user.id);
+                if (error) throw error;
+            }
+
+            setUsers(users.filter(u => u.id !== user.id));
+            toast.success("User deleted successfully", { id: toastId });
+        } catch (error: any) {
+            console.error('Error deleting user:', error);
+            toast.error("Failed to delete user: " + error.message, { id: toastId });
+        }
+    };
+
+    const handleResetPassword = async (user: Profile) => {
+        const newPass = prompt(`Enter NEW password for ${user.email}:`);
+        if (!newPass) return;
+
+        const toastId = toast.loading("Reseting password...");
+        try {
+            const { error } = await supabase.rpc('admin_reset_password', {
+                target_user_id: user.id,
+                new_password: newPass
+            });
+
+            if (error) throw error;
+            toast.success("Password updated successfully", { id: toastId });
+        } catch (e: any) {
+            console.error(e);
+            toast.error("Failed: " + e.message, { id: toastId });
         }
     };
 
@@ -781,10 +807,21 @@ USING ( is_admin() );`}
                                                             </button>
                                                         )}
 
-                                                        <button onClick={() => { setEditingUser(user); setEditForm({ balance: user.balance, profit: user.profit, role: user.role }); setShowEditModal(true); }} className="p-2 bg-white border border-slate-200 rounded text-slate-400 hover:text-emerald-600 hover:border-emerald-200 transition-colors" title="Edit User">
+                                                        <button onClick={() => {
+                                                            setEditingUser(user);
+                                                            setEditForm({
+                                                                balance: user.balance || 0,
+                                                                profit: user.profit || 0,
+                                                                role: user.role || 'user'
+                                                            });
+                                                            setShowEditModal(true);
+                                                        }} className="p-2 text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors" title="Edit User">
                                                             <Edit size={16} />
                                                         </button>
-                                                        <button onClick={() => handleDeleteUser(user.id)} className="p-2 bg-white border border-slate-200 rounded text-slate-400 hover:text-rose-600 hover:border-rose-200 transition-colors" title="Delete User">
+                                                        <button onClick={() => handleResetPassword(user)} className="p-2 text-slate-600 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors" title="Reset Password">
+                                                            <Key size={16} />
+                                                        </button>
+                                                        <button onClick={() => handleDeleteUser(user)} className="p-2 text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors" title="Delete User">
                                                             <LogOut size={16} />
                                                         </button>
                                                     </div>
