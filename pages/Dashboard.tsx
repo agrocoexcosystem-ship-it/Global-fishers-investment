@@ -164,7 +164,28 @@ const Dashboard: React.FC = () => {
     });
 
     return () => subscription.unsubscribe();
+    return () => subscription.unsubscribe();
   }, [navigate]);
+
+  // Google Translate Initialization for Dashboard
+  useEffect(() => {
+    const initTranslate = () => {
+      if (window.google?.translate?.TranslateElement) {
+        new window.google.translate.TranslateElement({
+          pageLanguage: 'en',
+          includedLanguages: 'en,de,es,fr,zh-CN,hi,ar,pt,ru,ja,ko,it,tr,nl,vi,id,pl,th,sv,no,fi,el,cs,da,hu,ro,sk,bg,uk,he',
+          layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+          autoDisplay: false
+        }, 'google_translate_element');
+      }
+    };
+
+    window.googleTranslateElementInit = initTranslate;
+
+    if (window.google?.translate?.TranslateElement) {
+      initTranslate();
+    }
+  }, []);
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
