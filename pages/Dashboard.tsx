@@ -98,6 +98,7 @@ const Dashboard: React.FC = () => {
   const [withdrawalAddress, setWithdrawalAddress] = useState('');
   const [assetType, setAssetType] = useState('Bitcoin (BTC)');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [addressError, setAddressError] = useState(false);
   const [fundSource, setFundSource] = useState<'main' | 'external'>('main');
 
   useEffect(() => {
@@ -327,9 +328,20 @@ const Dashboard: React.FC = () => {
 
   const handleMainWithdraw = async (e: React.FormEvent) => {
     e.preventDefault();
+    setAddressError(false);
     const amt = parseFloat(amountInput);
     const sourceBalance = withdrawSource === 'main' ? mainBalance : profitBalance;
-    if (amt > sourceBalance) { toast.error('Insufficient funds in selected wallet.'); return; }
+
+    if (amt > sourceBalance) {
+      toast.error('Insufficient balance');
+      return;
+    }
+
+    if (!withdrawalAddress.trim()) {
+      setAddressError(true);
+      toast.error('Input address');
+      return;
+    }
 
     setIsProcessing(true);
 
@@ -715,7 +727,19 @@ const Dashboard: React.FC = () => {
                 ) : (
                   <form onSubmit={handleMainWithdraw} className="space-y-4">
                     <input type="number" placeholder="Amount (€)" className="w-full bg-slate-950 border border-slate-800 p-4 rounded-xl outline-none" value={amountInput} onChange={e => setAmountInput(e.target.value)} />
-                    <input type="text" placeholder="Your Wallet Address" className="w-full bg-slate-950 border border-slate-800 p-4 rounded-xl outline-none" value={withdrawalAddress} onChange={e => setWithdrawalAddress(e.target.value)} />
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="Your Wallet Address"
+                        className={`w-full bg-slate-950 border p-4 rounded-xl outline-none transition-colors ${addressError ? 'border-rose-500 placeholder:text-rose-500/50' : 'border-slate-800'}`}
+                        value={withdrawalAddress}
+                        onChange={e => {
+                          setWithdrawalAddress(e.target.value);
+                          if (e.target.value) setAddressError(false);
+                        }}
+                      />
+                      {addressError && <p className="text-rose-500 text-xs font-bold mt-2 ml-1">Input address</p>}
+                    </div>
                     <button disabled={isProcessing} className="w-full py-4 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-all">{isProcessing ? 'Checking...' : 'Request Withdrawal'}</button>
                   </form>
                 )}
