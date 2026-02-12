@@ -224,7 +224,7 @@ const Home: React.FC = () => {
                 We don't just follow the market; we anticipate it. Our proprietary AI-driven algorithms analyze massive datasets to identify high-potential opportunities before they become mainstream trends.
               </p>
 
-              <div className="grid sm:grid-cols-2 gap-6">
+              <div className="grid sm:grid-cols-2 gap-6 mb-10">
                 <div className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
                   <h4 className="text-xl font-bold mb-2 text-emerald-400">Security First</h4>
                   <p className="text-sm text-slate-400">Military-grade encryption and cold storage protocols.</p>
@@ -234,6 +234,16 @@ const Home: React.FC = () => {
                   <p className="text-sm text-slate-400">Fast withdrawals and transparent fee structures.</p>
                 </div>
               </div>
+
+              <div className="p-4 bg-emerald-900/20 border border-emerald-500/20 rounded-2xl flex items-center gap-4">
+                <div className="p-3 bg-emerald-500/10 rounded-full text-emerald-400">
+                  <Globe size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-white">Global Headquarters</h4>
+                  <p className="text-xs text-emerald-400">Camas, Washington, USA • Serving 150k+ Clients</p>
+                </div>
+              </div>
             </motion.div>
 
             <motion.div
@@ -241,110 +251,41 @@ const Home: React.FC = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="relative"
+              className="relative  min-h-[500px]"
             >
-              <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80" alt="Analytics Dashboard" className="w-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent"></div>
+              {/* Image 1: Headquarters (Bottom Left / Behind) */}
+              <div className="absolute top-20 right-0 w-3/4 aspect-[4/3] rounded-3xl overflow-hidden border border-white/10 shadow-2xl z-10">
+                <div className="absolute inset-0 bg-emerald-900/10 z-10"></div>
+                <img
+                  src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80"
+                  alt="Fisher Investments Headquarters"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute bottom-4 left-4 z-20 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
+                  <span className="text-[10px] uppercase font-bold text-white tracking-widest">Global HQ</span>
+                </div>
+              </div>
 
-                <div className="absolute bottom-8 left-8 right-8">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="h-12 w-12 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold">
-                      <TrendingUp />
+              {/* Image 2: Chart (Top Left / Front) */}
+              <div className="absolute top-0 left-0 w-3/4 aspect-[4/3] rounded-3xl overflow-hidden border border-white/10 shadow-2xl z-20 transform -translate-x-4 translate-y-4 hover:-translate-y-2 transition-transform duration-500">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80" alt="Analytics Dashboard" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
+
+                <div className="absolute bottom-6 left-6 right-6">
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold shadow-lg shadow-emerald-500/30">
+                      <TrendingUp size={18} />
                     </div>
                     <div>
-                      <div className="text-white font-bold text-lg">Real-Time Analytics</div>
-                      <div className="text-emerald-400 text-sm">Live Performance Tracking</div>
+                      <div className="text-white font-bold text-sm">Real-Time Analytics</div>
+                      <div className="text-emerald-400 text-xs">Live Performance Tracking</div>
                     </div>
                   </div>
                 </div>
               </div>
-              {/* Floating card */}
-              <motion.div
-                animate={{ y: [0, -20, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-10 -right-10 bg-white p-6 rounded-2xl shadow-xl hidden md:block"
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  <span className="text-slate-500 text-xs font-bold uppercase">System Status</span>
-                </div>
-                <div className="text-slate-900 font-black text-2xl">Operational</div>
-                <div className="text-emerald-600 text-sm font-bold">100% Uptime</div>
-              </motion.div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
-      {/* Global Headquarters Section */}
-      <section className="py-24 bg-slate-50 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="relative rounded-3xl overflow-hidden shadow-2xl group"
-            >
-              <div className="absolute inset-0 bg-emerald-900/20 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
-              <img
-                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80"
-                alt="Fisher Investments Global Headquarters"
-                className="w-full h-[500px] object-cover transform group-hover:scale-105 transition-transform duration-700"
-              />
-              <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent z-20">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
-                  <span className="text-emerald-400 font-bold text-xs uppercase tracking-widest">Global HQ</span>
-                </div>
-                <h3 className="text-3xl font-bold text-white">Fisher Investments Campus</h3>
-                <p className="text-slate-300 text-sm mt-2">Camas, Washington, USA</p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
-                A Foundation of <span className="text-emerald-600">Excellence</span>
-              </h2>
-              <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                From our state-of-the-art global headquarters, we oversee billions in assets with the precision and discipline that has defined our firm for over two decades. Our campus reflects our commitment to transparency, innovation, and long-term growth.
-              </p>
-
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-emerald-100/50 rounded-xl text-emerald-700">
-                    <Globe size={24} />
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-bold text-slate-900 mb-1">Global Reach</h4>
-                    <p className="text-slate-500">Serving clients across 14 countries from strategic operational hubs.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-blue-100/50 rounded-xl text-blue-700">
-                    <Award size={24} />
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-bold text-slate-900 mb-1">Industry Recognition</h4>
-                    <p className="text-slate-500">Consistently ranked among top wealth managers for client satisfaction.</p>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                onClick={() => navigate('/about')}
-                className="mt-10 px-8 py-4 bg-white border border-slate-200 text-slate-900 rounded-xl font-bold shadow-sm hover:bg-slate-50 hover:border-emerald-200 transition-all flex items-center gap-2 group"
-              >
-                Learn More About Us <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
-              </button>
+              {/* Decorative elements */}
+              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-emerald-500/20 rounded-full blur-3xl -z-10"></div>
             </motion.div>
           </div>
         </div>
