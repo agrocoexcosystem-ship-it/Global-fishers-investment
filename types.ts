@@ -40,11 +40,16 @@ export interface Profile {
   username: string;
   email: string;
   full_name?: string;
-  role: 'user' | 'admin';
+  role: 'user' | 'admin' | 'support' | 'finance' | 'super_admin';
+  admin_role?: 'user' | 'admin' | 'support' | 'finance' | 'super_admin';
   balance: number;
   profit: number;
   created_at: string;
   kyc_status?: 'pending' | 'verified' | 'rejected' | 'unverified' | 'suspended';
+  risk_score?: number;
+  is_frozen?: boolean;
+  two_factor_enabled?: boolean;
+  last_login_ip?: string;
   bot_settings?: {
     enabled: boolean;
     strategy: 'AI_OPTIMIZED' | 'AGGRESSIVE' | 'SAFE';
@@ -82,4 +87,74 @@ export interface DBInvestment {
     email: string;
     username: string;
   };
+}
+
+// --- NEW ADMIN TYPES ---
+
+export interface AdminAuditLog {
+  id: string;
+  admin_id: string;
+  action_type: string;
+  target_resource: string;
+  details: any;
+  ip_address?: string;
+  created_at: string;
+  profiles?: Profile; // Joined admin profile
+}
+
+export interface SupportTicket {
+  id: string;
+  user_id: string;
+  subject: string;
+  message: string;
+  status: 'open' | 'pending' | 'resolved' | 'closed';
+  priority: 'low' | 'normal' | 'high' | 'urgent';
+  assigned_to?: string;
+  created_at: string;
+  updated_at: string;
+  profiles?: Profile;
+  response_log?: { sender: string; message: string; date: string }[];
+}
+
+export interface FraudAlert {
+  id: string;
+  user_id: string;
+  trigger_rule: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  details: any;
+  status: 'new' | 'investigating' | 'resolved' | 'false_positive';
+  created_at: string;
+  profiles?: Profile;
+}
+
+export interface AdminNote {
+  id: string;
+  target_user_id: string;
+  admin_id: string;
+  note: string;
+  is_private: boolean;
+  created_at: string;
+  admin_profile?: Profile;
+}
+
+export interface AutomationRule {
+  id: string;
+  name: string;
+  trigger_event: string;
+  conditions: any;
+  actions: any;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface KYCRequest {
+  id: string;
+  user_id: string;
+  document_type: string;
+  document_urls: string[];
+  status: 'pending' | 'approved' | 'rejected';
+  admin_feedback?: string;
+  reviewed_by?: string;
+  created_at: string;
+  profiles?: Profile;
 }

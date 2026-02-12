@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { Terminal, Play, Square, Save, Activity, Cpu, Zap } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Profile } from '../../types';
 
-interface BotControlProps {
-    users: Profile[];
-}
+const AdminBotControl: React.FC = () => {
+    const [users, setUsers] = useState<Profile[]>([]);
 
-const AdminBotControl: React.FC<BotControlProps> = ({ users }) => {
+    useEffect(() => {
+        const fetchUsers = async () => {
+            const { data } = await supabase.from('profiles').select('*');
+            if (data) setUsers(data as Profile[]);
+        };
+        fetchUsers();
+    }, []);
+
     const [selectedUser, setSelectedUser] = useState<string>('');
     const targetUser = users.find(u => u.id === selectedUser) || null;
     const [botConfig, setBotConfig] = useState({
