@@ -277,6 +277,78 @@ const Home: React.FC = () => {
         </div>
       </section>
 
+      {/* Global Headquarters Section */}
+      <section className="py-24 bg-slate-50 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="relative rounded-3xl overflow-hidden shadow-2xl group"
+            >
+              <div className="absolute inset-0 bg-emerald-900/20 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
+              <img
+                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80"
+                alt="Fisher Investments Global Headquarters"
+                className="w-full h-[500px] object-cover transform group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent z-20">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
+                  <span className="text-emerald-400 font-bold text-xs uppercase tracking-widest">Global HQ</span>
+                </div>
+                <h3 className="text-3xl font-bold text-white">Fisher Investments Campus</h3>
+                <p className="text-slate-300 text-sm mt-2">Camas, Washington, USA</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
+                A Foundation of <span className="text-emerald-600">Excellence</span>
+              </h2>
+              <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+                From our state-of-the-art global headquarters, we oversee billions in assets with the precision and discipline that has defined our firm for over two decades. Our campus reflects our commitment to transparency, innovation, and long-term growth.
+              </p>
+
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-emerald-100/50 rounded-xl text-emerald-700">
+                    <Globe size={24} />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-slate-900 mb-1">Global Reach</h4>
+                    <p className="text-slate-500">Serving clients across 14 countries from strategic operational hubs.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-blue-100/50 rounded-xl text-blue-700">
+                    <Award size={24} />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-slate-900 mb-1">Industry Recognition</h4>
+                    <p className="text-slate-500">Consistently ranked among top wealth managers for client satisfaction.</p>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={() => navigate('/about')}
+                className="mt-10 px-8 py-4 bg-white border border-slate-200 text-slate-900 rounded-xl font-bold shadow-sm hover:bg-slate-50 hover:border-emerald-200 transition-all flex items-center gap-2 group"
+              >
+                Learn More About Us <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
+              </button>
+            </motion.div>
+          </div>
+        </div>
+      </section>
       {/* CTA Section */}
       <section className="py-24 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
