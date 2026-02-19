@@ -121,6 +121,17 @@ const Dashboard: React.FC = () => {
 
         // Fetch Real Data or use Mock for Guest
         if (currentUser && !isGuest) {
+          // Fetch profile balances from Supabase
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('balance, profit')
+            .eq('id', currentUser.id)
+            .single();
+          if (profileData) {
+            setMainBalance(profileData.balance || 0);
+            setProfitBalance(profileData.profit || 0);
+          }
+
           const { data: txData } = await supabase.from('transactions').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
           if (txData) setTransactions(txData as any);
 
