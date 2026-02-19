@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Search, Filter, User, CreditCard, Shield, AlertTriangle, FileText, MoreVertical, Edit, Lock, Unlock, Trasher, Trash2, CheckCircle, Wallet, Ban } from 'lucide-react';
+import { Search, Filter, User, CreditCard, Shield, AlertTriangle, FileText, MoreVertical, Edit, Lock, Unlock, Trash, Trash2, CheckCircle, Wallet, Ban, X } from 'lucide-react';
 import { Profile, Transaction, AdminNote } from '../../types';
 import toast from 'react-hot-toast';
 

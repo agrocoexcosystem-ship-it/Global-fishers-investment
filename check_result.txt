@@ -1,0 +1,7 @@
+{
+  "profile": {
+    "balance": 21500,
+    "profit": 162000
+  },
+  "error": null
+}

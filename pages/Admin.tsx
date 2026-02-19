@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
 import { Toaster, toast } from 'react-hot-toast';
 
 // Components
-import AdminSidebar from '../../components/admin/AdminSidebar';
-import AdminOverview from '../../components/admin/AdminOverview';
-import AdminTransactions from '../../components/admin/AdminTransactions';
-import AdminUsers from '../../components/admin/AdminUsers';
-import AdminFinancials from '../../components/admin/AdminFinancials';
-import AdminKYC from '../../components/admin/AdminKYC';
-import AdminSupport from '../../components/admin/AdminSupport';
-import AdminAuditLogs from '../../components/admin/AdminAuditLogs';
-import AdminBotControl from '../../components/admin/AdminBotControl';
-import AdminInvestments from '../../components/admin/AdminInvestments';
+import AdminSidebar from '../components/admin/AdminSidebar';
+import AdminOverview from '../components/admin/AdminOverview';
+import AdminTransactions from '../components/admin/AdminTransactions';
+import AdminUsers from '../components/admin/AdminUsers';
+import AdminFinancials from '../components/admin/AdminFinancials';
+import AdminKYC from '../components/admin/AdminKYC';
+import AdminSupport from '../components/admin/AdminSupport';
+import AdminAuditLogs from '../components/admin/AdminAuditLogs';
+import AdminBotControl from '../components/admin/AdminBotControl';
+import AdminInvestments from '../components/admin/AdminInvestments';
 
 const Admin: React.FC = () => {
     const navigate = useNavigate();
