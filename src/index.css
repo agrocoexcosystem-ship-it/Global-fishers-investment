@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #f0fdf4;
+  --color-brand-100: #dcfce7;
+  --color-brand-200: #bbf7d0;
+  --color-brand-300: #86efac;
+  --color-brand-400: #4ade80;
+  --color-brand-500: #22c55e;
+  --color-brand-600: #16a34a;
+  --color-brand-700: #15803d;
+  --color-brand-800: #166534;
+  --color-brand-900: #14532d;
+  --color-brand-950: #052e16;
+  --color-gold-400: #fbbf24;
+  --color-gold-500: #f59e0b;
+  --color-gold-600: #d97706;
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-effect-dark {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.gradient-green {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.gradient-premium {
+  background: linear-gradient(135deg, #064e3b, #10b981);
+}
+
+.text-gradient-gold {
+  background: linear-gradient(to right, #d97706, #fbbf24, #d97706);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% auto;
+  animation: shine 4s linear infinite;
+}
+
+.triangle-3d {
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 35px solid #10b981;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.triangle-3d:hover {
+  transform: rotateY(180deg) scale(1.1);
+  filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.5));
+}
+
+@keyframes shine {
+  to { background-position: 200% center; }
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-ticker {
+  animation: ticker 30s linear infinite;
+}
+
+/* Google Translate */
+#google_translate_element_desktop,
+#google_translate_element_mobile {
+  display: inline-block;
+  min-height: 30px;
+  width: 100%;
+}
+.goog-te-gadget { font-family: 'Inter', sans-serif !important; font-size: 0 !important; }
+.goog-te-gadget-simple { background-color: transparent !important; border: none !important; padding: 4px 10px !important; border-radius: 8px !important; cursor: pointer !important; display: flex !important; align-items: center !important; width: 100% !important; justify-content: center; }
+.goog-te-gadget-icon { display: none !important; }
+.goog-te-menu-value span { color: #1e293b !important; font-weight: 600 !important; font-size: 13px !important; }
+.goog-te-menu-value img, .goog-logo-link, .goog-te-gadget span, .goog-te-banner-frame.skiptranslate { display: none !important; }
+body { top: 0 !important; }
