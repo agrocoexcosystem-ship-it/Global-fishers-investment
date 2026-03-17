@@ -9,6 +9,15 @@ import About from './pages/About';
 import Plans from './pages/Plans';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Dashboard from './pages/Dashboard';
+import Compliance from './pages/Compliance';
+import Security from './pages/Security';
+import Calculator from './pages/Calculator';
+import Support from './pages/Support';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
+import Risk from './pages/Risk';
+import WithdrawalPolicy from './pages/WithdrawalPolicy';
 
 function App() {
   return (
@@ -24,6 +33,15 @@ function App() {
               <Route path="/plans" element={<Plans />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/compliance" element={<Compliance />} />
+              <Route path="/security" element={<Security />} />
+              <Route path="/calculator" element={<Calculator />} />
+              <Route path="/support" element={<Support />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/risk" element={<Risk />} />
+              <Route path="/withdrawal-policy" element={<WithdrawalPolicy />} />
             </Routes>
           </main>
           <Footer />

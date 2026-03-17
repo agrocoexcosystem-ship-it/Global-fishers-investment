@@ -1,0 +1,358 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../lib/supabase';
+import { motion } from 'framer-motion';
+import {
+  Wallet, TrendingUp, ArrowDownCircle, ArrowUpCircle,
+  Copy, Clock, CheckCircle, XCircle, DollarSign, BarChart3
+} from 'lucide-react';
+import toast from 'react-hot-toast';
+
+interface Profile {
+  full_name: string;
+  balance: number;
+  total_deposited: number;
+  total_withdrawn: number;
+  total_profit: number;
+  role: string;
+}
+
+interface Transaction {
+  id: string;
+  type: string;
+  amount: number;
+  status: string;
+  created_at: string;
+  currency?: string;
+}
+
+export default function Dashboard() {
+  const { user, loading: authLoading, isAdmin } = useAuth();
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [activeTab, setActiveTab] = useState<'overview' | 'deposit' | 'withdraw'>('overview');
+  const [depositAmount, setDepositAmount] = useState('');
+  const [withdrawAmount, setWithdrawAmount] = useState('');
+  const [selectedCrypto, setSelectedCrypto] = useState('BTC');
+  const [loading, setLoading] = useState(true);
+
+  const WALLET_ADDRESSES: Record<string, string> = {
+    BTC: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
+    ETH: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F',
+    USDT: 'TN2Y6hYKZqXr1LqKTGcUmFZePBmMKbHMWi',
+  };
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate('/login');
+      return;
+    }
+    if (user) {
+      fetchProfile();
+      fetchTransactions();
+    }
+  }, [user, authLoading]);
+
+  async function fetchProfile() {
+    try {
+      const { data } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user!.id)
+        .single();
+      if (data) setProfile(data);
+    } catch {
+      // Profile may not exist yet
+      setProfile({
+        full_name: user?.user_metadata?.full_name || 'Investor',
+        balance: 0,
+        total_deposited: 0,
+        total_withdrawn: 0,
+        total_profit: 0,
+        role: 'user',
+      });
+    }
+    setLoading(false);
+  }
+
+  async function fetchTransactions() {
+    try {
+      const { data } = await supabase
+        .from('transactions')
+        .select('*')
+        .eq('user_id', user!.id)
+        .order('created_at', { ascending: false })
+        .limit(20);
+      if (data) setTransactions(data);
+    } catch {
+      // No transactions yet
+    }
+  }
+
+  const handleDeposit = async () => {
+    if (!depositAmount || parseFloat(depositAmount) <= 0) {
+      toast.error('Enter a valid deposit amount');
+      return;
+    }
+    try {
+      await supabase.from('transactions').insert({
+        user_id: user!.id,
+        type: 'deposit',
+        amount: parseFloat(depositAmount),
+        status: 'pending',
+        currency: selectedCrypto,
+      });
+      toast.success('Deposit request submitted! Send crypto to the address below.');
+      setDepositAmount('');
+      fetchTransactions();
+    } catch {
+      toast.error('Failed to submit deposit');
+    }
+  };
+
+  const handleWithdraw = async () => {
+    if (!withdrawAmount || parseFloat(withdrawAmount) <= 0) {
+      toast.error('Enter a valid withdrawal amount');
+      return;
+    }
+    if (profile && parseFloat(withdrawAmount) > profile.balance) {
+      toast.error('Insufficient balance');
+      return;
+    }
+    try {
+      await supabase.from('transactions').insert({
+        user_id: user!.id,
+        type: 'withdrawal',
+        amount: parseFloat(withdrawAmount),
+        status: 'pending',
+      });
+      toast.success('Withdrawal request submitted! Processing within 24 hours.');
+      setWithdrawAmount('');
+      fetchTransactions();
+    } catch {
+      toast.error('Failed to submit withdrawal');
+    }
+  };
+
+  const copyAddress = (addr: string) => {
+    navigator.clipboard.writeText(addr);
+    toast.success('Wallet address copied!');
+  };
+
+  if (authLoading || loading) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  const stats = [
+    { icon: Wallet, label: 'Account Balance', value: `$${(profile?.balance ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-emerald-400' },
+    { icon: TrendingUp, label: 'Total Profit', value: `$${(profile?.total_profit ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-green-400' },
+    { icon: ArrowDownCircle, label: 'Total Deposited', value: `$${(profile?.total_deposited ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-blue-400' },
+    { icon: ArrowUpCircle, label: 'Total Withdrawn', value: `$${(profile?.total_withdrawn ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-amber-400' },
+  ];
+
+  return (
+    <div className="min-h-screen bg-slate-900 text-white">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-bold font-serif">
+              Welcome, <span className="text-emerald-400">{profile?.full_name || 'Investor'}</span>
+            </h1>
+            <p className="text-slate-400 text-sm mt-1">Manage your investment portfolio</p>
+          </div>
+          {isAdmin && (
+            <span className="px-3 py-1 bg-amber-500/20 text-amber-400 rounded-full text-xs font-semibold uppercase">Admin</span>
+          )}
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          {stats.map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className="p-6 rounded-2xl bg-slate-800/50 border border-slate-700"
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <div className={`p-2 rounded-lg bg-slate-700/50 ${stat.color}`}>
+                  <stat.icon size={20} />
+                </div>
+                <span className="text-slate-400 text-sm">{stat.label}</span>
+              </div>
+              <div className="text-2xl font-bold font-sans">{stat.value}</div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Tabs */}
+        <div className="flex space-x-1 bg-slate-800/50 rounded-xl p-1 mb-8 max-w-md">
+          {(['overview', 'deposit', 'withdraw'] as const).map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold capitalize transition-all
+                ${activeTab === tab ? 'bg-emerald-500 text-white' : 'text-slate-400 hover:text-white'}`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Tab Content */}
+        {activeTab === 'overview' && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <div className="bg-slate-800/30 border border-slate-700 rounded-2xl overflow-hidden">
+              <div className="p-6 border-b border-slate-700 flex items-center gap-2">
+                <Clock size={18} className="text-emerald-400" />
+                <h2 className="text-lg font-semibold font-sans">Recent Transactions</h2>
+              </div>
+              {transactions.length === 0 ? (
+                <div className="p-12 text-center text-slate-500">
+                  <BarChart3 size={48} className="mx-auto mb-3 opacity-30" />
+                  <p>No transactions yet. Start by making a deposit.</p>
+                </div>
+              ) : (
+                <div className="divide-y divide-slate-700">
+                  {transactions.map(tx => (
+                    <div key={tx.id} className="p-4 flex items-center justify-between hover:bg-slate-800/30 transition">
+                      <div className="flex items-center gap-3">
+                        {tx.type === 'deposit' ? (
+                          <ArrowDownCircle size={20} className="text-emerald-400" />
+                        ) : (
+                          <ArrowUpCircle size={20} className="text-amber-400" />
+                        )}
+                        <div>
+                          <div className="font-semibold font-sans capitalize text-sm">{tx.type}</div>
+                          <div className="text-xs text-slate-500">
+                            {new Date(tx.created_at).toLocaleDateString('en-US', {
+                              year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <span className="font-bold font-sans">${tx.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                        <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
+                          tx.status === 'approved' || tx.status === 'completed'
+                            ? 'bg-emerald-500/20 text-emerald-400'
+                            : tx.status === 'pending'
+                            ? 'bg-amber-500/20 text-amber-400'
+                            : 'bg-red-500/20 text-red-400'
+                        }`}>
+                          {tx.status === 'approved' || tx.status === 'completed' ? <CheckCircle size={12} className="inline mr-1" /> :
+                           tx.status === 'pending' ? <Clock size={12} className="inline mr-1" /> :
+                           <XCircle size={12} className="inline mr-1" />}
+                          {tx.status}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+
+        {activeTab === 'deposit' && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-lg">
+            <div className="bg-slate-800/30 border border-slate-700 rounded-2xl p-6">
+              <h2 className="text-lg font-semibold font-sans mb-6 flex items-center gap-2">
+                <DollarSign size={20} className="text-emerald-400" /> Make a Deposit
+              </h2>
+
+              <div className="mb-4">
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Select Cryptocurrency</label>
+                <div className="flex gap-2">
+                  {Object.keys(WALLET_ADDRESSES).map(c => (
+                    <button
+                      key={c}
+                      onClick={() => setSelectedCrypto(c)}
+                      className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all
+                        ${selectedCrypto === c ? 'bg-emerald-500 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
+                    >
+                      {c}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Deposit Amount (USD)</label>
+                <input
+                  type="number"
+                  value={depositAmount}
+                  onChange={e => setDepositAmount(e.target.value)}
+                  placeholder="Enter amount"
+                  min="100"
+                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition"
+                />
+              </div>
+
+              <div className="mb-6 p-4 bg-slate-700/50 rounded-xl">
+                <p className="text-xs text-slate-400 mb-2">Send {selectedCrypto} to this address:</p>
+                <div className="flex items-center gap-2">
+                  <code className="flex-1 text-xs text-emerald-400 break-all">{WALLET_ADDRESSES[selectedCrypto]}</code>
+                  <button onClick={() => copyAddress(WALLET_ADDRESSES[selectedCrypto])} className="p-2 text-slate-400 hover:text-white transition">
+                    <Copy size={16} />
+                  </button>
+                </div>
+              </div>
+
+              <button
+                onClick={handleDeposit}
+                className="w-full py-3 bg-emerald-500 text-white rounded-xl font-semibold hover:bg-emerald-600 transition"
+              >
+                Submit Deposit
+              </button>
+            </div>
+          </motion.div>
+        )}
+
+        {activeTab === 'withdraw' && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-lg">
+            <div className="bg-slate-800/30 border border-slate-700 rounded-2xl p-6">
+              <h2 className="text-lg font-semibold font-sans mb-6 flex items-center gap-2">
+                <ArrowUpCircle size={20} className="text-amber-400" /> Request Withdrawal
+              </h2>
+
+              <div className="mb-4 p-4 bg-slate-700/50 rounded-xl">
+                <p className="text-xs text-slate-400">Available Balance</p>
+                <p className="text-2xl font-bold text-emerald-400">${(profile?.balance ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+              </div>
+
+              <div className="mb-6">
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Withdrawal Amount (USD)</label>
+                <input
+                  type="number"
+                  value={withdrawAmount}
+                  onChange={e => setWithdrawAmount(e.target.value)}
+                  placeholder="Enter amount"
+                  min="50"
+                  className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition"
+                />
+              </div>
+
+              <p className="text-xs text-slate-500 mb-4">Withdrawals are processed within 24 hours. Minimum withdrawal: $50.</p>
+
+              <button
+                onClick={handleWithdraw}
+                className="w-full py-3 bg-amber-500 text-white rounded-xl font-semibold hover:bg-amber-600 transition"
+              >
+                Submit Withdrawal
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+}
