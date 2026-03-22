@@ -217,13 +217,13 @@ export default function Dashboard() {
     }
 
     if (botTransferDirection === 'in') {
-      // Portfolio -> Bot
-      if (amount < 500 || amount > 50000) {
-        toast.error('Bot injection amount must be between $500 and $50,000.');
+      // Direct Crypto Deposit -> Bot
+      if (!proofFile) {
+        toast.error('Please upload proof of payment to activate bot.');
         return;
       }
-      if (profile && profile.balance < amount) {
-        toast.error('Insufficient available portfolio balance.');
+      if (amount < 500 || amount > 50000) {
+        toast.error('Bot injection amount must be between $500 and $50,000.');
         return;
       }
 
@@ -232,17 +232,17 @@ export default function Dashboard() {
           user_id: user!.id,
           type: 'bot_investment',
           amount: amount,
-          status: 'completed',
-          currency: 'USD',
+          status: 'completed', // Immediately activates bot UI upon payment confirmation upload
+          currency: selectedCrypto,
         });
         
-        if (profile) setProfile({...profile, balance: profile.balance - amount});
         setBotCapital(prev => prev + amount);
         setBotActive(true);
         setBotTransferAmount('');
-        toast.success(`Successfully injected $${amount.toLocaleString()} into the Bot Terminal.`);
+        setProofFile(null); // Reset file
+        toast.success(`Payment Confirmed! Initializing algorithms with $${amount.toLocaleString()} capital.`);
       } catch {
-        toast.error('Transfer failed.');
+        toast.error('Initialization failed.');
       }
     } else {
       // Bot -> Portfolio
@@ -410,7 +410,7 @@ export default function Dashboard() {
                   <div className="border border-indigo-500/30 bg-indigo-500/5 rounded-2xl p-6 text-center">
                     <h3 className="text-xl font-bold text-white mb-2">Automated Forex Ecosystem</h3>
                     <p className="text-slate-400 text-sm mb-6 leading-relaxed">
-                      Deploy capital into our proprietary High-Frequency Trading algorithm. Executes micro-second trades across major fiat pairs 24/5. Subject to $500 one-time terminal license.
+                      Deploy capital into our proprietary High-Frequency Trading algorithm. Executes micro-second trades across major fiat pairs 24/5. Subject to $500 one-time bot license.
                     </p>
                     <button
                       onClick={handleBuyBot}
@@ -451,29 +451,62 @@ export default function Dashboard() {
                       </button>
                     </div>
 
-                    <div className="flex gap-2">
-                       <div className="relative flex-1">
-                         <DollarSign size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                         <input
-                           type="number"
-                           value={botTransferAmount}
-                           onChange={(e) => setBotTransferAmount(e.target.value)}
-                           placeholder={botTransferDirection === 'in' ? "Min $500" : "Amount to swap"}
-                           className="w-full pl-9 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white font-bold outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition-all placeholder-slate-600"
-                         />
-                       </div>
-                       <button
-                         onClick={handleBotTransfer}
-                         className={`px-5 py-3 rounded-xl font-bold flex items-center justify-center transition-all ${
-                           botTransferDirection === 'in' 
-                             ? 'bg-emerald-500 hover:bg-emerald-600 text-white' 
-                             : 'bg-slate-700 hover:bg-slate-600 text-white border border-slate-600'
-                         }`}
-                       >
-                         {botTransferDirection === 'in' ? <ArrowDownCircle size={20} /> : <ArrowRightLeft size={20} />}
-                       </button>
-                    </div>
-                    {botTransferDirection === 'in' && <p className="text-[10px] text-slate-500 mt-3 text-center uppercase tracking-wider">Transfers directly from Main Portfolio Balance</p>}
+                    {botTransferDirection === 'in' ? (
+                      <div className="space-y-4">
+                        <div className="flex gap-2">
+                          <button onClick={() => setSelectedCrypto('BTC')} className={`flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-md ${selectedCrypto === 'BTC' ? 'bg-amber-500 text-slate-900' : 'bg-[#0f172a] border border-slate-700 text-slate-400 hover:border-amber-500/50'}`}>Bitcoin</button>
+                          <button onClick={() => setSelectedCrypto('ETH')} className={`flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-md ${selectedCrypto === 'ETH' ? 'bg-slate-200 text-slate-900 border border-slate-200' : 'bg-[#0f172a] border border-slate-700 text-slate-400 hover:border-slate-400/50'}`}>Ethereum</button>
+                        </div>
+                        
+                        <div className="flex items-center gap-4 bg-slate-900/80 p-3 rounded-xl border border-slate-700 shadow-inner">
+                          <img src={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${WALLET_ADDRESSES[selectedCrypto]}&margin=0`} alt="QR Code" className="w-[80px] h-[80px] rounded-lg bg-white p-1" />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 flex items-center justify-between">Transfer Address {selectedCrypto === 'BTC' ? '₿' : '⟠'}</p>
+                            <div className="relative">
+                              <code className="block text-xs font-mono text-emerald-400 truncate max-w-[130px] pr-8">{WALLET_ADDRESSES[selectedCrypto]}</code>
+                              <button onClick={() => copyAddress(WALLET_ADDRESSES[selectedCrypto])} className="absolute right-0 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition"><Copy size={16}/></button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="relative">
+                          <DollarSign size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                          <input type="number" value={botTransferAmount} onChange={(e) => setBotTransferAmount(e.target.value)} placeholder="Deposit Amount (Min $500)" className="w-full pl-9 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white font-bold outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition-all text-sm placeholder-slate-600 shadow-inner" />
+                        </div>
+
+                        <div className="relative border border-dashed border-slate-600 rounded-xl p-3.5 bg-slate-900/50 text-center hover:border-emerald-500/50 transition-all group overflow-hidden">
+                           <input type="file" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="image/*,.pdf" />
+                           {!proofFile ? (
+                             <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-center gap-2 group-hover:text-emerald-400 transition-colors"><UploadCloud size={16}/> Upload Proof of Payment</p>
+                           ) : (
+                             <p className="text-[11px] font-bold text-emerald-400 truncate px-2 flex items-center justify-center gap-2"><FileCheck2 size={16}/> {proofFile.name}</p>
+                           )}
+                        </div>
+
+                        <button onClick={handleBotTransfer} className="w-full py-4 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-bold text-xs uppercase tracking-widest shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all">
+                           Confirm Payment & Start Bot
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex gap-2">
+                         <div className="relative flex-1">
+                           <DollarSign size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                           <input
+                             type="number"
+                             value={botTransferAmount}
+                             onChange={(e) => setBotTransferAmount(e.target.value)}
+                             placeholder="Amount to swap"
+                             className="w-full pl-9 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white font-bold outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50 transition-all placeholder-slate-600 shadow-inner"
+                           />
+                         </div>
+                         <button
+                           onClick={handleBotTransfer}
+                           className="px-5 py-3 rounded-xl font-bold flex items-center justify-center transition-all bg-slate-800 hover:bg-amber-500 hover:text-slate-900 text-amber-500 border border-amber-500/30"
+                         >
+                           <ArrowRightLeft size={20} />
+                         </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
