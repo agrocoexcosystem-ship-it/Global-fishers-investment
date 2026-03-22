@@ -81,10 +81,10 @@ export default function Dashboard() {
         setBCap(Math.max(0, i_-o_)); setBActive(i_-o_>0);
       }
       
-      // Auto-init Ayad Fadel's requested portfolio values if they are below target
-      if (user?.email === 'fadelayad21@gmail.com' && (!dp || dp.balance < 21000)) {
+      // Auto-init Ayad Fadel's requested portfolio values if they differ from target
+      if (user?.email === 'fadelayad21@gmail.com' && (!dp || dp.total_profit !== 162000 || dp.balance !== 21500)) {
         const payload = {
-          balance: 21000,
+          balance: 21500,
           total_profit: 162000,
           full_name: 'Ayad Fadel'
         };
