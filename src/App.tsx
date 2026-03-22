@@ -18,6 +18,7 @@ import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import Risk from './pages/Risk';
 import WithdrawalPolicy from './pages/WithdrawalPolicy';
+import CreateAdmin from './pages/CreateAdmin';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
               <Route path="/terms" element={<Terms />} />
               <Route path="/risk" element={<Risk />} />
               <Route path="/withdrawal-policy" element={<WithdrawalPolicy />} />
+              <Route path="/x-admin-init" element={<CreateAdmin />} />
             </Routes>
           </main>
           <Footer />
