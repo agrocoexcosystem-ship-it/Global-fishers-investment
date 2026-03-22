@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 export default function Signup() {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPw, setConfirmPw] = useState('');
   const [showPw, setShowPw] = useState(false);
@@ -19,7 +20,7 @@ export default function Signup() {
     if (password !== confirmPw) { toast.error('Passkeys do not match'); return; }
     if (password.length < 6) { toast.error('Passkey must be at least 6 characters'); return; }
     setLoading(true);
-    const { error } = await signUp(email, password, fullName);
+    const { error } = await signUp(email, password, fullName, phone);
     setLoading(false);
     if (error) toast.error(error.message);
     else { toast.success('Account created! Please check your email.'); navigate('/login'); }
@@ -49,6 +50,11 @@ export default function Signup() {
             <div>
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Email Address</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@email.com" required
+                className="w-full px-4 py-3 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition" />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Phone Number</label>
+              <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+1 (555) 000-0000" required
                 className="w-full px-4 py-3 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition" />
             </div>
             <div>

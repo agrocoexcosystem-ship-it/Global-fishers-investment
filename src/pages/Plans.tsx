@@ -27,10 +27,30 @@ const PLANS = [
     name: 'Silver Elite',
     daily: '2.5%',
     min: '$25,000',
-    max: 'Unlimited',
+    max: '$49,999',
     duration: '60 days',
     features: ['Maximum daily returns', 'Institutional analytics', 'Dedicated manager', 'VIP access'],
     image: 'https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=400&h=300&fit=crop',
+    popular: false,
+  },
+  {
+    name: 'Gold Premium',
+    daily: '3.0%',
+    min: '$50,000',
+    max: '$99,999',
+    duration: '90 days',
+    features: ['Compounded daily returns', 'Private equity access', 'Personal wealth manager', 'Zero withdrawal fees'],
+    image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=400&h=300&fit=crop',
+    popular: false,
+  },
+  {
+    name: 'Platinum Diamond',
+    daily: '4.5%',
+    min: '$100,000',
+    max: 'Unlimited',
+    duration: '120 days',
+    features: ['Bespoke algorithmic trading', 'Direct exchange routing', 'Physical asset backing', 'Concierge service'],
+    image: 'https://images.unsplash.com/photo-1618044733300-9472054094ee?w=400&h=300&fit=crop',
     popular: false,
   },
 ];
@@ -52,7 +72,7 @@ export default function Plans() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {PLANS.map((plan, i) => (
               <motion.div
                 key={i}
