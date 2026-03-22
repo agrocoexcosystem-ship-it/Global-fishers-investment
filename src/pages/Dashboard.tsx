@@ -5,8 +5,7 @@ import { supabase } from '../lib/supabase';
 import {
   Wallet, TrendingUp, ArrowDownCircle, ArrowUpCircle,
   Bot, Cpu, ArrowRightLeft, Languages,
-  ShieldCheck, Zap, Award, Gem, Briefcase, Lock, ChevronDown,
-  DollarSign, Activity, UploadCloud
+  ShieldCheck, Zap, Award, Gem, Briefcase, Lock, ChevronDown, Activity, UploadCloud
 } from 'lucide-react';
 import { AreaChart, Area, ResponsiveContainer, YAxis } from 'recharts';
 import toast from 'react-hot-toast';
@@ -195,7 +194,7 @@ export default function Dashboard() {
           ].map((s, idx) => (
             <div key={idx} className={`bg-slate-900/50 border border-white/5 p-4 rounded-2xl backdrop-blur-lg hover:border-white/10 transition-all shadow-2xl ${s.s}`}>
               <div className="flex items-center gap-2 mb-2"><s.i size={12} className={s.c} /><span className="text-[9px] font-black text-slate-500 uppercase tracking-[0.1em]">{s.l}</span></div>
-              <div className="text-xl font-black text-white tracking-tighter">${(s.v || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+              <div className="text-xl font-black text-white tracking-tighter">€{(s.v || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
             </div>
           ))}
         </div>
@@ -216,7 +215,7 @@ export default function Dashboard() {
               {txs.map(tx => (
                 <tr key={tx.id} className="hover:bg-white/[0.03] transition-colors group/row">
                   <td className="p-5 font-bold text-slate-200 capitalize tracking-tight group-hover/row:text-white transition-colors">{tx.type.replace('_',' ')}</td>
-                  <td className="p-5 font-black text-white tracking-[0.1em] text-sm">${tx.amount.toLocaleString()}</td>
+                  <td className="p-5 font-black text-white tracking-[0.1em] text-sm">€{tx.amount.toLocaleString()}</td>
                   <td className="p-5 text-right"><span className={`px-3 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest shadow-sm ${['completed','approved'].includes(tx.status) ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20':'bg-amber-500/10 text-amber-500 border border-amber-500/20'}`}>{tx.status}</span></td>
                 </tr>
               ))}
@@ -238,7 +237,7 @@ export default function Dashboard() {
                     </div>
                     <h3 className="text-lg font-black text-white uppercase tracking-tight mb-2 group-hover:text-emerald-400 transition-colors">{plan.name}</h3>
                     <div className="mt-8 pt-6 border-t border-white/5 space-y-4">
-                       <div className="flex justify-between text-[10px] uppercase font-black text-slate-500"><span>Mag. Floor</span><span className="text-white tracking-widest">${plan.min.toLocaleString()}</span></div>
+                       <div className="flex justify-between text-[10px] uppercase font-black text-slate-500"><span>Mag. Floor</span><span className="text-white tracking-widest">€{plan.min.toLocaleString()}</span></div>
                        <button onClick={() => handlePlan(plan)} className="w-full py-3.5 bg-slate-950 border border-white/10 hover:bg-emerald-500 hover:border-emerald-400 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all shadow-xl active:scale-95 group-hover:shadow-emerald-500/10">{t('establishing')}</button>
                     </div>
                     <div className="absolute -right-8 -bottom-8 opacity-[0.02] group-hover:opacity-[0.08] transition-opacity"><plan.icon size={120}/></div>
@@ -272,7 +271,7 @@ export default function Dashboard() {
                    </div>
 
                    {!bOwned ? (
-                     <button onClick={() => toast.error('Check wallet connectivity')} className="w-full py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-2xl font-black text-[11px] tracking-[0.3em] uppercase shadow-[0_8px_30px_rgba(79,70,229,0.3)] hover:scale-[1.02] active:scale-95 transition-all">ESTABLISH LICENSE ($500)</button>
+                     <button onClick={() => toast.error('Check wallet connectivity')} className="w-full py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-2xl font-black text-[11px] tracking-[0.3em] uppercase shadow-[0_8px_30px_rgba(79,70,229,0.3)] hover:scale-[1.02] active:scale-95 transition-all">ESTABLISH LICENSE (€500)</button>
                    ) : (
                      <div className="space-y-4">
                         <div className="bg-slate-950 p-1.5 flex rounded-2xl border border-white/5 shadow-inner transition-all hover:border-white/10">
@@ -293,8 +292,8 @@ export default function Dashboard() {
                                  <code className="text-[9px] text-emerald-500/80 font-mono break-all leading-tight italic flex-1">{WALLETS[crypto]}</code>
                               </div>
                               <div className="relative group/inp">
-                                 <input type="number" value={bAmt} onChange={e=>setBAmt(e.target.value)} placeholder="0.00 USD" className="w-full p-4 bg-slate-950 border border-white/5 rounded-2xl text-lg text-white font-black outline-none tracking-widest shadow-inner transition-all focus:border-emerald-500/40"/>
-                                 <DollarSign size={14} className="absolute right-4 top-5 text-slate-800 group-focus-within/inp:text-emerald-500/50 transition-colors"/>
+                                 <input type="number" value={bAmt} onChange={e=>setBAmt(e.target.value)} placeholder="0.00 EUR" className="w-full p-4 bg-slate-950 border border-white/5 rounded-2xl text-lg text-white font-black outline-none tracking-widest shadow-inner transition-all focus:border-emerald-500/40"/>
+                                 <span className="absolute right-4 top-5 text-slate-800 group-focus-within/inp:text-emerald-500/50 transition-colors font-black">€</span>
                               </div>
                               <div className="bg-slate-950 border border-dashed border-white/10 p-3 rounded-2xl text-center relative pointer-events-auto hover:border-emerald-500/30 transition-all">
                                  <input type="file" onChange={ev=>{if(ev.target.files)setFile(ev.target.files[0])}} className="absolute inset-0 opacity-0 cursor-pointer w-full"/>
@@ -385,8 +384,8 @@ export default function Dashboard() {
 
              <div className="space-y-5">
                 <div className="relative group/inp">
-                   <input type="number" value={amt} onChange={e=>setAmt(e.target.value)} placeholder="0.00 USD" className="w-full p-4 bg-slate-950 border border-white/5 rounded-2xl text-white font-black text-2xl outline-none tracking-widest shadow-inner transition-all focus:border-emerald-500/40 focus:ring-4 focus:ring-emerald-500/5"/>
-                   <DollarSign size={20} className="absolute right-4 top-5 text-slate-800 group-focus-within/inp:text-emerald-500/50 transition-colors"/>
+                   <input type="number" value={amt} onChange={e=>setAmt(e.target.value)} placeholder="0.00 EUR" className="w-full p-4 bg-slate-950 border border-white/5 rounded-2xl text-white font-black text-2xl outline-none tracking-widest shadow-inner transition-all focus:border-emerald-500/40 focus:ring-4 focus:ring-emerald-500/5"/>
+                   <span className="absolute right-4 top-5 text-slate-800 group-focus-within/inp:text-emerald-500/50 transition-colors font-black text-xl">€</span>
                 </div>
                 
                 <div className="bg-slate-950 border border-dashed border-white/10 p-4 rounded-2xl text-center relative pointer-events-auto hover:border-emerald-500/20 transition-all group/file">
@@ -418,7 +417,7 @@ export default function Dashboard() {
                 ].map(src => (
                    <button key={src.id} onClick={() => setWSource(src.id as any)} className={`flex-1 py-3 px-2 rounded-xl text-[9px] font-black border transition-all flex flex-col items-center gap-1 ${wSource === src.id ? 'bg-amber-500 border-amber-400 text-slate-950 shadow-lg' : 'bg-transparent border-transparent text-slate-600 hover:text-white'}`}>
                       <span>{src.label}</span>
-                      <span className="opacity-70">${(src.val || 0).toLocaleString()}</span>
+                      <span className="opacity-70">€{(src.val || 0).toLocaleString()}</span>
                    </button>
                 ))}
              </div>
@@ -432,7 +431,7 @@ export default function Dashboard() {
              
              <div className="space-y-6">
                 <div className="relative group/inp">
-                   <input type="number" value={amt} onChange={e=>setAmt(e.target.value)} placeholder="0.00 USD" className="w-full p-5 bg-slate-950 border border-white/5 rounded-2xl text-white font-black text-3xl outline-none shadow-inner transition-all focus:border-amber-500/40"/>
+                   <input type="number" value={amt} onChange={e=>setAmt(e.target.value)} placeholder="0.00 EUR" className="w-full p-5 bg-slate-950 border border-white/5 rounded-2xl text-white font-black text-3xl outline-none shadow-inner transition-all focus:border-amber-500/40"/>
                    <button onClick={() => setAmt(wSource === 'balance' ? (p?.balance || 0).toString() : (p?.total_profit || 0).toString())} className="absolute right-5 bottom-5 text-[8px] font-black bg-amber-500/10 text-amber-500 px-3 py-1.5 rounded-lg border border-amber-500/20 hover:bg-amber-500 hover:text-white transition-all uppercase tracking-widest">MAX</button>
                 </div>
 
