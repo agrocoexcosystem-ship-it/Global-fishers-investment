@@ -60,6 +60,8 @@ export default function Dashboard() {
   const [bAmt, setBAmt] = useState('');
   const [dir, setDir] = useState<'in'|'out'>('in');
   const [l, setL] = useState(true);
+  const [wSource, setWSource] = useState<'balance'|'profit'>('balance');
+  const [wAddr, setWAddr] = useState('');
   const data = useMemo(()=>genData(), []);
   const WALLETS: Record<string, string> = { BTC: 'bc1qsnx0faedv2s80zdj3730dywhggjrrx7t5l0g86', ETH: '0x3ecED1d7b461d201ae87Ea609E59d3539D11D413' };
 
@@ -118,6 +120,36 @@ export default function Dashboard() {
       await supabase.from('transactions').insert({ user_id:user!.id, type:'bot_withdrawal', amount:a, status:'completed' });
       if(p) { await supabase.from('profiles').update({ balance: p.balance + a }).eq('id', user!.id); setP({...p, balance: p.balance+a}); }
       setBCap(p=>{ const n=p-a; if(n<=0) setBActive(false); return n; }); setBAmt('');
+    }
+  };
+
+  const executeWithdraw = async () => {
+    const amount = parseFloat(amt);
+    if (!amount || amount <= 0) return toast.error('Enter valid amount');
+    if (!wAddr) return toast.error('Wallet address required');
+    
+    const available = wSource === 'balance' ? (p?.balance || 0) : (p?.total_profit || 0);
+    if (amount > available) return toast.error('Insufficient funds');
+
+    try {
+      await supabase.from('transactions').insert({
+        user_id: user!.id,
+        type: `withdrawal_${wSource}`,
+        amount: amount,
+        status: 'pending',
+        currency: crypto,
+        created_at: new Date().toISOString()
+      });
+
+      // Optimistic update - reduce from local state to reflect "Pending" status in a way
+      // Actually usually we just show it in the ledger.
+      
+      toast.success('Withdrawal Request Queued');
+      setAmt('');
+      setWAddr('');
+      fetchData();
+    } catch (e) {
+      toast.error('Failed to queue withdrawal');
     }
   };
 
@@ -377,27 +409,46 @@ export default function Dashboard() {
                 <div className="p-3 bg-amber-500/10 text-amber-500 rounded-xl"><ArrowUpCircle size={22}/></div>
                 {t('egress')}
              </h2>
+
+             {/* Account Source Selection */}
+             <div className="flex gap-2 mb-8 bg-black/20 p-1.5 rounded-2xl border border-white/5 shadow-inner">
+                {[
+                   { id: 'balance', label: t('balance'), val: p?.balance },
+                   { id: 'profit', label: t('profit'), val: p?.total_profit }
+                ].map(src => (
+                   <button key={src.id} onClick={() => setWSource(src.id as any)} className={`flex-1 py-3 px-2 rounded-xl text-[9px] font-black border transition-all flex flex-col items-center gap-1 ${wSource === src.id ? 'bg-amber-500 border-amber-400 text-slate-950 shadow-lg' : 'bg-transparent border-transparent text-slate-600 hover:text-white'}`}>
+                      <span>{src.label}</span>
+                      <span className="opacity-70">${(src.val || 0).toLocaleString()}</span>
+                   </button>
+                ))}
+             </div>
+
+             {/* Currency selection */}
+             <div className="flex gap-2 mb-8 border-b border-white/5 pb-6">
+                {['BTC','ETH'].map(cur=>(
+                   <button key={cur} onClick={()=>setCrypto(cur)} className={`flex-1 py-3 rounded-xl text-[10px] font-black border transition-all ${crypto===cur?'bg-slate-200 border-white text-slate-950 shadow-xl':'bg-black/20 border-white/5 text-slate-500 hover:text-white'}`}>{cur}</button>
+                ))}
+             </div>
              
-             <div className="bg-slate-950 p-8 rounded-3xl border border-white/5 flex justify-between items-center mb-10 shadow-inner group-hover:border-amber-500/5 transition-all">
-                <div className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em]">{t('balance')}</div>
-                <div className="text-3xl font-black text-emerald-400 tracking-tighter shadow-sm flex items-center gap-2">
-                   <span className="text-slate-700 text-sm">$</span>
-                   {(p?.balance || 0).toLocaleString()}
+             <div className="space-y-6">
+                <div className="relative group/inp">
+                   <input type="number" value={amt} onChange={e=>setAmt(e.target.value)} placeholder="0.00 USD" className="w-full p-5 bg-slate-950 border border-white/5 rounded-2xl text-white font-black text-3xl outline-none shadow-inner transition-all focus:border-amber-500/40"/>
+                   <button onClick={() => setAmt(wSource === 'balance' ? (p?.balance || 0).toString() : (p?.total_profit || 0).toString())} className="absolute right-5 bottom-5 text-[8px] font-black bg-amber-500/10 text-amber-500 px-3 py-1.5 rounded-lg border border-amber-500/20 hover:bg-amber-500 hover:text-white transition-all uppercase tracking-widest">MAX</button>
+                </div>
+
+                <div className="relative group/addr">
+                   <label className="text-[8px] font-black text-slate-600 uppercase tracking-[0.2em] mb-2 block mx-1">Recipient {crypto} Address</label>
+                   <input type="text" value={wAddr} onChange={e=>setWAddr(e.target.value)} placeholder={`Enter your ${crypto} wallet address...`} className="w-full p-4 bg-slate-950 border border-white/10 rounded-2xl text-xs text-white font-bold outline-none shadow-inner transition-all focus:border-amber-500/40 placeholder:text-slate-800"/>
                 </div>
              </div>
 
-             <div className="relative mb-10 group/inp">
-                <input type="number" placeholder="0.00 USD" className="w-full p-5 bg-slate-950 border border-white/5 rounded-2xl text-white font-black text-3xl outline-none shadow-inner transition-all focus:border-amber-500/40"/>
-                <button className="absolute right-5 bottom-5 text-[9px] font-black bg-amber-500/10 text-amber-500 px-3 py-1.5 rounded-lg border border-amber-500/20 hover:bg-amber-500 hover:text-white transition-all uppercase tracking-widest">MAX</button>
-             </div>
-
-             <div className="bg-amber-500/5 border-l-4 border-amber-500 p-5 rounded-r-2xl mb-10 group-hover:bg-amber-500/10 transition-all">
-                <p className="text-[10px] text-slate-400 font-bold uppercase leading-relaxed tracking-widest italic group-hover:text-slate-300">
-                   System requirement: Security keys or biometric confirmation required for egress. Estimated window: <span className="text-amber-500 font-black">1-24 HOURS</span>.
+             <div className="bg-amber-500/5 border-l-4 border-amber-500 p-5 rounded-r-2xl my-10 group-hover:bg-amber-500/10 transition-all">
+                <p className="text-[9px] text-slate-500 font-bold uppercase leading-relaxed tracking-widest italic group-hover:text-slate-400">
+                   {t('authorized')} Security required. Processing time: <span className="text-amber-500 font-black">1-24 HOURS</span>.
                 </p>
              </div>
 
-             <button onClick={() => toast.success('Egress Request Queued')} className="w-full py-5 bg-amber-500 text-slate-950 rounded-2xl font-black uppercase text-[11px] tracking-[0.4em] shadow-[0_15px_40px_rgba(245,158,11,0.2)] hover:-translate-y-1 active:scale-95 transition-all">EXECUTE EGRESS</button>
+             <button onClick={executeWithdraw} className="w-full py-5 bg-amber-500 text-slate-950 rounded-2xl font-black uppercase text-[11px] tracking-[0.4em] shadow-[0_15px_40px_rgba(245,158,11,0.2)] hover:-translate-y-1 active:scale-95 transition-all">EXECUTE EGRESS</button>
              
              <div className="absolute top-0 right-0 p-10 opacity-[0.02] rotate-[30deg] pointer-events-none group-hover:rotate-[45deg] transition-transform duration-1000">
                 <ShieldCheck size={180}/>

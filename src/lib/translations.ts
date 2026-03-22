@@ -21,6 +21,7 @@ export const translations = {
     idle: "Idle Standby",
     establishing: "Establishing Allocation",
     low_balance: "Insufficient Portfolio Balance",
+    authorized: "Authorized",
   },
   de: {
     dashboard: "Dashboard",
@@ -44,6 +45,7 @@ export const translations = {
     idle: "Bereitstand",
     establishing: "Zuweisung festlegen",
     low_balance: "Unzureichendes Portfolio-Guthaben",
+    authorized: "Autorisiert",
   },
   ar: {
     dashboard: "لوحة التحكم",
@@ -67,6 +69,7 @@ export const translations = {
     idle: "في وضع الاستعداد",
     establishing: "تحديد التخصيص",
     low_balance: "رصيد المحفظة غير كافٍ",
+    authorized: "مفوض",
   },
   es: {
     dashboard: "Panel",
@@ -90,6 +93,7 @@ export const translations = {
     idle: "En Espera",
     establishing: "Estableciendo Asignación",
     low_balance: "Saldo de Cartera Insuficiente",
+    authorized: "Autorizado",
   }
 };
 
