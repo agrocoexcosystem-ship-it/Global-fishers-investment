@@ -118,7 +118,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
-              { value: '$2.4B+', label: 'Assets Managed' },
+              { value: '€2.4B+', label: 'Assets Managed' },
               { value: '45,000+', label: 'Active Investors' },
               { value: '99.9%', label: 'Platform Uptime' },
               { value: '15+', label: 'Global Markets' },

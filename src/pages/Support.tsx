@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 
 const FAQS = [
   { q: 'How do I create an account?', a: 'Click "Open Account" on the signup page, provide your details, verify your email, and your portfolio will be ready within minutes.' },
-  { q: 'What is the minimum investment amount?', a: 'Our Starter Tier begins at $100. Higher tiers require larger minimum investments for enhanced returns.' },
+  { q: 'What is the minimum investment amount?', a: 'Our Starter Tier begins at €100. Higher tiers require larger minimum investments for enhanced returns.' },
   { q: 'How are returns calculated?', a: 'Returns are calculated daily based on your selected tier\'s percentage rate, applied to your invested capital. Use our Calculator page for estimates.' },
   { q: 'How long does withdrawal processing take?', a: 'Withdrawal requests are processed within 24 hours during business days. Funds are sent to your designated wallet address.' },
   { q: 'Is my investment insured?', a: 'Yes, all investor funds are covered by our comprehensive insurance policy, providing protection against unforeseen events.' },

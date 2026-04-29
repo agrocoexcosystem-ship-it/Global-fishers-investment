@@ -6,8 +6,8 @@ const PLANS = [
   {
     name: 'Starter Tier',
     daily: '1.5%',
-    min: '$100',
-    max: '$4,999',
+    min: '€100',
+    max: '€4,999',
     duration: '30 days',
     features: ['Daily returns', 'Basic analytics', 'Email support', '24/7 monitoring'],
     image: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&h=300&fit=crop',
@@ -16,8 +16,8 @@ const PLANS = [
   {
     name: 'Bronze Growth',
     daily: '2%',
-    min: '$5,000',
-    max: '$24,999',
+    min: '€5,000',
+    max: '€24,999',
     duration: '45 days',
     features: ['Enhanced daily returns', 'Advanced analytics', 'Priority support', 'Portfolio diversification'],
     image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=300&fit=crop',
@@ -26,7 +26,7 @@ const PLANS = [
   {
     name: 'Silver Elite',
     daily: '2.5%',
-    min: '$25,000',
+    min: '€25,000',
     max: 'Unlimited',
     duration: '60 days',
     features: ['Maximum daily returns', 'Institutional analytics', 'Dedicated manager', 'VIP access'],

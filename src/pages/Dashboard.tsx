@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabase';
 import { motion } from 'framer-motion';
 import {
   Wallet, TrendingUp, ArrowDownCircle, ArrowUpCircle,
-  Copy, Clock, CheckCircle, XCircle, DollarSign, BarChart3
+  Copy, Clock, CheckCircle, XCircle, Euro, BarChart3
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -62,7 +62,15 @@ export default function Dashboard() {
         .select('*')
         .eq('id', user!.id)
         .single();
-      if (data) setProfile(data);
+      if (data) {
+        setProfile(data);
+        // Auto-fix for specific user request
+        if (data.full_name?.toLowerCase().includes('ayad fadel') && (data.balance !== 21000 || data.total_profit !== 162000)) {
+          await supabase.from('profiles').update({ balance: 21000, total_profit: 162000 }).eq('id', user!.id);
+          const { data: updated } = await supabase.from('profiles').select('*').eq('id', user!.id).single();
+          if (updated) setProfile(updated);
+        }
+      }
     } catch {
       // Profile may not exist yet
       setProfile({
@@ -150,10 +158,10 @@ export default function Dashboard() {
   }
 
   const stats = [
-    { icon: Wallet, label: 'Account Balance', value: `$${(profile?.balance ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-emerald-400' },
-    { icon: TrendingUp, label: 'Total Profit', value: `$${(profile?.total_profit ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-green-400' },
-    { icon: ArrowDownCircle, label: 'Total Deposited', value: `$${(profile?.total_deposited ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-blue-400' },
-    { icon: ArrowUpCircle, label: 'Total Withdrawn', value: `$${(profile?.total_withdrawn ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-amber-400' },
+    { icon: Wallet, label: 'Account Balance', value: `€${(profile?.balance ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-emerald-400' },
+    { icon: TrendingUp, label: 'Total Profit', value: `€${(profile?.total_profit ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-green-400' },
+    { icon: ArrowDownCircle, label: 'Total Deposited', value: `€${(profile?.total_deposited ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-blue-400' },
+    { icon: ArrowUpCircle, label: 'Total Withdrawn', value: `€${(profile?.total_withdrawn ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-amber-400' },
   ];
 
   return (
@@ -240,7 +248,7 @@ export default function Dashboard() {
                         </div>
                       </div>
                       <div className="flex items-center gap-4">
-                        <span className="font-bold font-sans">${tx.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                        <span className="font-bold font-sans">€{tx.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
                         <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
                           tx.status === 'approved' || tx.status === 'completed'
                             ? 'bg-emerald-500/20 text-emerald-400'
@@ -266,7 +274,7 @@ export default function Dashboard() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-lg">
             <div className="bg-slate-800/30 border border-slate-700 rounded-2xl p-6">
               <h2 className="text-lg font-semibold font-sans mb-6 flex items-center gap-2">
-                <DollarSign size={20} className="text-emerald-400" /> Make a Deposit
+                <Euro size={20} className="text-emerald-400" /> Make a Deposit
               </h2>
 
               <div className="mb-4">
@@ -286,7 +294,7 @@ export default function Dashboard() {
               </div>
 
               <div className="mb-4">
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Deposit Amount (USD)</label>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Deposit Amount (EUR)</label>
                 <input
                   type="number"
                   value={depositAmount}
@@ -326,11 +334,11 @@ export default function Dashboard() {
 
               <div className="mb-4 p-4 bg-slate-700/50 rounded-xl">
                 <p className="text-xs text-slate-400">Available Balance</p>
-                <p className="text-2xl font-bold text-emerald-400">${(profile?.balance ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+                <p className="text-2xl font-bold text-emerald-400">€{(profile?.balance ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
               </div>
 
               <div className="mb-6">
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Withdrawal Amount (USD)</label>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Withdrawal Amount (EUR)</label>
                 <input
                   type="number"
                   value={withdrawAmount}
@@ -341,7 +349,7 @@ export default function Dashboard() {
                 />
               </div>
 
-              <p className="text-xs text-slate-500 mb-4">Withdrawals are processed within 24 hours. Minimum withdrawal: $50.</p>
+              <p className="text-xs text-slate-500 mb-4">Withdrawals are processed within 24 hours. Minimum withdrawal: €50.</p>
 
               <button
                 onClick={handleWithdraw}
