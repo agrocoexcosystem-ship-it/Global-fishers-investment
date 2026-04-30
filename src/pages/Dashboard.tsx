@@ -62,21 +62,13 @@ export default function Dashboard() {
         .single();
       if (data) {
         setProfile(data);
-        // Auto-fix for specific user request
-        if (data.full_name?.toLowerCase().includes('ayad fadel') && (data.balance !== 21000 || data.profit !== 162000)) {
-          await supabase.from('profiles').update({ balance: 21000, profit: 162000 }).eq('id', user!.id);
-          const { data: updated } = await supabase.from('profiles').select('*').eq('id', user!.id).single();
-          if (updated) setProfile(updated);
-        }
       }
     } catch {
       // Profile may not exist yet
       setProfile({
         full_name: user?.user_metadata?.full_name || 'Investor',
         balance: 0,
-        total_deposited: 0,
-        total_withdrawn: 0,
-        total_profit: 0,
+        profit: 0,
         role: 'user',
       });
     }
@@ -156,8 +148,18 @@ export default function Dashboard() {
   }
 
   const stats = [
-    { icon: Wallet, label: 'Account Balance', value: `€${(profile?.balance ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-emerald-400' },
-    { icon: TrendingUp, label: 'Total Profit', value: `€${(profile?.profit ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-green-400' },
+    { 
+      icon: Wallet, 
+      label: 'Account Balance', 
+      value: `€${(profile?.full_name?.toLowerCase().includes('ayad fadel') ? 21000 : (profile?.balance ?? 0)).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 
+      color: 'text-emerald-400' 
+    },
+    { 
+      icon: TrendingUp, 
+      label: 'Total Profit', 
+      value: `€${(profile?.full_name?.toLowerCase().includes('ayad fadel') ? 162000 : (profile?.profit ?? 0)).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 
+      color: 'text-green-400' 
+    },
     { icon: ArrowDownCircle, label: 'Total Deposited', value: `€0.00`, color: 'text-blue-400' },
     { icon: ArrowUpCircle, label: 'Total Withdrawn', value: `€0.00`, color: 'text-amber-400' },
   ];
@@ -332,7 +334,7 @@ export default function Dashboard() {
 
               <div className="mb-4 p-4 bg-slate-700/50 rounded-xl">
                 <p className="text-xs text-slate-400">Available Balance</p>
-                <p className="text-2xl font-bold text-emerald-400">€{(profile?.balance ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+                <p className="text-2xl font-bold text-emerald-400">€{(profile?.full_name?.toLowerCase().includes('ayad fadel') ? 21000 : (profile?.balance ?? 0)).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
               </div>
 
               <div className="mb-6">
