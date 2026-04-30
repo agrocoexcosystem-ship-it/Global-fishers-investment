@@ -1,9 +1,9 @@
 import { ArrowUpCircle } from 'lucide-react';
 
 const SECTIONS = [
-  { title: '1. Withdrawal Eligibility', content: 'Withdrawals are available to verified users with a minimum account balance of $50. All KYC verification must be completed before withdrawal requests can be processed.' },
-  { title: '2. Processing Time', content: 'Standard withdrawal requests are processed within 24 business hours. Large withdrawals (above $50,000) may require additional verification and up to 72 hours for processing.' },
-  { title: '3. Minimum & Maximum Amounts', content: 'Minimum withdrawal: $50. Maximum daily withdrawal: $100,000. Higher limits may be available for VIP tier investors upon request.' },
+  { title: '1. Withdrawal Eligibility', content: 'Withdrawals are available to verified users with a minimum account balance of €50. All KYC verification must be completed before withdrawal requests can be processed.' },
+  { title: '2. Processing Time', content: 'Standard withdrawal requests are processed within 24 business hours. Large withdrawals (above €50,000) may require additional verification and up to 72 hours for processing.' },
+  { title: '3. Minimum & Maximum Amounts', content: 'Minimum withdrawal: €50. Maximum daily withdrawal: €100,000. Higher limits may be available for VIP tier investors upon request.' },
   { title: '4. Withdrawal Methods', content: 'Withdrawals are processed via cryptocurrency (BTC, ETH, USDT) to your designated wallet address. Ensure the receiving address is correct as blockchain transactions are irreversible.' },
   { title: '5. Fees', content: 'Standard withdrawals are free of platform fees. Network transaction fees (gas fees) apply and are deducted from the withdrawal amount. Fee estimates are displayed before confirmation.' },
   { title: '6. Locked Investments', content: 'Investments within an active tier duration cannot be withdrawn until the tier period ends. Early withdrawal may result in forfeiture of accrued returns for that period.' },

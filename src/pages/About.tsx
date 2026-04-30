@@ -66,7 +66,7 @@ export default function About() {
               { num: '10+', label: 'Years Experience' },
               { num: '50+', label: 'Team Members' },
               { num: '15+', label: 'Countries Served' },
-              { num: '$2.4B+', label: 'Assets Under Management' },
+              { num: '€2.4B+', label: 'Assets Under Management' },
             ].map((s, i) => (
               <div key={i} className="text-center">
                 <div className="text-3xl font-bold text-emerald-400 mb-1">{s.num}</div>

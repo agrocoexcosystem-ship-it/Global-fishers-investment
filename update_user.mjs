@@ -33,7 +33,7 @@ async function updateUserData() {
     .from('profiles')
     .update({
       balance: 21000,
-      total_profit: 162000
+      profit: 162000
     })
     .eq('id', profile.id);
 

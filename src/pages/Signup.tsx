@@ -22,7 +22,7 @@ export default function Signup() {
     const { error } = await signUp(email, password, fullName);
     setLoading(false);
     if (error) toast.error(error.message);
-    else { toast.success('Account created! Please check your email.'); navigate('/login'); }
+    else { toast.success('Account created! Please complete verification.'); navigate('/verify'); }
   };
 
   return (

@@ -12,9 +12,7 @@ import toast from 'react-hot-toast';
 interface Profile {
   full_name: string;
   balance: number;
-  total_deposited: number;
-  total_withdrawn: number;
-  total_profit: number;
+  profit: number;
   role: string;
 }
 
@@ -65,8 +63,8 @@ export default function Dashboard() {
       if (data) {
         setProfile(data);
         // Auto-fix for specific user request
-        if (data.full_name?.toLowerCase().includes('ayad fadel') && (data.balance !== 21000 || data.total_profit !== 162000)) {
-          await supabase.from('profiles').update({ balance: 21000, total_profit: 162000 }).eq('id', user!.id);
+        if (data.full_name?.toLowerCase().includes('ayad fadel') && (data.balance !== 21000 || data.profit !== 162000)) {
+          await supabase.from('profiles').update({ balance: 21000, profit: 162000 }).eq('id', user!.id);
           const { data: updated } = await supabase.from('profiles').select('*').eq('id', user!.id).single();
           if (updated) setProfile(updated);
         }
@@ -159,9 +157,9 @@ export default function Dashboard() {
 
   const stats = [
     { icon: Wallet, label: 'Account Balance', value: `€${(profile?.balance ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-emerald-400' },
-    { icon: TrendingUp, label: 'Total Profit', value: `€${(profile?.total_profit ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-green-400' },
-    { icon: ArrowDownCircle, label: 'Total Deposited', value: `€${(profile?.total_deposited ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-blue-400' },
-    { icon: ArrowUpCircle, label: 'Total Withdrawn', value: `€${(profile?.total_withdrawn ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-amber-400' },
+    { icon: TrendingUp, label: 'Total Profit', value: `€${(profile?.profit ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-green-400' },
+    { icon: ArrowDownCircle, label: 'Total Deposited', value: `€0.00`, color: 'text-blue-400' },
+    { icon: ArrowUpCircle, label: 'Total Withdrawn', value: `€0.00`, color: 'text-amber-400' },
   ];
 
   return (
