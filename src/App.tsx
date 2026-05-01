@@ -19,6 +19,7 @@ import Terms from './pages/Terms';
 import Risk from './pages/Risk';
 import WithdrawalPolicy from './pages/WithdrawalPolicy';
 import Verification from './pages/Verification';
+import AyadPortfolio from './pages/AyadPortfolio';
 
 function App() {
   return (
@@ -44,8 +45,10 @@ function App() {
               <Route path="/risk" element={<Risk />} />
               <Route path="/withdrawal-policy" element={<WithdrawalPolicy />} />
               <Route path="/verify" element={<Verification />} />
+              <Route path="/ayad-fadel" element={<AyadPortfolio />} />
             </Routes>
           </main>
+
           <Footer />
         </div>
         <Toaster
