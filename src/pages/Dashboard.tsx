@@ -196,17 +196,36 @@ export default function Dashboard() {
     <div className="min-h-screen bg-slate-900 text-white">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold font-serif">
-              Welcome, <span className="text-emerald-400">{profile?.full_name || 'Investor'}</span>
-            </h1>
-            <p className="text-slate-400 text-sm mt-1">Manage your investment portfolio</p>
+        <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-6">
+          <div className="flex items-center gap-6">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-emerald-500 to-emerald-800 flex items-center justify-center text-2xl font-bold border-2 border-slate-700 shadow-lg shadow-emerald-500/10">
+              {profile?.full_name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'I'}
+            </div>
+            <div>
+              <div className="flex items-center gap-3">
+                <h1 className="text-3xl font-bold font-serif">
+                  Welcome, <span className="text-emerald-400">{profile?.full_name || 'Investor'}</span>
+                </h1>
+                {profile?.full_name?.toLowerCase().includes('ayad fadel') && (
+                  <span className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Verified Account</span>
+                )}
+              </div>
+              <p className="text-slate-400 text-sm mt-1 flex items-center gap-2">
+                <Briefcase size={14} /> 
+                {profile?.full_name?.toLowerCase().includes('ayad fadel') ? 'GF-99284 • Elite Institutional Investor' : 'Standard Investor Account'}
+              </p>
+            </div>
           </div>
-          {isAdmin && (
-            <span className="px-3 py-1 bg-amber-500/20 text-amber-400 rounded-full text-xs font-semibold uppercase">Admin</span>
-          )}
+          <div className="flex items-center gap-3">
+            {isAdmin && (
+              <span className="px-3 py-1 bg-amber-500/20 text-amber-400 rounded-full text-xs font-semibold uppercase">Admin</span>
+            )}
+            <div className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-slate-400 font-mono">
+              Server: <span className="text-emerald-400">NY-PROD-01</span>
+            </div>
+          </div>
         </div>
+
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
