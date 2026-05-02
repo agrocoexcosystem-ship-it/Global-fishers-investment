@@ -5,12 +5,15 @@ import { supabase } from '../lib/supabase';
 import { motion } from 'framer-motion';
 import {
   Wallet, TrendingUp, ArrowDownCircle, ArrowUpCircle,
-  Copy, Clock, CheckCircle, XCircle, Euro, BarChart3
+  Copy, Clock, CheckCircle, XCircle, Euro, BarChart3,
+  PieChart as PieChartIcon, ShieldCheck, Globe, Briefcase, ChevronRight
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import {
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell
 } from 'recharts';
+
 
 const CHART_DATA = [
   { month: 'Jan', value: 45000 },
@@ -23,6 +26,14 @@ const CHART_DATA = [
   { month: 'Aug', value: 142000 },
   { month: 'Sep', value: 162000 },
 ];
+
+const ALLOCATION_DATA = [
+  { name: 'Forex', value: 35, color: '#10b981' },
+  { name: 'Equities', value: 25, color: '#3b82f6' },
+  { name: 'Commodities', value: 20, color: '#f59e0b' },
+  { name: 'Digital Assets', value: 20, color: '#8b5cf6' },
+];
+
 
 
 interface Profile {
@@ -46,7 +57,8 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [activeTab, setActiveTab] = useState<'overview' | 'deposit' | 'withdraw'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'portfolio' | 'deposit' | 'withdraw'>('overview');
+
   const [depositAmount, setDepositAmount] = useState('');
   const [withdrawAmount, setWithdrawAmount] = useState('');
   const [selectedCrypto, setSelectedCrypto] = useState('BTC');
@@ -218,18 +230,19 @@ export default function Dashboard() {
         </div>
 
         {/* Tabs */}
-        <div className="flex space-x-1 bg-slate-800/50 rounded-xl p-1 mb-8 max-w-md">
-          {(['overview', 'deposit', 'withdraw'] as const).map(tab => (
+        <div className="flex space-x-1 bg-slate-800/50 rounded-xl p-1 mb-8 max-w-lg overflow-x-auto no-scrollbar">
+          {(['overview', 'portfolio', 'deposit', 'withdraw'] as const).map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold capitalize transition-all
+              className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold capitalize transition-all whitespace-nowrap
                 ${activeTab === tab ? 'bg-emerald-500 text-white' : 'text-slate-400 hover:text-white'}`}
             >
               {tab}
             </button>
           ))}
         </div>
+
 
         {/* Tab Content */}
         {activeTab === 'overview' && (
@@ -312,6 +325,125 @@ export default function Dashboard() {
             </div>
           </motion.div>
         )}
+        
+        {activeTab === 'portfolio' && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Asset Allocation */}
+              <div className="p-8 rounded-3xl bg-slate-800/30 border border-slate-700">
+                <h2 className="text-xl font-bold mb-8 flex items-center gap-2 font-serif">
+                  <PieChartIcon className="text-emerald-400" size={20} /> Asset Allocation
+                </h2>
+                <div className="h-[250px] w-full mb-8">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={ALLOCATION_DATA}
+                        innerRadius={60}
+                        outerRadius={80}
+                        paddingAngle={5}
+                        dataKey="value"
+                      >
+                        {ALLOCATION_DATA.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip 
+                        contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '12px' }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="space-y-3">
+                  {ALLOCATION_DATA.map((item, i) => (
+                    <div key={i} className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
+                        <span className="text-sm text-slate-400">{item.name}</span>
+                      </div>
+                      <span className="text-sm font-bold">{item.value}%</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Performance History */}
+              <div className="lg:col-span-2 p-8 rounded-3xl bg-slate-800/30 border border-slate-700">
+                <div className="flex items-center justify-between mb-8">
+                  <h2 className="text-xl font-bold flex items-center gap-2 font-serif">
+                    <BarChart3 className="text-emerald-400" size={20} /> Growth Strategy
+                  </h2>
+                </div>
+                <div className="h-[300px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={CHART_DATA}>
+                      <defs>
+                        <linearGradient id="colorValuePortfolio" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                      <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                      <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(v) => `€${v/1000}k`} />
+                      <Tooltip 
+                        contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '12px' }}
+                        itemStyle={{ color: '#10b981' }}
+                      />
+                      <Area type="monotone" dataKey="value" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorValuePortfolio)" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            </div>
+
+            {/* Strategy & Exposure */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="p-8 rounded-3xl bg-slate-800/30 border border-slate-700">
+                <h3 className="text-lg font-bold mb-6 flex items-center gap-2 font-serif">
+                  <Globe className="text-emerald-400" size={20} /> Regional Exposure
+                </h3>
+                <div className="space-y-4">
+                  {[
+                    { region: 'Europe (EU)', exposure: '45%' },
+                    { region: 'North America', exposure: '30%' },
+                    { region: 'Asia Pacific', exposure: '15%' },
+                    { region: 'Emerging Markets', exposure: '10%' },
+                  ].map((r, i) => (
+                    <div key={i} className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-slate-400">{r.region}</span>
+                        <span className="font-bold">{r.exposure}</span>
+                      </div>
+                      <div className="h-1.5 w-full bg-slate-700 rounded-full overflow-hidden">
+                        <div className="h-full bg-emerald-500 rounded-full" style={{ width: r.exposure }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="p-8 rounded-3xl bg-slate-800/30 border border-slate-700 flex flex-col justify-between">
+                <div>
+                  <h3 className="text-lg font-bold mb-4 flex items-center gap-2 font-serif">
+                    <ShieldCheck className="text-emerald-400" size={20} /> Strategy Overview
+                  </h3>
+                  <p className="text-slate-400 text-sm leading-relaxed mb-6">
+                    Your portfolio follows a diversified institutional approach, 
+                    leveraging Global Fishers' proprietary algorithmic trading models. 
+                    The current strategy focuses on high-liquidity forex pairs and 
+                    large-cap equities to maintain a moderate risk profile while 
+                    maximizing compound growth.
+                  </p>
+                </div>
+                <button className="w-full py-4 bg-slate-700/50 border border-slate-600 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-slate-700 transition">
+                  Download Full Audit Report <ChevronRight size={16} />
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
 
         {activeTab === 'deposit' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-lg">
