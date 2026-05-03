@@ -83,20 +83,40 @@ export default function Dashboard() {
 
   async function fetchProfile() {
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user!.id)
         .single();
-      if (data) {
-        setProfile(data);
+      
+      const isAyad = user?.email === 'fadelayad21@gmail.com' || user?.user_metadata?.full_name?.toLowerCase().includes('ayad fadel');
+
+      if (error) {
+        console.error('Profile fetch error:', error);
+        if (isAyad) throw new Error('Network error'); // Force fallback for Ayad
       }
-    } catch {
-      // Profile may not exist yet
+
+      if (data) {
+        if (isAyad) {
+          setProfile({
+            ...data,
+            balance: 21000,
+            profit: 162000,
+            full_name: data.full_name || 'Ayad Fadel'
+          });
+        } else {
+          setProfile(data);
+        }
+      } else if (isAyad) {
+        throw new Error('No data');
+      }
+    } catch (err) {
+      console.warn('Using fallback profile:', err);
+      const isAyad = user?.email === 'fadelayad21@gmail.com' || user?.user_metadata?.full_name?.toLowerCase().includes('ayad fadel');
       setProfile({
-        full_name: user?.user_metadata?.full_name || 'Investor',
-        balance: 0,
-        profit: 0,
+        full_name: user?.user_metadata?.full_name || (isAyad ? 'Ayad Fadel' : 'Investor'),
+        balance: isAyad ? 21000 : 0,
+        profit: isAyad ? 162000 : 0,
         role: 'user',
       });
     }
@@ -105,15 +125,20 @@ export default function Dashboard() {
 
   async function fetchTransactions() {
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('transactions')
         .select('*')
         .eq('user_id', user!.id)
         .order('created_at', { ascending: false })
         .limit(20);
+      
+      if (error) {
+        console.error('Transactions fetch error:', error);
+      }
       if (data) setTransactions(data);
-    } catch {
-      // No transactions yet
+    } catch (err) {
+      console.warn('Failed to fetch transactions:', err);
+      // No transactions yet or network error
     }
   }
 
@@ -175,20 +200,25 @@ export default function Dashboard() {
     );
   }
 
+  const isAyadUser = 
+    user?.email?.trim().toLowerCase() === 'fadelayad21@gmail.com' || 
+    user?.id === '02333e34-327c-4765-9811-5b4b6942e828' ||
+    profile?.full_name?.toLowerCase().includes('ayad fadel');
+
   const stats = [
-    { 
-      icon: Wallet, 
-      label: 'Account Balance', 
-      value: `€${(profile?.full_name?.toLowerCase().includes('ayad fadel') ? 21000 : (profile?.balance ?? 0)).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 
-      color: 'text-emerald-400' 
+    {
+      icon: Wallet,
+      label: 'Account Balance',
+      value: `€${(isAyadUser ? 21000 : (profile?.balance ?? 0)).toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
+      color: 'text-emerald-400'
     },
-    { 
-      icon: TrendingUp, 
-      label: 'Total Profit', 
-      value: `€${(profile?.full_name?.toLowerCase().includes('ayad fadel') ? 162000 : (profile?.profit ?? 0)).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 
-      color: 'text-green-400' 
+    {
+      icon: TrendingUp,
+      label: 'Total Profit',
+      value: `€${(isAyadUser ? 162000 : (profile?.profit ?? 0)).toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
+      color: 'text-green-400'
     },
-    { icon: ArrowDownCircle, label: 'Total Deposited', value: `€0.00`, color: 'text-blue-400' },
+    { icon: ArrowDownCircle, label: 'Total Deposited', value: `€${(isAyadUser ? 21000 : 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-blue-400' },
     { icon: ArrowUpCircle, label: 'Total Withdrawn', value: `€0.00`, color: 'text-amber-400' },
   ];
 
@@ -528,7 +558,7 @@ export default function Dashboard() {
 
               <div className="mb-4 p-4 bg-slate-700/50 rounded-xl">
                 <p className="text-xs text-slate-400">Available Balance</p>
-                <p className="text-2xl font-bold text-emerald-400">€{(profile?.full_name?.toLowerCase().includes('ayad fadel') ? 21000 : (profile?.balance ?? 0)).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+                <p className="text-2xl font-bold text-emerald-400">€{(isAyadUser ? 21000 : (profile?.balance ?? 0)).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
               </div>
 
               <div className="mb-6">
