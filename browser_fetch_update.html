@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supabase Fetch Update</title>
+</head>
+<body>
+    <h1>Updating Ayad Fadel via Fetch...</h1>
+    <div id="status">Starting...</div>
+    <script>
+        async function updateData() {
+            const statusDiv = document.getElementById('status');
+            const url = 'https://dzttuzosppjslpszjtyp.supabase.co/rest/v1/profiles?id=eq.02333e34-327c-4765-9811-5b4b6942e828';
+            const anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6dHR1em9zcHBqc2xwc3pqdHlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk0NzA1NTUsImV4cCI6MjA4NTA0NjU1NX0.53iQzP4xof2mK1p0pUBMEdSVTvTXw7CfXTzXnmoZG4w';
+            
+            try {
+                statusDiv.innerText = 'Sending PATCH request...';
+                const response = await fetch(url, {
+                    method: 'PATCH',
+                    headers: {
+                        'apikey': anonKey,
+                        'Authorization': 'Bearer ' + anonKey,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=representation'
+                    },
+                    body: JSON.stringify({
+                        balance: 21000,
+                        profit: 162000
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && data.length > 0) {
+                        statusDiv.innerText = 'Successfully updated! New values: ' + JSON.stringify(data[0]);
+                    } else {
+                        statusDiv.innerText = 'Request sent, but no rows were updated. This likely means RLS is preventing the update with the anon key.';
+                    }
+                } else {
+                    const error = await response.text();
+                    statusDiv.innerText = 'Error from API: ' + response.status + ' ' + error;
+                }
+            } catch (e) {
+                statusDiv.innerText = 'Caught exception: ' + e.message;
+            }
+        }
+
+        updateData();
+    </script>
+</body>
+</html>

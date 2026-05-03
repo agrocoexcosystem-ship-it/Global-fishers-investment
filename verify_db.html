@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supabase Verification</title>
+</head>
+<body>
+    <h1>Verifying Ayad Fadel's Portfolio...</h1>
+    <div id="status">Starting...</div>
+    <script>
+        async function verifyData() {
+            const statusDiv = document.getElementById('status');
+            const url = 'https://dzttuzosppjslpszjtyp.supabase.co/rest/v1/profiles?email=eq.fadelayad21@gmail.com';
+            const anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6dHR1em9zcHBqc2xwc3pqdHlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk0NzA1NTUsImV4cCI6MjA4NTA0NjU1NX0.53iQzP4xof2mK1p0pUBMEdSVTvTXw7CfXTzXnmoZG4w';
+            
+            try {
+                statusDiv.innerText = 'Fetching profile...';
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': anonKey,
+                        'Authorization': 'Bearer ' + anonKey,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && data.length > 0) {
+                        const p = data[0];
+                        statusDiv.innerText = 'PROFILE VERIFIED: ' + p.full_name + '\nBalance: €' + p.balance + '\nProfit: €' + p.profit;
+                    } else {
+                        statusDiv.innerText = 'Profile not found.';
+                    }
+                } else {
+                    statusDiv.innerText = 'Error from API: ' + response.status;
+                }
+            } catch (e) {
+                statusDiv.innerText = 'Caught exception: ' + e.message;
+            }
+        }
+
+        verifyData();
+    </script>
+</body>
+</html>

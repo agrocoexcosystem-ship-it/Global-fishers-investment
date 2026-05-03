@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Fingerprint, Camera, CheckCircle2, ShieldCheck, AlertCircle } from 'lucide-react';
+import { Shield, Fingerprint, Camera, CheckCircle2, ShieldCheck } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function Verification() {

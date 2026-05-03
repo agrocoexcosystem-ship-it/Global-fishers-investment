@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supabase Update</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>Updating Ayad Fadel...</h1>
+    <div id="status">Starting...</div>
+    <script>
+        const supabaseUrl = 'https://dzttuzosppjslpszjtyp.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6dHR1em9zcHBqc2xwc3pqdHlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk0NzA1NTUsImV4cCI6MjA4NTA0NjU1NX0.53iQzP4xof2mK1p0pUBMEdSVTvTXw7CfXTzXnmoZG4w';
+        const supabase = supabasejs.createClient(supabaseUrl, supabaseKey);
+
+        async function updateData() {
+            const statusDiv = document.getElementById('status');
+            try {
+                // First find the user to be sure
+                const { data: profile, error: findError } = await supabase
+                    .from('profiles')
+                    .select('id, full_name, balance, profit')
+                    .ilike('full_name', '%Ayad fadel%')
+                    .single();
+
+                if (findError) {
+                    statusDiv.innerText = 'Error finding profile: ' + JSON.stringify(findError);
+                    return;
+                }
+
+                statusDiv.innerText = 'Found profile: ' + profile.full_name + ' (ID: ' + profile.id + '). Current Balance: ' + profile.balance + ', Profit: ' + profile.profit;
+
+                // Now update
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .update({
+                        balance: 21000,
+                        profit: 162000
+                    })
+                    .eq('id', profile.id)
+                    .select();
+
+                if (error) {
+                    statusDiv.innerText += '\nError updating: ' + JSON.stringify(error);
+                } else {
+                    statusDiv.innerText += '\nSuccessfully updated! New values: ' + JSON.stringify(data[0]);
+                }
+            } catch (e) {
+                statusDiv.innerText = 'Caught exception: ' + e.message;
+            }
+        }
+
+        updateData();
+    </script>
+</body>
+</html>
