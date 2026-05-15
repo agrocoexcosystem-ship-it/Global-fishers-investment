@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import {
   Wallet, TrendingUp, ArrowDownCircle, ArrowUpCircle,
   Copy, Clock, CheckCircle, XCircle, Euro, BarChart3,
-  PieChart as PieChartIcon, ShieldCheck, Globe, Briefcase, ChevronRight
+  PieChart as PieChartIcon, ShieldCheck, Globe, Briefcase, ChevronRight, Share2, Users
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import {
@@ -57,7 +57,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [activeTab, setActiveTab] = useState<'overview' | 'portfolio' | 'deposit' | 'withdraw'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'portfolio' | 'deposit' | 'withdraw' | 'referral'>('overview');
 
   const [depositAmount, setDepositAmount] = useState('');
   const [withdrawAmount, setWithdrawAmount] = useState('');
@@ -286,8 +286,8 @@ export default function Dashboard() {
         </div>
 
         {/* Tabs */}
-        <div className="flex space-x-2 bg-slate-900/50 border border-slate-800 p-1.5 rounded-[1.5rem] mb-12 max-w-2xl overflow-x-auto no-scrollbar">
-          {(['overview', 'portfolio', 'deposit', 'withdraw'] as const).map(tab => (
+        <div className="flex space-x-2 bg-slate-900/50 border border-slate-800 p-1.5 rounded-[1.5rem] mb-12 max-w-3xl overflow-x-auto no-scrollbar">
+          {(['overview', 'portfolio', 'deposit', 'withdraw', 'referral'] as const).map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -588,6 +588,69 @@ export default function Dashboard() {
               >
                 Submit Withdrawal
               </button>
+            </div>
+          </motion.div>
+        )}
+
+        {activeTab === 'referral' && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-3xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="p-10 rounded-[2.5rem] glass-effect-dark border border-slate-800 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full -mr-16 -mt-16 group-hover:bg-emerald-500/10 transition-colors"></div>
+                <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
+                  <div className="p-3 bg-emerald-500/10 rounded-2xl text-emerald-400">
+                    <Share2 size={24} />
+                  </div>
+                  Network Expansion
+                </h2>
+                
+                <p className="text-slate-400 text-sm leading-relaxed mb-8">
+                  Invite fellow investors to the Global Fishers elite network. Receive a <span className="text-emerald-400 font-bold">5% commission</span> on every initial capital deployment made by your direct referrals.
+                </p>
+
+                <div className="space-y-4">
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] ml-1">Your Unique Referral Link</label>
+                  <div className="flex items-center gap-3 p-2 bg-slate-950/50 border border-slate-800 rounded-2xl">
+                    <code className="flex-1 px-4 text-xs text-emerald-400 truncate font-mono">
+                      https://global-fishers.com/signup?ref={user?.id?.slice(0, 8) || 'GF-NETWORK'}
+                    </code>
+                    <button 
+                      onClick={() => {
+                        navigator.clipboard.writeText(`https://global-fishers.com/signup?ref=${user?.id?.slice(0, 8) || 'GF-NETWORK'}`);
+                        toast.success('Referral link copied to clipboard');
+                      }}
+                      className="p-4 bg-emerald-500 text-white rounded-xl hover:bg-emerald-400 transition shadow-lg shadow-emerald-500/20"
+                    >
+                      <Copy size={18} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="p-8 rounded-[2rem] glass-effect-dark border border-slate-800">
+                  <h3 className="text-sm font-bold text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+                    <Users size={16} className="text-emerald-400" /> Network Statistics
+                  </h3>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div>
+                      <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Active Referrals</div>
+                      <div className="text-2xl font-black text-white">0</div>
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Rewards</div>
+                      <div className="text-2xl font-black text-emerald-400">€0.00</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-8 rounded-[2rem] bg-emerald-500/5 border border-emerald-500/20">
+                  <h3 className="text-xs font-bold text-emerald-400 uppercase tracking-[0.2em] mb-3">Institutional Benefit</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Commissions are instantly credited to your available balance upon successful verification and deposit of your referred partners.
+                  </p>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}
