@@ -5,7 +5,10 @@ import { Calculator as CalcIcon, TrendingUp, Euro, Clock } from 'lucide-react';
 const PLANS = [
   { name: 'Starter Tier', daily: 1.5, min: 100, max: 4999, duration: 30 },
   { name: 'Bronze Growth', daily: 2.0, min: 5000, max: 24999, duration: 45 },
-  { name: 'Silver Elite', daily: 2.5, min: 25000, max: 1000000, duration: 60 },
+  { name: 'Silver Elite', daily: 2.5, min: 25000, max: 99999, duration: 60 },
+  { name: 'Gold Institutional', daily: 3.2, min: 100000, max: 499999, duration: 90 },
+  { name: 'Platinum Sovereign', daily: 4.0, min: 500000, max: 1999999, duration: 120 },
+  { name: 'Fisher Reserve', daily: 5.5, min: 2000000, max: 10000000, duration: 180 },
 ];
 
 export default function Calculator() {
@@ -94,7 +97,7 @@ export default function Calculator() {
                                 {p.name}
                               </div>
                               <div className="text-xs text-slate-500 font-medium mt-1 uppercase tracking-wider">
-                                €{p.min.toLocaleString()} – €{p.max.toLocaleString()}
+                                €{p.min.toLocaleString()} – {p.max === 10000000 ? 'Unlimited' : `€${p.max.toLocaleString()}`}
                               </div>
                             </div>
                             <div className="text-right">
