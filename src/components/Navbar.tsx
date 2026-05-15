@@ -31,11 +31,14 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="triangle-3d" style={{ borderBottomWidth: '28px', borderLeftWidth: '16px', borderRightWidth: '16px' }} />
-            <span className="text-lg font-bold">
-              <span className="text-emerald-400">GLOBAL</span>{' '}
-              <span className="text-white">FISHERS</span>
+          <Link to="/" className="flex items-center space-x-3 group">
+            <div className="relative">
+              <div className="absolute -inset-1 bg-emerald-500 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+              <img src="/logo.svg" alt="Global Fishers" className="relative h-10 w-10 transition-transform duration-500 group-hover:rotate-12" />
+            </div>
+            <span className="text-xl font-bold tracking-tight">
+              <span className="text-emerald-400">GLOBAL</span>
+              <span className="text-white ml-1.5">FISHERS</span>
             </span>
           </Link>
 

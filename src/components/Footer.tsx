@@ -8,11 +8,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="triangle-3d" style={{ borderBottomWidth: '24px', borderLeftWidth: '14px', borderRightWidth: '14px' }} />
-              <span className="text-lg font-bold">
-                <span className="text-emerald-400">GLOBAL</span>{' '}
-                <span className="text-white">FISHERS</span>
+            <div className="flex items-center space-x-3 mb-6">
+              <img src="/logo.svg" alt="Logo" className="h-8 w-8" />
+              <span className="text-xl font-bold tracking-tight">
+                <span className="text-emerald-400">GLOBAL</span>
+                <span className="text-white ml-1.5">FISHERS</span>
               </span>
             </div>
             <p className="text-sm leading-relaxed">
