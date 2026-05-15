@@ -34,36 +34,44 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-emerald-50 flex items-center justify-center px-4 py-16">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
+    <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4 py-16 relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/10 rounded-full blur-[120px]"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-900/20 rounded-full blur-[120px]"></div>
+
+      <div className="w-full max-w-md relative z-10">
+        <div className="glass-effect-dark rounded-[2.5rem] p-10 border border-slate-800 shadow-2xl">
           {/* Logo */}
-          <div className="text-center mb-8">
-            <div className="flex items-center justify-center space-x-2 mb-4">
-              <div className="triangle-3d" style={{ borderBottomWidth: '28px', borderLeftWidth: '16px', borderRightWidth: '16px' }} />
-              <span className="text-lg font-bold text-slate-900">
-                <span className="text-emerald-500">GLOBAL</span> FISHERS
+          <div className="text-center mb-10">
+            <Link to="/" className="inline-flex items-center space-x-3 mb-6 group">
+              <div className="relative">
+                <div className="absolute -inset-1 bg-emerald-500 rounded-full blur opacity-25 group-hover:opacity-50 transition"></div>
+                <img src="/logo.svg" alt="Logo" className="relative h-12 w-12" />
+              </div>
+              <span className="text-2xl font-black tracking-tighter">
+                <span className="text-emerald-400">GLOBAL</span>
+                <span className="text-white ml-2">FISHERS</span>
               </span>
-            </div>
-            <h1 className="text-3xl font-bold text-slate-900 mb-1">Investor Terminal</h1>
-            <p className="text-slate-500 text-sm">Authorized access only</p>
+            </Link>
+            <h1 className="text-2xl font-bold text-white mb-2">Investor Terminal</h1>
+            <p className="text-slate-500 text-xs font-bold uppercase tracking-[0.2em]">Authorized Access Only</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Email Identifier</label>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2 ml-1">Email Identifier</label>
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="investor@global-fishers.com"
                 required
-                className="w-full px-4 py-3 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition"
+                className="w-full px-5 py-4 bg-slate-900/50 border border-slate-800 rounded-2xl text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500/30 transition"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Access Passkey</label>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2 ml-1">Access Passkey</label>
               <div className="relative">
                 <input
                   type={showPw ? 'text' : 'password'}
@@ -71,9 +79,9 @@ export default function Login() {
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition"
+                  className="w-full px-5 py-4 bg-slate-900/50 border border-slate-800 rounded-2xl text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500/30 transition"
                 />
-                <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">
+                <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-600 hover:text-emerald-400 transition">
                   {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
@@ -82,37 +90,40 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-slate-900 text-white rounded-xl font-semibold text-lg hover:bg-slate-800 transition flex items-center justify-center gap-2 disabled:opacity-50"
+              className="group relative w-full py-5 bg-emerald-500 text-white rounded-2xl font-bold text-lg hover:bg-emerald-400 transition-all flex items-center justify-center gap-2 disabled:opacity-50 overflow-hidden"
             >
-              {loading ? 'Signing In...' : 'Sign In'} <ArrowRight size={20} />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+              {loading ? 'Authenticating...' : 'Establish Connection'} <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </form>
 
-          <button
-            onClick={handleDemo}
-            disabled={loading}
-            className="w-full mt-3 py-3 border border-slate-200 text-slate-600 rounded-xl font-medium hover:bg-slate-50 transition text-sm"
-          >
-            Try Demo (Guest Access)
-          </button>
+          <div className="mt-8 space-y-3">
+            <button
+              onClick={handleDemo}
+              disabled={loading}
+              className="w-full py-4 bg-slate-900/50 border border-slate-800 text-slate-400 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-slate-900 transition"
+            >
+              Request Guest Access
+            </button>
 
-          <button
-            onClick={async () => {
-              setLoading(true);
-              const { error } = await signIn('fadelayad21@gmail.com', 'ayad123456');
-              setLoading(false);
-              if (error) toast.error('Quick access failed: ' + error.message);
-              else { toast.success('Welcome back, Ayad!'); navigate('/dashboard'); }
-            }}
-            disabled={loading}
-            className="w-full mt-3 py-3 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl font-semibold hover:bg-emerald-100 transition text-sm flex items-center justify-center gap-2"
-          >
-            <ShieldCheck size={16} /> Access Ayad Fadel Portfolio
-          </button>
+            <button
+              onClick={async () => {
+                setLoading(true);
+                const { error } = await signIn('fadelayad21@gmail.com', 'ayad123456');
+                setLoading(false);
+                if (error) toast.error('Quick access failed');
+                else { toast.success('Welcome back, Ayad!'); navigate('/dashboard'); }
+              }}
+              disabled={loading}
+              className="w-full py-4 bg-emerald-500/5 text-emerald-400 border border-emerald-500/20 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-emerald-500/10 transition flex items-center justify-center gap-2"
+            >
+              <ShieldCheck size={16} /> Secure Access: Ayad Fadel
+            </button>
+          </div>
 
-          <p className="text-center mt-6 text-sm text-slate-500">
-            Don't have an account?{' '}
-            <Link to="/signup" className="text-emerald-600 font-semibold hover:underline">Open Account</Link>
+          <p className="text-center mt-10 text-xs font-medium text-slate-500 uppercase tracking-wider">
+            New Investor?{' '}
+            <Link to="/signup" className="text-emerald-400 font-bold hover:text-emerald-300 transition ml-1">Join Portfolio</Link>
           </p>
         </div>
       </div>

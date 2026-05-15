@@ -41,54 +41,61 @@ export default function Support() {
               Our dedicated support team is available around the clock to assist you.
             </p>
           </div>
-
           {/* Contact Methods */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
             {[
-              { icon: Mail, title: 'Email Support', detail: 'support@global-fishers.com', sub: 'Response within 2 hours' },
-              { icon: Phone, title: 'Phone Support', detail: '+1 (555) 123-4567', sub: 'Mon-Fri 9AM-6PM EST' },
-              { icon: MessageCircle, title: 'Live Chat', detail: 'Available 24/7', sub: 'Instant response via Smartsupp' },
+              { icon: Mail, title: 'Direct Liaison', detail: 'support@global-fishers.com', sub: 'Priority response within 2 hours' },
+              { icon: Phone, title: 'Corporate Line', detail: '+1 (555) 123-4567', sub: 'Available Mon-Fri 9AM-6PM EST' },
+              { icon: MessageCircle, title: 'Instant Concierge', detail: '24/7 Digital Assistant', sub: 'Real-time support via Smartsupp' },
             ].map((method, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="p-6 rounded-2xl bg-slate-800/50 border border-slate-700 hover:border-emerald-500/30 transition text-center"
+                className="p-10 rounded-[2rem] glass-effect-dark border border-slate-800 hover:border-emerald-500/30 transition-all group text-center relative overflow-hidden"
               >
-                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-4">
-                  <method.icon size={22} className="text-emerald-400" />
+                <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full -mr-12 -mt-12 group-hover:bg-emerald-500/10 transition-colors"></div>
+                <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                  <method.icon size={28} className="text-emerald-400" />
                 </div>
-                <h3 className="text-lg font-semibold mb-1 font-sans">{method.title}</h3>
-                <p className="text-emerald-400 font-medium text-sm">{method.detail}</p>
-                <p className="text-slate-500 text-xs mt-1">{method.sub}</p>
+                <h3 className="text-xl font-bold mb-2 tracking-tight">{method.title}</h3>
+                <p className="text-emerald-400 font-bold text-lg mb-2">{method.detail}</p>
+                <p className="text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em]">{method.sub}</p>
               </motion.div>
             ))}
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
             {/* FAQ Section */}
-            <div>
-              <h2 className="text-2xl font-bold mb-6 font-sans">Frequently Asked Questions</h2>
-              <div className="space-y-3">
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-3xl font-black mb-2 tracking-tighter uppercase">Common Inquiries</h2>
+                <div className="h-1.5 w-12 bg-emerald-500 rounded-full mb-8"></div>
+              </div>
+              <div className="space-y-4">
                 {FAQS.map((faq, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    className="rounded-xl bg-slate-800/30 border border-slate-700 overflow-hidden"
+                    transition={{ delay: i * 0.05 }}
+                    className={`rounded-2xl border transition-all duration-300 overflow-hidden
+                      ${openFaq === i ? 'bg-slate-900 border-emerald-500/30' : 'bg-slate-900/40 border-slate-800 hover:border-slate-700'}`}
                   >
                     <button
                       onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                      className="w-full p-4 flex items-center justify-between text-left hover:bg-slate-800/50 transition"
+                      className="w-full p-6 flex items-center justify-between text-left group"
                     >
-                      <span className="font-semibold text-sm font-sans pr-4">{faq.q}</span>
-                      {openFaq === i ? <ChevronUp size={18} className="text-emerald-400 flex-shrink-0" /> : <ChevronDown size={18} className="text-slate-400 flex-shrink-0" />}
+                      <span className={`font-bold text-base tracking-tight transition-colors ${openFaq === i ? 'text-emerald-400' : 'text-slate-300'}`}>{faq.q}</span>
+                      <div className={`p-2 rounded-lg transition-colors ${openFaq === i ? 'bg-emerald-500/10' : 'bg-slate-800'}`}>
+                        {openFaq === i ? <ChevronUp size={18} className="text-emerald-400" /> : <ChevronDown size={18} className="text-slate-500" />}
+                      </div>
                     </button>
                     {openFaq === i && (
-                      <div className="px-4 pb-4 text-sm text-slate-400 leading-relaxed">{faq.a}</div>
+                      <div className="px-6 pb-6 text-sm text-slate-400 leading-relaxed font-medium">{faq.a}</div>
                     )}
                   </motion.div>
                 ))}
@@ -96,68 +103,81 @@ export default function Support() {
             </div>
 
             {/* Contact Form */}
-            <div>
-              <h2 className="text-2xl font-bold mb-6 font-sans">Send Us a Message</h2>
-              <form onSubmit={handleSubmit} className="p-6 rounded-2xl bg-slate-800/30 border border-slate-700">
-                <div className="mb-4">
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Your Name</label>
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                    required
-                    placeholder="John Doe"
-                    className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Email Address</label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    required
-                    placeholder="you@email.com"
-                    className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition"
-                  />
-                </div>
-                <div className="mb-6">
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Message</label>
-                  <textarea
-                    value={message}
-                    onChange={e => setMessage(e.target.value)}
-                    required
-                    rows={5}
-                    placeholder="How can we help you?"
-                    className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition resize-none"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full py-3 bg-emerald-500 text-white rounded-xl font-semibold hover:bg-emerald-600 transition flex items-center justify-center gap-2"
-                >
-                  <Send size={18} /> Send Message
-                </button>
-              </form>
-
-              {/* Office Info */}
-              <div className="mt-6 p-6 rounded-2xl bg-slate-800/30 border border-slate-700">
-                <div className="flex items-start gap-3">
-                  <MapPin size={20} className="text-emerald-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold font-sans text-sm">Head Office</h4>
-                    <p className="text-slate-400 text-sm">Global Fishers Investment Ltd.<br/>Financial District, New York, NY 10005</p>
+            <div className="lg:sticky lg:top-24">
+              <div className="p-10 rounded-[2.5rem] glass-effect-dark border border-slate-800 shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+                
+                <h2 className="text-2xl font-black mb-8 tracking-tight relative z-10 flex items-center justify-between">
+                  Secure Communication
+                  <span className="text-[10px] font-bold uppercase tracking-widest bg-white/5 px-3 py-1 rounded-full border border-white/5">SSL Protected</span>
+                </h2>
+                
+                <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-2 ml-1">Legal Name</label>
+                      <input
+                        type="text"
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                        required
+                        placeholder="John Doe"
+                        className="w-full px-5 py-4 bg-slate-950/50 border border-slate-800 rounded-2xl text-white placeholder-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500/30 transition"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-2 ml-1">Email Identifier</label>
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        required
+                        placeholder="you@email.com"
+                        className="w-full px-5 py-4 bg-slate-950/50 border border-slate-800 rounded-2xl text-white placeholder-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500/30 transition"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-3 mt-4">
-                  <Clock size={20} className="text-emerald-400 mt-0.5 flex-shrink-0" />
                   <div>
-                    <h4 className="font-semibold font-sans text-sm">Business Hours</h4>
-                    <p className="text-slate-400 text-sm">Monday – Friday: 9:00 AM – 6:00 PM EST<br/>Weekend: Emergency support only</p>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-2 ml-1">Inquiry Details</label>
+                    <textarea
+                      value={message}
+                      onChange={e => setMessage(e.target.value)}
+                      required
+                      rows={4}
+                      placeholder="Specify your requirements..."
+                      className="w-full px-5 py-4 bg-slate-950/50 border border-slate-800 rounded-2xl text-white placeholder-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500/30 transition resize-none"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="group relative w-full py-5 bg-emerald-500 text-white rounded-2xl font-bold text-lg hover:bg-emerald-400 transition-all flex items-center justify-center gap-2 overflow-hidden shadow-xl shadow-emerald-500/20"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                    Transmit Message <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  </button>
+                </form>
+
+                <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6 pt-10 border-t border-slate-800/50">
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 bg-emerald-500/10 rounded-xl">
+                      <MapPin size={18} className="text-emerald-400" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-[10px] text-slate-400 uppercase tracking-[0.2em] mb-1">Head Office</h4>
+                      <p className="text-xs text-slate-300 font-medium leading-relaxed">Financial District, New York, NY 10005</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 bg-emerald-500/10 rounded-xl">
+                      <Clock size={18} className="text-emerald-400" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-[10px] text-slate-400 uppercase tracking-[0.2em] mb-1">Operational Hours</h4>
+                      <p className="text-xs text-slate-300 font-medium leading-relaxed">Mon-Fri: 0900 – 1800 EST</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
           </div>
         </div>
       </section>

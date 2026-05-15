@@ -221,69 +221,78 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-slate-950 text-white relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/5 rounded-full blur-[120px]"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-900/10 rounded-full blur-[120px]"></div>
+
+      <div className="max-w-7xl mx-auto px-4 py-10 relative z-10">
         {/* Header */}
-        <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-6">
-          <div className="flex items-center gap-6">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-emerald-500 to-emerald-800 flex items-center justify-center text-2xl font-bold border-2 border-slate-700 shadow-lg shadow-emerald-500/10">
-              {profile?.full_name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'I'}
+        <div className="flex flex-col lg:flex-row items-center justify-between mb-12 gap-8">
+          <div className="flex items-center gap-8">
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-tr from-emerald-500 to-emerald-800 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+              <div className="relative w-24 h-24 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-3xl font-black tracking-tighter text-emerald-400 shadow-2xl">
+                {profile?.full_name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'I'}
+              </div>
             </div>
             <div>
-              <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-bold font-serif">
-                  Welcome, <span className="text-emerald-400">{isAyadUser ? 'Ayad Fadel' : (profile?.full_name || 'Investor')}</span>
+              <div className="flex flex-wrap items-center gap-4 mb-2">
+                <h1 className="text-4xl font-black tracking-tighter">
+                  WELCOME, <span className="text-emerald-400 italic font-serif uppercase">{isAyadUser ? 'Ayad Fadel' : (profile?.full_name || 'Investor')}</span>
                 </h1>
-                {profile?.full_name?.toLowerCase().includes('ayad fadel') && (
-                  <span className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Verified Account</span>
-                )}
+                <span className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-[10px] text-emerald-400 font-black uppercase tracking-widest">Verified Portfolio</span>
               </div>
-              <p className="text-slate-400 text-sm mt-1 flex items-center gap-2">
-                <Briefcase size={14} /> 
-                {profile?.full_name?.toLowerCase().includes('ayad fadel') ? 'GF-99284 • Elite Institutional Investor' : 'Standard Investor Account'}
+              <p className="text-slate-500 text-sm font-bold uppercase tracking-widest flex items-center gap-3">
+                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                {profile?.full_name?.toLowerCase().includes('ayad fadel') ? 'STRAT-ID: GF-99284 • ELITE INSTITUTIONAL' : 'Standard Asset Profile'}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            {isAdmin && (
-              <span className="px-3 py-1 bg-amber-500/20 text-amber-400 rounded-full text-xs font-semibold uppercase">Admin</span>
-            )}
-            <div className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-slate-400 font-mono">
-              Server: <span className="text-emerald-400">NY-PROD-01</span>
+          <div className="flex items-center gap-4">
+            <div className="px-5 py-3 glass-effect-dark border border-slate-800 rounded-2xl">
+              <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Infrastructure</div>
+              <div className="text-sm font-black text-emerald-400 font-mono tracking-tighter">PROD-NY-01.GF</div>
+            </div>
+            <div className="px-5 py-3 glass-effect-dark border border-slate-800 rounded-2xl">
+              <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Security Status</div>
+              <div className="text-sm font-black text-emerald-400 tracking-tighter flex items-center gap-2">
+                <ShieldCheck size={14} /> ENCRYPTED
+              </div>
             </div>
           </div>
         </div>
 
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {stats.map((stat, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="p-6 rounded-2xl bg-slate-800/50 border border-slate-700"
+              className="p-8 rounded-3xl glass-effect-dark border border-slate-800/50 hover:border-emerald-500/30 transition-all group"
             >
-              <div className="flex items-center gap-3 mb-3">
-                <div className={`p-2 rounded-lg bg-slate-700/50 ${stat.color}`}>
-                  <stat.icon size={20} />
+              <div className="flex items-center gap-4 mb-6">
+                <div className={`p-3 rounded-2xl bg-slate-900 border border-slate-800 ${stat.color} group-hover:scale-110 transition-transform`}>
+                  <stat.icon size={24} />
                 </div>
-                <span className="text-slate-400 text-sm">{stat.label}</span>
+                <span className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em]">{stat.label}</span>
               </div>
-              <div className="text-2xl font-bold font-sans">{stat.value}</div>
+              <div className="text-3xl font-black font-sans tracking-tighter text-white">{stat.value}</div>
             </motion.div>
           ))}
         </div>
 
         {/* Tabs */}
-        <div className="flex space-x-1 bg-slate-800/50 rounded-xl p-1 mb-8 max-w-lg overflow-x-auto no-scrollbar">
+        <div className="flex space-x-2 bg-slate-900/50 border border-slate-800 p-1.5 rounded-[1.5rem] mb-12 max-w-2xl overflow-x-auto no-scrollbar">
           {(['overview', 'portfolio', 'deposit', 'withdraw'] as const).map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold capitalize transition-all whitespace-nowrap
-                ${activeTab === tab ? 'bg-emerald-500 text-white' : 'text-slate-400 hover:text-white'}`}
+              className={`flex-1 py-3.5 px-6 rounded-2xl text-xs font-black uppercase tracking-[0.2em] transition-all whitespace-nowrap
+                ${activeTab === tab ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'text-slate-500 hover:text-white hover:bg-slate-800'}`}
             >
               {tab}
             </button>

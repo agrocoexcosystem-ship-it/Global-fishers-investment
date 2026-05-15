@@ -52,57 +52,90 @@ export default function Plans() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {PLANS.map((plan, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-                className={`relative rounded-2xl overflow-hidden bg-slate-800/50 border transition-all hover:scale-[1.02]
-                  ${plan.popular ? 'border-emerald-500/50 shadow-lg shadow-emerald-500/10' : 'border-slate-700'}`}
+                transition={{ duration: 0.7, delay: i * 0.1 }}
+                className={`group relative rounded-[2rem] overflow-hidden glass-effect-dark border transition-all duration-500 hover:-translate-y-2
+                  ${plan.popular ? 'border-emerald-500/40 shadow-2xl shadow-emerald-500/10' : 'border-slate-800 hover:border-slate-700'}`}
               >
-                {/* Image */}
-                <div className="relative h-48 overflow-hidden">
-                  <img src={plan.image} alt={plan.name} className="w-full h-full object-cover" />
-                  <div className="absolute top-4 right-4 px-3 py-1 bg-emerald-500 rounded-full text-sm font-bold">
-                    +{plan.daily}
-                  </div>
-                  {plan.popular && (
-                    <div className="absolute top-4 left-4 px-3 py-1 bg-gold-500 text-slate-900 rounded-full text-xs font-bold uppercase">
-                      Most Popular
+                {/* Popular Badge */}
+                {plan.popular && (
+                  <div className="absolute top-0 right-10 z-20">
+                    <div className="bg-emerald-500 text-white text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-b-xl shadow-lg">
+                      Recommended
                     </div>
-                  )}
+                  </div>
+                )}
+
+                {/* Image Section */}
+                <div className="relative h-64 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent z-10 opacity-60"></div>
+                  <img 
+                    src={plan.image} 
+                    alt={plan.name} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                  />
+                  <div className="absolute bottom-6 left-6 z-20">
+                    <div className="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-1">Strategy Tier</div>
+                    <h3 className="text-3xl font-black text-white tracking-tighter">{plan.name}</h3>
+                  </div>
                 </div>
 
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold mb-2 font-sans">{plan.name}</h3>
-                  <div className="flex items-baseline gap-2 mb-1">
-                    <span className="text-3xl font-bold text-emerald-400">{plan.daily}</span>
-                    <span className="text-slate-400 text-sm">daily return</span>
+                {/* Content Section */}
+                <div className="p-8 relative">
+                  <div className="flex items-center justify-between mb-8">
+                    <div>
+                      <div className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-1">Target Yield</div>
+                      <div className="text-4xl font-black text-white tracking-tighter">
+                        {plan.daily} <span className="text-sm font-bold text-emerald-500 tracking-normal uppercase">/ Day</span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-1">Cycle</div>
+                      <div className="text-lg font-bold text-slate-300">{plan.duration}</div>
+                    </div>
                   </div>
-                  <p className="text-slate-400 text-sm mb-4">
-                    {plan.min} – {plan.max} • {plan.duration}
-                  </p>
 
-                  <ul className="space-y-2 mb-6">
-                    {plan.features.map((f, j) => (
-                      <li key={j} className="flex items-center text-sm text-slate-300">
-                        <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full mr-2" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="space-y-6 mb-10">
+                    <div className="p-4 bg-slate-900/50 rounded-2xl border border-slate-800/50">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Entry Limit</span>
+                        <span className="text-sm font-bold text-white">{plan.min}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Max Cap</span>
+                        <span className="text-sm font-bold text-white">{plan.max}</span>
+                      </div>
+                    </div>
+
+                    <ul className="space-y-3">
+                      {plan.features.map((f, j) => (
+                        <li key={j} className="flex items-center text-sm text-slate-400 group/item">
+                          <div className="w-5 h-5 rounded-full bg-emerald-500/10 flex items-center justify-center mr-3 group-hover/item:bg-emerald-500/20 transition-colors">
+                            <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
+                          </div>
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
                   <Link
                     to="/signup"
-                    className={`block text-center py-3 rounded-xl font-semibold transition-all
+                    className={`relative w-full py-5 rounded-2xl font-bold text-lg transition-all flex items-center justify-center gap-2 overflow-hidden
                       ${plan.popular
-                        ? 'bg-emerald-500 text-white hover:bg-emerald-600'
-                        : 'bg-slate-700 text-white hover:bg-slate-600'}`}
+                        ? 'bg-emerald-500 text-white shadow-xl shadow-emerald-500/20 hover:bg-emerald-400 hover:scale-[1.02]'
+                        : 'bg-slate-800 text-white border border-slate-700 hover:bg-slate-700'}`}
                   >
-                    Invest Now <ArrowRight size={16} className="inline ml-1" />
+                    {plan.popular && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                    )}
+                    Deploy Capital <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
                   </Link>
                 </div>
               </motion.div>

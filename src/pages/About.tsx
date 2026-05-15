@@ -20,23 +20,47 @@ export default function About() {
 
           {/* Mission */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="max-w-4xl mx-auto mb-20"
+            transition={{ duration: 0.8 }}
+            className="max-w-5xl mx-auto mb-24 relative"
           >
-            <div className="p-10 rounded-2xl bg-slate-800/50 border border-slate-700">
-              <h2 className="text-2xl font-bold mb-4 font-sans">Our Mission</h2>
-              <p className="text-slate-300 leading-relaxed text-lg">
-                At Global Fishers Investment, we believe that institutional-grade investing should be accessible to everyone. 
-                Our mission is to democratize wealth creation through advanced algorithmic trading strategies, 
-                transparent operations, and unwavering commitment to our investors' financial success.
-              </p>
+            <div className="absolute -inset-4 bg-emerald-500/5 rounded-[2.5rem] blur-2xl"></div>
+            <div className="relative p-12 rounded-[2rem] glass-effect-dark border border-slate-700/50 overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+              <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                  <h2 className="text-3xl font-black mb-6 tracking-tighter">OUR MISSION</h2>
+                  <p className="text-slate-400 leading-relaxed text-lg font-medium">
+                    At Global Fishers Investment, we believe that institutional-grade investing should be accessible to everyone. 
+                    We are committed to democratizing wealth creation through advanced algorithmic strategies and transparent operations.
+                  </p>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-6 bg-slate-900/50 rounded-2xl border border-slate-800">
+                    <div className="text-2xl font-black text-emerald-400 mb-1">100%</div>
+                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Transparency</div>
+                  </div>
+                  <div className="p-6 bg-slate-900/50 rounded-2xl border border-slate-800">
+                    <div className="text-2xl font-black text-emerald-400 mb-1">AI-DRIVEN</div>
+                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Strategies</div>
+                  </div>
+                  <div className="p-6 bg-slate-900/50 rounded-2xl border border-slate-800">
+                    <div className="text-2xl font-black text-emerald-400 mb-1">24/7</div>
+                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Monitoring</div>
+                  </div>
+                  <div className="p-6 bg-slate-900/50 rounded-2xl border border-slate-800">
+                    <div className="text-2xl font-black text-emerald-400 mb-1">GLOBAL</div>
+                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Exposure</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </motion.div>
 
           {/* Values */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
             {[
               { icon: Shield, title: 'Trust & Transparency', desc: 'Complete transparency in operations with real-time reporting and audited performance metrics.' },
               { icon: Target, title: 'Performance Driven', desc: 'Relentless focus on delivering consistent, risk-adjusted returns that outperform benchmarks.' },
@@ -51,26 +75,29 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="p-8 rounded-2xl bg-slate-800/30 border border-slate-700 hover:border-emerald-500/30 transition"
+                className="p-10 rounded-[2rem] glass-effect-dark border border-slate-800 hover:border-emerald-500/30 transition-all group"
               >
-                <value.icon size={28} className="text-emerald-400 mb-4" />
-                <h3 className="text-lg font-semibold mb-2 font-sans">{value.title}</h3>
-                <p className="text-slate-400 text-sm">{value.desc}</p>
+                <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-6 group-hover:bg-emerald-500/20 transition-colors">
+                  <value.icon size={32} className="text-emerald-400" />
+                </div>
+                <h3 className="text-xl font-bold mb-3 tracking-tight">{value.title}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">{value.desc}</p>
               </motion.div>
             ))}
           </div>
 
           {/* Team Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-10 rounded-2xl bg-slate-800/50 border border-slate-700">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 p-12 rounded-[2.5rem] glass-effect-dark border border-slate-800 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-transparent"></div>
             {[
               { num: '10+', label: 'Years Experience' },
               { num: '50+', label: 'Team Members' },
               { num: '15+', label: 'Countries Served' },
               { num: '€2.4B+', label: 'Assets Under Management' },
             ].map((s, i) => (
-              <div key={i} className="text-center">
-                <div className="text-3xl font-bold text-emerald-400 mb-1">{s.num}</div>
-                <div className="text-slate-400 text-sm">{s.label}</div>
+              <div key={i} className="text-center relative z-10">
+                <div className="text-4xl font-black text-white mb-2 tracking-tighter">{s.num}</div>
+                <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">{s.label}</div>
               </div>
             ))}
           </div>
