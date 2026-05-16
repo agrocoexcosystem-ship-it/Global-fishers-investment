@@ -4,7 +4,7 @@ import { Menu, X, LogOut } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Navbar() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, isAdmin } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -64,6 +64,11 @@ export default function Navbar() {
             <div id="google_translate_element_desktop" className="w-28" />
             {user ? (
               <div className="flex items-center space-x-2">
+                {isAdmin && (
+                  <Link to="/admin" className="px-4 py-2 border border-emerald-500 text-emerald-400 rounded-full text-sm font-semibold hover:bg-emerald-500/10 transition">
+                    Admin
+                  </Link>
+                )}
                 <Link to="/dashboard" className="px-4 py-2 bg-emerald-500 text-white rounded-full text-sm font-semibold hover:bg-emerald-600 transition">
                   Dashboard
                 </Link>
@@ -101,6 +106,7 @@ export default function Navbar() {
           <div className="mt-3 pt-3 border-t border-slate-800">
             {user ? (
               <>
+                {isAdmin && <Link to="/admin" onClick={() => setMobileOpen(false)} className="block py-2 text-emerald-400 font-semibold text-sm">Admin Panel</Link>}
                 <Link to="/dashboard" onClick={() => setMobileOpen(false)} className="block py-2 text-emerald-400 font-semibold text-sm">Dashboard</Link>
                 <button onClick={handleLogout} className="block py-2 text-red-400 text-sm">Sign Out</button>
               </>

@@ -21,6 +21,8 @@ import WithdrawalPolicy from './pages/WithdrawalPolicy';
 import Verification from './pages/Verification';
 import AyadPortfolio from './pages/AyadPortfolio';
 
+import Admin from './pages/Admin';
+
 function App() {
   return (
     <AuthProvider>
@@ -36,6 +38,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/admin" element={<Admin />} />
               <Route path="/compliance" element={<Compliance />} />
               <Route path="/security" element={<Security />} />
               <Route path="/calculator" element={<Calculator />} />

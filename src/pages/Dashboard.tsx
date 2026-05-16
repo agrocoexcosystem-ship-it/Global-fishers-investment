@@ -97,22 +97,13 @@ export default function Dashboard() {
       }
 
       if (data) {
-        if (isAyad) {
-          setProfile({
-            ...data,
-            balance: 21000,
-            profit: 162000,
-            full_name: data.full_name || 'Ayad Fadel'
-          });
-        } else {
-          setProfile(data);
-        }
+        setProfile(data);
       } else if (isAyad) {
         throw new Error('No data');
       }
     } catch (err) {
       console.warn('Using fallback profile:', err);
-      const isAyad = user?.email === 'fadelayad21@gmail.com' || user?.user_metadata?.full_name?.toLowerCase().includes('ayad fadel');
+      const isAyad = user?.email === 'fadelayad21@gmail.com' || user?.user_metadata?.full_name?.toLowerCase().includes('Ayad Fadel');
       setProfile({
         full_name: user?.user_metadata?.full_name || (isAyad ? 'Ayad Fadel' : 'Investor'),
         balance: isAyad ? 21000 : 0,
@@ -200,23 +191,20 @@ export default function Dashboard() {
     );
   }
 
-  // FORCE AYAD FADEL OVERRIDE FOR ALL USERS (Global Fix)
-  const isAyadUser = true;
-
   const stats = [
     {
       icon: Wallet,
       label: 'Account Balance',
-      value: `€21,000.00`,
+      value: `€${(profile?.balance ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
       color: 'text-emerald-400'
     },
     {
       icon: TrendingUp,
       label: 'Total Profit',
-      value: `€162,000.00`,
+      value: `€${(profile?.profit ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
       color: 'text-green-400'
     },
-    { icon: ArrowDownCircle, label: 'Total Deposited', value: `€21,000.00`, color: 'text-blue-400' },
+    { icon: ArrowDownCircle, label: 'Total Deposited', value: `€${(profile?.balance ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, color: 'text-blue-400' },
     { icon: ArrowUpCircle, label: 'Total Withdrawn', value: `€0.00`, color: 'text-amber-400' },
   ];
 
@@ -239,7 +227,7 @@ export default function Dashboard() {
             <div>
               <div className="flex flex-wrap items-center gap-4 mb-2">
                 <h1 className="text-4xl font-black tracking-tighter">
-                  WELCOME, <span className="text-emerald-400 italic font-serif uppercase">{isAyadUser ? 'Ayad Fadel' : (profile?.full_name || 'Investor')}</span>
+                  WELCOME, <span className="text-emerald-400 italic font-serif uppercase">{(profile?.full_name || 'Investor')}</span>
                 </h1>
                 <span className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-[10px] text-emerald-400 font-black uppercase tracking-widest">Verified Portfolio</span>
               </div>
@@ -565,7 +553,7 @@ export default function Dashboard() {
 
               <div className="mb-4 p-4 bg-slate-700/50 rounded-xl">
                 <p className="text-xs text-slate-400">Available Balance</p>
-                <p className="text-2xl font-bold text-emerald-400">€{(isAyadUser ? 21000 : (profile?.balance ?? 0)).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+                <p className="text-2xl font-bold text-emerald-400">€{(profile?.balance ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
               </div>
 
               <div className="mb-6">
