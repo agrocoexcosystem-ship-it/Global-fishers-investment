@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import {
   Wallet, TrendingUp, ArrowDownCircle, ArrowUpCircle,
   Copy, Clock, CheckCircle, XCircle, Euro, BarChart3,
-  PieChart as PieChartIcon, ShieldCheck, Globe, Briefcase, ChevronRight, Share2, Users
+  PieChart as PieChartIcon, ShieldCheck, Globe, ChevronRight, Share2, Users
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import {
@@ -53,7 +53,7 @@ interface Transaction {
 }
 
 export default function Dashboard() {
-  const { user, loading: authLoading, isAdmin } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);

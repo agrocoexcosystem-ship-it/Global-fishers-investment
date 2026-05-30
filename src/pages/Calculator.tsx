@@ -7,8 +7,8 @@ const PLANS = [
   { name: 'Bronze Growth', daily: 2.0, min: 5000, max: 24999, duration: 45 },
   { name: 'Silver Elite', daily: 2.5, min: 25000, max: 99999, duration: 60 },
   { name: 'Gold Institutional', daily: 3.2, min: 100000, max: 499999, duration: 90 },
-  { name: 'Platinum Sovereign', daily: 4.0, min: 500000, max: 1999999, duration: 120 },
-  { name: 'Fisher Reserve', daily: 5.5, min: 2000000, max: 10000000, duration: 180 },
+  { name: 'Platinum Sovereign', daily: 4.0, min: 500000, max: 999999, duration: 120 },
+  { name: 'Fisher Reserve', daily: 5.5, min: 1000000, max: 1500000, duration: 180 },
 ];
 
 export default function Calculator() {

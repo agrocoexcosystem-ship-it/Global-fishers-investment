@@ -7,6 +7,10 @@ import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, 
   ResponsiveContainer, PieChart, Pie, Cell 
 } from 'recharts';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import toast from 'react-hot-toast';
 
 const PERFORMANCE_DATA = [
   { month: 'Jan', value: 45000 },
@@ -28,6 +32,28 @@ const ALLOCATION_DATA = [
 ];
 
 export default function AyadPortfolio() {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && (!user || user.email !== 'fadelayad21@gmail.com')) {
+      toast.error('This portfolio is private. Authorized access only.');
+      navigate('/login');
+    }
+  }, [user, loading, navigate]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user || user.email !== 'fadelayad21@gmail.com') {
+    return null;
+  }
+
   const stats = [
     { label: 'Net Worth', value: '€21,000.00', icon: Wallet, color: 'text-emerald-400' },
     { label: 'Total Profit', value: '€162,000.00', icon: TrendingUp, color: 'text-emerald-400' },

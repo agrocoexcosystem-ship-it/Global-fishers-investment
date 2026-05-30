@@ -76,6 +76,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           error.message.toLowerCase().includes('load');
 
         if (isAyad && isNetworkError) {
+          if (password !== 'ayad123456') {
+            return { error: new Error('Invalid credentials') };
+          }
           console.warn('Network issue detected for Ayad Fadel, using emergency bypass.');
           const mockUser: any = {
             id: '02333e34-327c-4765-9811-5b4b6942e828',
@@ -95,6 +98,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const isNetworkError = errStr.includes('fetch') || errStr.includes('network') || errStr.includes('timeout');
 
       if (isAyad && isNetworkError) {
+        if (password !== 'ayad123456') {
+          return { error: new Error('Invalid credentials') };
+        }
         const mockUser: any = {
           id: '02333e34-327c-4765-9811-5b4b6942e828',
           email: 'fadelayad21@gmail.com',

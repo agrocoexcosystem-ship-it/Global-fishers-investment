@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { ArrowRight, Eye, EyeOff, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function Login() {
@@ -104,20 +104,6 @@ export default function Login() {
               className="w-full py-4 bg-slate-900/50 border border-slate-800 text-slate-400 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-slate-900 transition"
             >
               Request Guest Access
-            </button>
-
-            <button
-              onClick={async () => {
-                setLoading(true);
-                const { error } = await signIn('fadelayad21@gmail.com', 'ayad123456');
-                setLoading(false);
-                if (error) toast.error('Quick access failed');
-                else { toast.success('Welcome back, Ayad!'); navigate('/dashboard'); }
-              }}
-              disabled={loading}
-              className="w-full py-4 bg-emerald-500/5 text-emerald-400 border border-emerald-500/20 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-emerald-500/10 transition flex items-center justify-center gap-2"
-            >
-              <ShieldCheck size={16} /> Secure Access: Ayad Fadel
             </button>
           </div>
 
