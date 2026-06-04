@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin, Send } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -61,7 +61,11 @@ export default function Footer() {
               </li>
               <li className="flex items-center space-x-2">
                 <Phone size={14} className="text-emerald-400" />
-                <span>+1 (555) 123-4567</span>
+                <span>+49 15 216 228 753</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Send size={14} className="text-emerald-400" />
+                <a href="https://t.me/GlobalFishersinvestment" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition">@GlobalFishersinvestment</a>
               </li>
               <li className="flex items-start space-x-2">
                 <MapPin size={14} className="text-emerald-400 mt-0.5" />

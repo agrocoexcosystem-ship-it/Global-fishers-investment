@@ -42,11 +42,12 @@ export default function Support() {
             </p>
           </div>
           {/* Contact Methods */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
             {[
-              { icon: Mail, title: 'Direct Liaison', detail: 'support@global-fishers.com', sub: 'Priority response within 2 hours' },
-              { icon: Phone, title: 'Corporate Line', detail: '+1 (555) 123-4567', sub: 'Available Mon-Fri 9AM-6PM EST' },
-              { icon: MessageCircle, title: 'Instant Concierge', detail: '24/7 Digital Assistant', sub: 'Real-time support via Smartsupp' },
+              { icon: Mail, title: 'Direct Liaison', detail: 'support@global-fishers.com', sub: 'Priority response within 2 hours', isLink: false },
+              { icon: Phone, title: 'Corporate Line', detail: '+49 15 216 228 753', sub: 'Available Mon-Fri 9AM-6PM EST', isLink: false },
+              { icon: MessageCircle, title: 'Telegram Support', detail: '@GlobalFishersinvestment', sub: 'Direct link to chat concierge', isLink: true, link: 'https://t.me/GlobalFishersinvestment' },
+              { icon: Clock, title: 'Instant Concierge', detail: '24/7 Digital Assistant', sub: 'Real-time support via Smartsupp', isLink: false },
             ].map((method, i) => (
               <motion.div
                 key={i}
@@ -61,7 +62,13 @@ export default function Support() {
                   <method.icon size={28} className="text-emerald-400" />
                 </div>
                 <h3 className="text-xl font-bold mb-2 tracking-tight">{method.title}</h3>
-                <p className="text-emerald-400 font-bold text-lg mb-2">{method.detail}</p>
+                {method.isLink ? (
+                  <a href={method.link} target="_blank" rel="noopener noreferrer" className="text-emerald-400 font-bold text-lg mb-2 block hover:underline">
+                    {method.detail}
+                  </a>
+                ) : (
+                  <p className="text-emerald-400 font-bold text-lg mb-2">{method.detail}</p>
+                )}
                 <p className="text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em]">{method.sub}</p>
               </motion.div>
             ))}
