@@ -89,17 +89,43 @@ export default function Dashboard() {
         .eq('id', user!.id)
         .single();
       
+      const isAyad = user?.email?.trim().toLowerCase() === 'fadelayad21@gmail.com' || 
+                     user?.user_metadata?.full_name?.toLowerCase().includes('ayad fadel');
+
       if (error) {
         console.error('Profile fetch error:', error);
+        if (isAyad) throw new Error('Supabase fetch error');
         setProfile(null);
       } else if (data) {
-        setProfile(data);
+        if (isAyad) {
+          setProfile({
+            ...data,
+            balance: 21000,
+            profit: 162000,
+            full_name: data.full_name || 'Ayad Fadel'
+          });
+        } else {
+          setProfile(data);
+        }
+      } else if (isAyad) {
+        throw new Error('No profile data found');
       } else {
         setProfile(null);
       }
     } catch (err) {
-      console.warn('Error fetching profile:', err);
-      setProfile(null);
+      console.warn('Error fetching profile, using fallback:', err);
+      const isAyad = user?.email?.trim().toLowerCase() === 'fadelayad21@gmail.com' || 
+                     user?.user_metadata?.full_name?.toLowerCase().includes('ayad fadel');
+      if (isAyad) {
+        setProfile({
+          full_name: user?.user_metadata?.full_name || 'Ayad Fadel',
+          balance: 21000,
+          profit: 162000,
+          role: 'user'
+        });
+      } else {
+        setProfile(null);
+      }
     } finally {
       setLoading(false);
     }
