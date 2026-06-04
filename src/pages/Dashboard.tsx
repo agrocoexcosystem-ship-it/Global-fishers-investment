@@ -89,29 +89,20 @@ export default function Dashboard() {
         .eq('id', user!.id)
         .single();
       
-      const isAyad = user?.email === 'fadelayad21@gmail.com' || user?.user_metadata?.full_name?.toLowerCase().includes('ayad fadel');
-
       if (error) {
         console.error('Profile fetch error:', error);
-        if (isAyad) throw new Error('Network error'); // Force fallback for Ayad
-      }
-
-      if (data) {
+        setProfile(null);
+      } else if (data) {
         setProfile(data);
-      } else if (isAyad) {
-        throw new Error('No data');
+      } else {
+        setProfile(null);
       }
     } catch (err) {
-      console.warn('Using fallback profile:', err);
-      const isAyad = user?.email === 'fadelayad21@gmail.com' || user?.user_metadata?.full_name?.toLowerCase().includes('Ayad Fadel');
-      setProfile({
-        full_name: user?.user_metadata?.full_name || (isAyad ? 'Ayad Fadel' : 'Investor'),
-        balance: isAyad ? 21000 : 0,
-        profit: isAyad ? 162000 : 0,
-        role: 'user',
-      });
+      console.warn('Error fetching profile:', err);
+      setProfile(null);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   async function fetchTransactions() {

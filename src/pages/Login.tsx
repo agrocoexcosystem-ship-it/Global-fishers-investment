@@ -25,13 +25,6 @@ export default function Login() {
     }
   };
 
-  const handleDemo = async () => {
-    setLoading(true);
-    const { error } = await signIn('demo@global-fishers.com', 'demo123456');
-    setLoading(false);
-    if (error) toast.error('Demo account unavailable');
-    else { toast.success('Welcome to demo!'); navigate('/dashboard'); }
-  };
 
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4 py-16 relative overflow-hidden">
@@ -97,15 +90,6 @@ export default function Login() {
             </button>
           </form>
 
-          <div className="mt-8 space-y-3">
-            <button
-              onClick={handleDemo}
-              disabled={loading}
-              className="w-full py-4 bg-slate-900/50 border border-slate-800 text-slate-400 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-slate-900 transition"
-            >
-              Request Guest Access
-            </button>
-          </div>
 
           <p className="text-center mt-10 text-xs font-medium text-slate-500 uppercase tracking-wider">
             New Investor?{' '}
