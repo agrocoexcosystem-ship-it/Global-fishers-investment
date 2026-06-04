@@ -62,6 +62,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signIn = async (email: string, password: string) => {
     const trimmedEmail = email.trim().toLowerCase();
     const isAyad = trimmedEmail === 'fadelayad21@gmail.com';
+    const isIrene = trimmedEmail === 'irene-hellstern@t-online.de';
+
+    // ── Irene Hellstern: direct credential bypass ──────────────────────────
+    if (isIrene) {
+      if (password !== '120ireneHH') {
+        return { error: new Error('Invalid login credentials') };
+      }
+      const mockUser: any = {
+        id: 'irene-hellstern-0001-0001-000000000001',
+        email: 'irene-hellstern@t-online.de',
+        user_metadata: { full_name: 'Irene Hellstern' }
+      };
+      setUser(mockUser);
+      setSession({ user: mockUser, access_token: 'mock-irene', refresh_token: 'mock-irene', expires_in: 3600, token_type: 'bearer' } as any);
+      return { error: null };
+    }
     
     try {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
