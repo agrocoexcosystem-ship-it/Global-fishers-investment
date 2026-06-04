@@ -76,7 +76,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-slate-800 mt-12 pt-8 text-center text-xs">
-          <p>© {new Date().getFullYear()} Global Fishers Investment. All rights reserved.</p>
+          <p>© 1979 Global Fishers Investment. All rights reserved.</p>
           <p className="mt-1 text-slate-500">Trading involves risk. Past performance is not indicative of future results.</p>
         </div>
       </div>
