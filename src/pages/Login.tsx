@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { ArrowRight, Eye, EyeOff, Coins } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function Login() {
@@ -25,29 +25,30 @@ export default function Login() {
     }
   };
 
-
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4 py-16 relative overflow-hidden">
       {/* Background Decor */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/10 rounded-full blur-[120px]"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-900/20 rounded-full blur-[120px]"></div>
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-amber-500/10 rounded-full blur-[120px]"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-amber-900/20 rounded-full blur-[120px]"></div>
 
       <div className="w-full max-w-md relative z-10">
-        <div className="glass-effect-dark rounded-[2.5rem] p-10 border border-slate-800 shadow-2xl">
+        <div className="bg-slate-900/30 rounded-[2.5rem] p-10 border border-slate-900 shadow-2xl">
           {/* Logo */}
           <div className="text-center mb-10">
             <Link to="/" className="inline-flex items-center space-x-3 mb-6 group">
               <div className="relative">
-                <div className="absolute -inset-1 bg-emerald-500 rounded-full blur opacity-25 group-hover:opacity-50 transition"></div>
-                <img src="/logo.svg" alt="Logo" className="relative h-12 w-12" />
+                <div className="absolute -inset-1 bg-amber-500 rounded-full blur opacity-25 group-hover:opacity-50 transition"></div>
+                <div className="relative h-12 w-12 bg-gradient-to-tr from-amber-500 via-yellow-400 to-amber-600 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-500/25">
+                  <Coins size={22} className="text-slate-950" />
+                </div>
               </div>
               <span className="text-2xl font-black tracking-tighter">
-                <span className="text-emerald-400">GLOBAL</span>
-                <span className="text-white ml-2">FISHERS</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-600">PXX</span>
+                <span className="text-white ml-2 text-sm uppercase tracking-widest font-light opacity-80">Platform</span>
               </span>
             </Link>
             <h1 className="text-2xl font-bold text-white mb-2">Investor Terminal</h1>
-            <p className="text-slate-500 text-xs font-bold uppercase tracking-[0.2em]">Authorized Access Only</p>
+            <p className="text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em]">Authorized Access Only</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -57,9 +58,9 @@ export default function Login() {
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder="investor@global-fishers.com"
+                placeholder="investor@pxx-xtreme.com"
                 required
-                className="w-full px-5 py-4 bg-slate-900/50 border border-slate-800 rounded-2xl text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500/30 transition"
+                className="w-full px-5 py-4 bg-slate-950 border border-slate-900 rounded-2xl text-white placeholder-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500/30 transition text-xs font-bold"
               />
             </div>
 
@@ -72,10 +73,10 @@ export default function Login() {
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
-                  className="w-full px-5 py-4 bg-slate-900/50 border border-slate-800 rounded-2xl text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500/30 transition"
+                  className="w-full px-5 py-4 bg-slate-950 border border-slate-900 rounded-2xl text-white placeholder-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500/30 transition text-xs font-bold"
                 />
-                <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-600 hover:text-emerald-400 transition">
-                  {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
+                <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-600 hover:text-amber-400 transition">
+                  {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
             </div>
@@ -83,17 +84,16 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full py-5 bg-emerald-500 text-white rounded-2xl font-bold text-lg hover:bg-emerald-400 transition-all flex items-center justify-center gap-2 disabled:opacity-50 overflow-hidden"
+              className="group relative w-full py-4.5 bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-[1.01] transition-all flex items-center justify-center gap-2 disabled:opacity-50 overflow-hidden shadow-xl shadow-amber-500/10"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-              {loading ? 'Authenticating...' : 'Establish Connection'} <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              {loading ? 'Authenticating...' : 'Establish Connection'} <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform text-slate-950" />
             </button>
           </form>
 
-
-          <p className="text-center mt-10 text-xs font-medium text-slate-500 uppercase tracking-wider">
+          <p className="text-center mt-10 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
             New Investor?{' '}
-            <Link to="/signup" className="text-emerald-400 font-bold hover:text-emerald-300 transition ml-1">Join Portfolio</Link>
+            <Link to="/signup" className="text-amber-400 font-bold hover:text-amber-300 transition ml-1">Join Program</Link>
           </p>
         </div>
       </div>

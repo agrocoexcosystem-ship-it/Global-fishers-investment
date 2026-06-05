@@ -2,13 +2,13 @@ import { Shield } from 'lucide-react';
 
 export default function Privacy() {
   return (
-    <div className="bg-slate-900 text-white min-h-screen">
+    <div className="bg-slate-950 text-white min-h-screen">
       <section className="py-20">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-12">
-            <Shield size={36} className="text-emerald-400 mx-auto mb-4" />
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Privacy Policy</h1>
-            <p className="text-slate-400">Last updated: March 2026</p>
+            <Shield size={36} className="text-amber-400 mx-auto mb-4" />
+            <h1 className="text-4xl md:text-5xl font-black mb-4 tracking-tighter">Privacy Policy</h1>
+            <p className="text-slate-500 text-xs font-bold uppercase tracking-wider">Last updated: March 2026</p>
           </div>
 
           <div className="prose prose-invert max-w-none space-y-8">
@@ -19,7 +19,7 @@ export default function Privacy() {
               },
               {
                 title: '2. How We Use Your Information',
-                content: `Your information is used to provide and maintain our investment services, process transactions and withdrawals, verify your identity for KYC/AML compliance, communicate account updates and important notices, improve our platform and user experience, and comply with legal and regulatory requirements.`
+                content: `Your information is used to provide and maintain our ecosystem services, process transactions and withdrawals, verify your identity for KYC/AML compliance, communicate account updates and important notices, improve our platform and user experience, and comply with legal and regulatory requirements.`
               },
               {
                 title: '3. Data Sharing & Third Parties',
@@ -35,7 +35,7 @@ export default function Privacy() {
               },
               {
                 title: '6. Your Rights',
-                content: `You have the right to access, correct, or delete your personal information. You may request a copy of all data we hold about you. You have the right to withdraw consent for data processing. You can file a complaint with the relevant data protection authority. To exercise these rights, contact our Data Protection Officer at privacy@global-fishers.com.`
+                content: `You have the right to access, correct, or delete your personal information. You may request a copy of all data we hold about you. You have the right to withdraw consent for data processing. You can file a complaint with the relevant data protection authority. To exercise these rights, contact our Data Protection Officer at privacy@pxx-xtreme.com.`
               },
               {
                 title: '7. Cookies & Tracking',
@@ -46,15 +46,15 @@ export default function Privacy() {
                 content: `We may update this Privacy Policy periodically. Significant changes will be communicated via email and platform notifications. Continued use of our services after changes constitutes acceptance of the updated policy.`
               },
             ].map((section, i) => (
-              <div key={i} className="p-6 rounded-2xl bg-slate-800/30 border border-slate-700">
-                <h2 className="text-xl font-bold mb-3 font-sans text-emerald-400">{section.title}</h2>
-                <p className="text-slate-300 leading-relaxed text-sm">{section.content}</p>
+              <div key={i} className="p-6 rounded-2xl bg-slate-900/30 border border-slate-900">
+                <h2 className="text-base font-bold mb-3 font-sans text-amber-400 uppercase tracking-wide">{section.title}</h2>
+                <p className="text-slate-400 leading-relaxed text-xs font-medium">{section.content}</p>
               </div>
             ))}
           </div>
 
-          <div className="mt-12 text-center text-sm text-slate-500">
-            <p>For privacy inquiries, contact: <span className="text-emerald-400">privacy@global-fishers.com</span></p>
+          <div className="mt-12 text-center text-xs text-slate-500 font-bold uppercase tracking-wider">
+            <p>For privacy inquiries, contact: <span className="text-amber-400">privacy@pxx-xtreme.com</span></p>
           </div>
         </div>
       </section>

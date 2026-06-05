@@ -22,7 +22,8 @@ import Verification from './pages/Verification';
 import AyadPortfolio from './pages/AyadPortfolio';
 
 import Admin from './pages/Admin';
-
+import Portfolio from './pages/Portfolio';
+  
 function App() {
   return (
     <AuthProvider>
@@ -49,6 +50,8 @@ function App() {
               <Route path="/withdrawal-policy" element={<WithdrawalPolicy />} />
               <Route path="/verify" element={<Verification />} />
               <Route path="/ayad-fadel" element={<AyadPortfolio />} />
+              <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/admin" element={<Admin />} />
             </Routes>
           </main>
 

@@ -13,24 +13,24 @@ const SECTIONS = [
 
 export default function WithdrawalPolicy() {
   return (
-    <div className="bg-slate-900 text-white min-h-screen">
+    <div className="bg-slate-950 text-white min-h-screen">
       <section className="py-20">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-12">
-            <ArrowUpCircle size={36} className="text-emerald-400 mx-auto mb-4" />
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Withdrawal Policy</h1>
-            <p className="text-slate-400">Last updated: March 2026</p>
+            <ArrowUpCircle size={36} className="text-amber-400 mx-auto mb-4" />
+            <h1 className="text-4xl md:text-5xl font-black mb-4 tracking-tighter">Withdrawal Policy</h1>
+            <p className="text-slate-500 text-xs font-bold uppercase tracking-wider">Last updated: March 2026</p>
           </div>
           <div className="space-y-6">
             {SECTIONS.map((s, i) => (
-              <div key={i} className="p-6 rounded-2xl bg-slate-800/30 border border-slate-700">
-                <h2 className="text-xl font-bold mb-3 font-sans text-emerald-400">{s.title}</h2>
-                <p className="text-slate-300 leading-relaxed text-sm">{s.content}</p>
+              <div key={i} className="p-6 rounded-2xl bg-slate-900/30 border border-slate-900">
+                <h2 className="text-base font-bold mb-3 font-sans text-amber-400 uppercase tracking-wide">{s.title}</h2>
+                <p className="text-slate-400 leading-relaxed text-xs font-medium">{s.content}</p>
               </div>
             ))}
           </div>
-          <div className="mt-12 text-center text-sm text-slate-500">
-            <p>Need help? Contact: <span className="text-emerald-400">support@global-fishers.com</span></p>
+          <div className="mt-12 text-center text-xs text-slate-500 font-bold uppercase tracking-wider">
+            <p>Need help? Contact: <span className="text-amber-400">support@pxx-xtreme.com</span></p>
           </div>
         </div>
       </section>

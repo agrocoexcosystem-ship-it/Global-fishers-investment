@@ -3,34 +3,34 @@ import { Shield, Users, Globe, Award, Target, Landmark, Briefcase, CheckCircle2 
 
 export default function About() {
   return (
-    <div className="bg-slate-900 text-white min-h-screen">
+    <div className="bg-slate-950 text-white min-h-screen">
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4">
           
           {/* Header */}
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase tracking-widest mb-6">
-              Corporate Overview
+            <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold uppercase tracking-widest mb-6">
+              Protocol Overview
             </span>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Global Fisher <span className="italic text-emerald-400">Investments</span>
+            <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter">
+              PXX – Platinum <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-600">Xtreme Xchange</span>
             </h1>
-            <p className="text-slate-400 max-w-3xl mx-auto text-lg leading-relaxed">
-              Global Fisher Investments (often referred to as "Global Fisher's Investment") is a well-established, legitimate independent investment management firm dedicated to helping clients reach their long-term financial goals.
+            <p className="text-slate-400 max-w-3xl mx-auto text-base leading-relaxed font-medium">
+              PXX is a next-generation decentralized digital asset and utility ecosystem. Operating as a decentralized autonomous organization (DAO), PXX leverages audited smart contracts and quantitative algorithmic terminals to provide institutional-grade infrastructure for modern participants.
             </p>
           </div>
 
           {/* Key Facts Stats Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 p-12 rounded-[2.5rem] glass-effect-dark border border-slate-800 relative overflow-hidden mb-20">
-            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-transparent"></div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 p-12 rounded-[2.5rem] bg-slate-900/30 border border-slate-900 relative overflow-hidden mb-20">
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-transparent"></div>
             {[
-              { num: '1979', label: 'Founded by Ken Fisher' },
-              { num: '$387B+', label: 'Assets Under Management' },
-              { num: '200K+', label: 'Clients Globally' },
-              { num: 'Plano, TX', label: 'Global Headquarters' },
+              { num: '2026', label: 'Ecosystem Launched' },
+              { num: '1.2B PXX', label: 'Total Token Supply' },
+              { num: '45,000+', label: 'Consensus Members' },
+              { num: 'Multi-Chain', label: 'Bridge Infrastructure' },
             ].map((s, i) => (
               <div key={i} className="text-center relative z-10">
-                <div className="text-4xl font-black text-white mb-2 tracking-tighter">{s.num}</div>
+                <div className="text-4xl font-black text-white mb-2 tracking-tighter font-mono">{s.num}</div>
                 <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">{s.label}</div>
               </div>
             ))}
@@ -44,32 +44,32 @@ export default function About() {
             transition={{ duration: 0.8 }}
             className="max-w-5xl mx-auto mb-20 relative"
           >
-            <div className="absolute -inset-4 bg-emerald-500/5 rounded-[2.5rem] blur-2xl"></div>
-            <div className="relative p-12 rounded-[2rem] glass-effect-dark border border-slate-800/80 overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+            <div className="absolute -inset-4 bg-amber-500/5 rounded-[2.5rem] blur-2xl"></div>
+            <div className="relative p-12 rounded-[2rem] bg-slate-900/30 border border-slate-800/80 overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
               <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div>
                   <div className="flex items-center gap-3 mb-4">
-                    <Landmark className="text-emerald-400" size={24} />
-                    <h2 className="text-2xl font-black tracking-tighter uppercase">Fiduciary Model</h2>
+                    <Landmark className="text-amber-400" size={24} />
+                    <h2 className="text-2xl font-black tracking-tighter uppercase">Code-as-Law Fiduciary</h2>
                   </div>
-                  <p className="text-slate-400 leading-relaxed text-base font-medium">
-                    We operate as a fee-only Registered Investment Adviser (RIA), meaning we earn money primarily through transparent advisory fees rather than product commissions. This structure guarantees a fiduciary duty to act strictly in our clients' best interests.
+                  <p className="text-slate-400 leading-relaxed text-sm font-medium">
+                    Our architecture utilizes automated blockchain logic, eliminating middleman bias and commissions. By deploying assets directly into audited smart contracts, participants gain complete transparency and certainty over staking APYs and consensus mechanics.
                   </p>
                 </div>
                 <div className="space-y-4">
-                  <div className="flex items-start gap-4 p-4 rounded-xl bg-slate-900/50 border border-slate-800">
-                    <CheckCircle2 className="text-emerald-400 mt-1 shrink-0" size={18} />
+                  <div className="flex items-start gap-4 p-4 rounded-xl bg-slate-950 border border-slate-900">
+                    <CheckCircle2 className="text-amber-400 mt-1 shrink-0" size={18} />
                     <div>
-                      <h4 className="font-bold text-sm text-white">Fee-Only Registered Advisor</h4>
-                      <p className="text-xs text-slate-500 mt-0.5">Aligned incentive models based solely on portfolio growth.</p>
+                      <h4 className="font-bold text-sm text-white font-sans">Transparent Smart Contracts</h4>
+                      <p className="text-[11px] text-slate-500 mt-0.5">Yield programs are secured natively on the Ethereum blockchain.</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-4 p-4 rounded-xl bg-slate-900/50 border border-slate-800">
-                    <CheckCircle2 className="text-emerald-400 mt-1 shrink-0" size={18} />
+                  <div className="flex items-start gap-4 p-4 rounded-xl bg-slate-950 border border-slate-900">
+                    <CheckCircle2 className="text-amber-400 mt-1 shrink-0" size={18} />
                     <div>
-                      <h4 className="font-bold text-sm text-white">Fiduciary Standards</h4>
-                      <p className="text-xs text-slate-500 mt-0.5">Legally bound to prioritize client interest and portfolio stability.</p>
+                      <h4 className="font-bold text-sm text-white font-sans">Fiduciary Decentralization</h4>
+                      <p className="text-[11px] text-slate-500 mt-0.5">Ecosystem treasury and voting rules are fully managed by the DAO.</p>
                     </div>
                   </div>
                 </div>
@@ -80,9 +80,9 @@ export default function About() {
           {/* What We Offer Section */}
           <div className="mb-24">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">What We Offer</h2>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">Ecosystem Utility</h2>
               <p className="text-slate-400 max-w-xl mx-auto text-sm">
-                Discretionary portfolio management tailored to long-term wealth appreciation and tactical preservation.
+                Decentralized portfolio utilities tailored to long-term wealth appreciation and active token participation.
               </p>
             </div>
             
@@ -90,33 +90,33 @@ export default function About() {
               {[
                 {
                   icon: Briefcase,
-                  title: 'Personalized Strategies',
-                  desc: 'Custom-tailored asset allocation models focusing on global equities, macro trends, and targeted growth parameters.'
+                  title: 'Decentralized Swap',
+                  desc: 'Direct smart contract-based token acquisition from ETH to PXX on our audited token exchange portal.'
                 },
                 {
                   icon: Users,
-                  title: 'High-Net-Worth Solutions',
-                  desc: 'Comprehensive wealth management for private clients, typically beginning at a $1 million entry point.'
+                  title: 'High-Yield Staking',
+                  desc: 'Lock tokens directly in contract vaults with yield incentives reaching up to 25.0% APY.'
                 },
                 {
                   icon: Landmark,
-                  title: 'Institutional Services',
-                  desc: 'Sophisticated capital strategies and consulting for global pension funds, sovereign entities, and endowments.'
+                  title: 'Quant Bots Simulator',
+                  desc: 'Test neural network HFT strategies that trade micro-movements on major currency index pairs.'
                 },
                 {
                   icon: Target,
-                  title: 'Retirement & Reviews',
-                  desc: 'In-depth retirement planning, structured financial support, and objective historical portfolio reviews.'
+                  title: 'DAO Voting Power',
+                  desc: 'Direct participation in network upgrades. Your vote weight scales with your PXX wallet balance.'
                 },
                 {
                   icon: Shield,
-                  title: 'Active Risk Mitigation',
-                  desc: 'Disciplined active management designed to bypass emotional decision-making during periods of market volatility.'
+                  title: 'Audited Smart Code',
+                  desc: 'Immutable contract systems with built-in security handshakes to avoid third-party risk.'
                 },
                 {
                   icon: Globe,
-                  title: 'Objective Decision Making',
-                  desc: 'Business structures designed specifically to separate day-to-day client services from portfolio research.'
+                  title: 'Cross-Chain Bridging',
+                  desc: 'Secure cross-chain token movement, maintaining low latency and efficient gas consumption.'
                 }
               ].map((item, i) => (
                 <motion.div
@@ -125,37 +125,37 @@ export default function About() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.05 }}
-                  className="p-8 rounded-[2rem] glass-effect-dark border border-slate-800 hover:border-emerald-500/30 transition-all group"
+                  className="p-8 rounded-[2rem] bg-slate-900/30 border border-slate-900 hover:border-amber-500/20 transition-all duration-350 group"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-6 group-hover:bg-emerald-500/20 transition-colors">
-                    <item.icon size={24} className="text-emerald-400" />
+                  <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center mb-6 group-hover:bg-amber-500/20 transition-colors">
+                    <item.icon size={22} className="text-amber-400" />
                   </div>
                   <h3 className="text-lg font-bold mb-3 tracking-tight">{item.title}</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+                  <p className="text-slate-400 text-xs leading-relaxed font-medium">{item.desc}</p>
                 </motion.div>
               ))}
             </div>
           </div>
 
-          {/* Reputation, Reviews, and Legitimacy */}
+          {/* Reputation and Legitimacy */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-stretch">
-            {/* Reputation Card */}
+            {/* Auditing Card */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="p-10 rounded-[2.5rem] glass-effect-dark border border-slate-800 flex flex-col justify-between"
+              className="p-10 rounded-[2.5rem] bg-slate-900/30 border border-slate-900 flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center gap-3 mb-6">
-                  <Award className="text-emerald-400" size={24} />
-                  <h3 className="text-xl font-bold uppercase tracking-tight">Reputation & Reviews</h3>
+                  <Award className="text-amber-400" size={24} />
+                  <h3 className="text-xl font-bold uppercase tracking-tight font-sans">Open Source Code</h3>
                 </div>
-                <p className="text-slate-400 text-sm leading-relaxed mb-6">
-                  The firm has received various industry recognitions for growth, assets managed, and advisory services. Client feedback is mixed: many appreciate the personalized service, communication, and downside protection during market downturns, while others focus on the fee structures or relative benchmark performance.
+                <p className="text-slate-400 text-xs leading-relaxed mb-6 font-medium">
+                  The PXX smart contract is public and open-source. Anyone can review the token logic, check mint/burn privileges, and inspect the buyTokens execution code on block explorers. We believe in total visibility as the foundation of modern Web3 trust.
                 </p>
-                <p className="text-slate-500 text-xs leading-relaxed italic">
-                  *As with any advisor, results depend on individual circumstances, market conditions, and risk tolerance. It's always wise to review Form ADV and conduct due diligence.
+                <p className="text-slate-500 text-[10px] leading-relaxed italic">
+                  *Ecosystem participants are encouraged to perform contract dry-runs and verify block explorer addresses before executing live swaps.
                 </p>
               </div>
             </motion.div>
@@ -165,19 +165,19 @@ export default function About() {
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="p-10 rounded-[2.5rem] glass-effect-dark border border-slate-800 flex flex-col justify-between"
+              className="p-10 rounded-[2.5rem] bg-slate-900/30 border border-slate-900 flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center gap-3 mb-6">
-                  <Shield className="text-emerald-400" size={24} />
-                  <h3 className="text-xl font-bold uppercase tracking-tight">Verified Legitimacy</h3>
+                  <Shield className="text-amber-400" size={24} />
+                  <h3 className="text-xl font-bold uppercase tracking-tight font-sans">Verified Web Access</h3>
                 </div>
-                <p className="text-slate-400 text-sm leading-relaxed mb-6">
-                  Global Fisher Investments is a fully regulated firm in the United States (SEC-registered) and complies with regulatory standards across other international jurisdictions where operations exist. 
+                <p className="text-slate-400 text-xs leading-relaxed mb-6 font-medium">
+                  The PXX ecosystem token interactions and staking vaults are hosted strictly on our verified decentralized frontend application. Connect with standard wallet providers like MetaMask or Trust Wallet.
                 </p>
-                <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
-                  <p className="text-xs text-slate-300 font-medium">
-                    All official operations, onboarding pathways, and secure dashboard interactions are conducted exclusively through our verified web interface (<span className="text-emerald-400 font-bold">fisherspay.de</span>) and authorized representatives.
+                <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/10">
+                  <p className="text-[10.5px] text-slate-300 font-medium leading-relaxed">
+                    Verify you are interacting with the correct network contract address (<span className="text-amber-400 font-bold font-mono">0x5FbDB2315678afecb367f032d93F642f64180aa3</span>) before performing transactions.
                   </p>
                 </div>
               </div>

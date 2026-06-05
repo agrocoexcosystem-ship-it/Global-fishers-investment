@@ -47,7 +47,7 @@ export default function Verification() {
     <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4 py-20 relative overflow-hidden">
       {/* Background Orbs */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/10 blur-[120px] rounded-full" />
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-amber-500/10 blur-[120px] rounded-full" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 blur-[120px] rounded-full" />
       </div>
 
@@ -67,16 +67,16 @@ export default function Verification() {
             >
               <div className="flex justify-center mb-8">
                 <div className="relative">
-                  <div className={`w-32 h-32 rounded-full border-2 ${isScanning ? 'border-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.3)]' : 'border-slate-700'} flex items-center justify-center transition-all duration-500`}>
+                  <div className={`w-32 h-32 rounded-full border-2 ${isScanning ? 'border-amber-500 shadow-[0_0_20px_rgba(251,191,36,0.3)]' : 'border-slate-700'} flex items-center justify-center transition-all duration-500`}>
                     {isScanning ? (
-                      <Fingerprint size={48} className="text-emerald-500 animate-pulse" />
+                      <Fingerprint size={48} className="text-amber-500 animate-pulse" />
                     ) : (
                       <Camera size={48} className="text-slate-500" />
                     )}
                   </div>
                   {isScanning && (
                     <motion.div 
-                      className="absolute top-0 left-0 w-full h-1 bg-emerald-500"
+                      className="absolute top-0 left-0 w-full h-1 bg-amber-500"
                       animate={{ top: ['0%', '100%', '0%'] }}
                       transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                     />
@@ -91,14 +91,14 @@ export default function Verification() {
                 onClick={handleStartScan}
                 disabled={isScanning}
                 className={`w-full py-4 rounded-2xl font-bold text-lg transition-all
-                  ${isScanning ? 'bg-slate-700 text-slate-500 cursor-not-allowed' : 'bg-emerald-500 text-white hover:bg-emerald-600 shadow-lg shadow-emerald-500/20'}`}
+                  ${isScanning ? 'bg-slate-700 text-slate-500 cursor-not-allowed' : 'bg-amber-500 text-white hover:bg-amber-600 shadow-lg shadow-amber-500/20'}`}
               >
                 {isScanning ? 'Scanning Biometrics...' : 'Begin Verification'}
               </button>
 
               <div className="mt-8 flex items-center justify-center gap-2 text-xs text-slate-500 uppercase tracking-widest font-semibold">
-                <Shield size={14} className="text-emerald-400" />
-                Secured by Global Fishers Multi-Layer AI
+                <Shield size={14} className="text-amber-400" />
+                Secured by PXX Multi-Layer AI
               </div>
             </motion.div>
           )}
@@ -129,7 +129,7 @@ export default function Verification() {
                     maxLength={1}
                     value={digit}
                     onChange={(e) => handleOtpChange(i, e.target.value)}
-                    className="w-12 h-14 bg-slate-700 border border-slate-600 rounded-xl text-center text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+                    className="w-12 h-14 bg-slate-700 border border-slate-600 rounded-xl text-center text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all"
                   />
                 ))}
               </div>
